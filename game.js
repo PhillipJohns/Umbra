@@ -5,7 +5,7 @@ var cursors;
 
 // NPC class
 class NPC {
-    constructor(name, sprite_sheet, dialogue){
+    constructor(name, sprite_sheet, dialogue = {}){
         this.name = name;
         this.sprite_sheet = sprite_sheet;
         this.dialogue = dialogue;

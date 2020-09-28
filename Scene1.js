@@ -5,12 +5,12 @@ var y = 0;
 var items;
 var inZone = false;
 var npc;
-
-//
+var info;
+var info2;
 var text1;
 var npc_text;
 var player1 = {name: "name1", inventory: []};
-var npc1 = {name: "npc1", dialogue: "Hello there!"};
+var npc1 = {name: "npc1", dialogue: {1: 'Can you find my box?', 2: 'Thank you!'}};
 
 // items
 var box_added = false;
@@ -28,15 +28,15 @@ preload(){
     this.load.spritesheet('right', 'Free/Main Characters/Ninja Frog/Run (32x32).png', {frameWidth: 32, frameHeight: 32});
     this.load.spritesheet('left', 'Free/Main Characters/Ninja Frog/RunL (32x32).png', {frameWidth: 32, frameHeight: 32});
     this.load.spritesheet('up', 'Free/Main Characters/Ninja Frog/Jump (32x32).png', {frameWidth: 32, frameHeight: 32});
-    this.load.image('grass', 'Free/Terrain/Grass.png');
-    this.load.image('background', 'Free/Background/Blue.png');
-    
+    this.load.image('wall', 'Interior/Wall.png');
+    this.load.image('floor', 'Interior/Floor.png');
+    this.load.image('sideWall', 'Interior/SideWall.png');
     // add item image
     // 28 X 24 
     this.load.image('box', 'Free/Items/Boxes/Box1/Idle.png')
     
     // add the npc
-    this.load.image('npc1', 'Free/Main Characters/Pink Man/Jump (32x32).png');
+    this.load.image('npc1', 'Scifi Character/jump.png');
     
 }
 
@@ -47,17 +47,30 @@ create(){
     y = 30
     while (y != 600){
         for (x = 30; x < 850; x += 30){
-            this.add.image(x, y, 'background');
+            this.add.image(x, y, 'floor');
         }
         y += 30
     }
-    for (x = 23; x < 830; x += 46){
-        platforms.create(x, 578, 'grass').setScale(1).refreshBody();
+    for (y = 15; y < 700; y += 15){
+        platforms.create(10, y, 'sideWall');   
     }
+    for (y = 15; y < 700; y += 15){
+        platforms.create(790, y, 'sideWall');
+    }
+    for (x = 0; x < 800; x += 15){
+        platforms.create(x, 630, 'sideWall');
+    }
+    for (x = 23; x < 830; x += 46){
+        platforms.create(x, 0, 'wall').setScale(1).refreshBody();
+    }
+    //Game Text
+    text1 = this.add.text(30, 30, 'You picked up the box!', { fontSize: '32px', fill: '#900' }).setVisible(false);
+    info = this.add.text(350, 60, 'Spacebar to interact', { fontSize: '32px', fill: '#900' });
+    info2 = this.add.text(350, 90, 'Shift to end message', { fontSize: '32px', fill: '#900' });
+
     //Make Character
-     text1 = this.add.text(30, 30, 'You picked up the box!', { fontSize: '32px', fill: '#000' }).setVisible(false);
     
-    npc_text = this.add.text(30, 30, 'Hello there! Welcome to the tutorial!', { fontSize: '32px', fill: '#000' }).setVisible(false);
+    npc_text = this.add.text(30, 30, 'Hello there! Welcome to the tutorial!', { fontSize: '32px', fill: '#900' }).setVisible(false);
     player = this.physics.add.sprite(100, 450, 'character');
     
     // border sprite
@@ -69,7 +82,9 @@ create(){
     let border = this.physics.add.sprite(200, 450);
     border.width = 36;
     border.height = 36;//(29, 26);
+
     
+    //animations
     this.anims.create({
         key: 'Idle',
         frames: this.anims.generateFrameNumbers('character', {start:0, end: 10}),
@@ -101,7 +116,9 @@ create(){
     
     // make npc 1
     npc = this.physics.add.staticGroup();
-    npc.create(200, 450, 'box');
+    npc.create(200, 450, 'npc1');
+    npc.width = 32;
+    npc.height = 32;
     
     //Make item
     // Player collision causes item to become white
@@ -121,7 +138,7 @@ create(){
     function gameItem(){
         inZone = true;
         items.setTint(0x777777);
-        console.info("overlap");
+        // console.info("overlap");
         if(cursors.space.isDown){
             text1.setVisible(true);
             if(!box_added){
@@ -137,13 +154,21 @@ create(){
     
     // NPC function
     function gameNpc(){
-        console.log("!!!");
+        // console.log("!!!");
         inZone = true;
         //console.info("overlap");
         if(cursors.space.isDown){
-            npc_text.setVisible(true);
-            this.physics.pause();
-        }
+            if(box_added){
+                npc_text.setText(npc1.dialogue[2]);
+                npc_text.setVisible(true);
+                console.log(npc1.dialogue[1]);
+            }
+            else{
+                npc_text.setText(npc1.dialogue[1]);
+                npc_text.setVisible(true);
+            }
+            this.physics.pause(); 
+        }  
     }
     
     
