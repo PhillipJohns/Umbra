@@ -24,11 +24,12 @@ class Scene1 extends Phaser.Scene {
 
     }
 preload(){
-    this.load.spritesheet('character', 'Free/Main Characters/Ninja Frog/Idle (32x32).png', {frameWidth: 32, frameHeight: 32});
+    this.load.spritesheet('character', 'sprite/idle.png', {frameWidth: 32, frameHeight: 32});
     player1.sprite_sheet = 'character';
-    this.load.spritesheet('right', 'Free/Main Characters/Ninja Frog/Run (32x32).png', {frameWidth: 32, frameHeight: 32});
-    this.load.spritesheet('left', 'Free/Main Characters/Ninja Frog/RunL (32x32).png', {frameWidth: 32, frameHeight: 32});
-    this.load.spritesheet('up', 'Free/Main Characters/Ninja Frog/Jump (32x32).png', {frameWidth: 32, frameHeight: 32});
+    this.load.spritesheet('right', 'sprite/right.png', {frameWidth: 32, frameHeight: 32});
+    this.load.spritesheet('left', 'sprite/left.png', {frameWidth: 32, frameHeight: 32});
+    this.load.spritesheet('up', 'sprite/back.png', {frameWidth: 32, frameHeight: 32});
+    this.load.spritesheet('down', 'sprite/forward.png', {frameWidth: 32, frameHeight: 32});
     this.load.image('wall', 'Interior/Wall.png');
     this.load.image('floor', 'Interior/Floor.png');
     this.load.image('sideWall', 'Interior/SideWall.png');
@@ -91,25 +92,31 @@ create(){
     //animations
     this.anims.create({
         key: 'Idle',
-        frames: this.anims.generateFrameNumbers('character', {start:0, end: 10}),
+        frames: this.anims.generateFrameNumbers('character', {start:0, end: 3}),
         frameRate: 10,
         repeat: -1
     });
     this.anims.create({
         key: 'right',
-        frames: this.anims.generateFrameNumbers('right', { start: 0, end: 10 }),
+        frames: this.anims.generateFrameNumbers('right', { start: 0, end: 3 }),
         frameRate: 10,
         repeat: -1
     });
     this.anims.create({
         key: 'left',
-        frames: this.anims.generateFrameNumbers('left', { start: 0, end: 10 }),
+        frames: this.anims.generateFrameNumbers('left', { start: 0, end: 3 }),
         frameRate: 10,
         repeat: -1
     });
     this.anims.create({
         key: 'up',
-        frames: this.anims.generateFrameNumbers('up', { start: 0, end: 0 }),
+        frames: this.anims.generateFrameNumbers('up', { start: 0, end: 3 }),
+        frameRate: 10,
+        repeat: -1
+    });
+    this.anims.create({
+        key: 'down',
+        frames: this.anims.generateFrameNumbers('down', { start: 0, end: 3 }),
         frameRate: 10,
         repeat: -1
     });
@@ -218,6 +225,7 @@ update(){
         }
     else if (cursors.down.isDown){
         player.setVelocityY(160);
+        player.anims.play('down', true)
     }
 }
 }
