@@ -24,15 +24,16 @@ class Scene1 extends Phaser.Scene {
 
     }
 preload(){
-    this.load.spritesheet('character', 'sprite/idle.png', {frameWidth: 32, frameHeight: 32});
+    this.load.spritesheet('character', 'Free/Main Characters/Ninja Frog/Idle (32x32).png', {frameWidth: 32, frameHeight: 32});
     player1.sprite_sheet = 'character';
-    this.load.spritesheet('right', 'sprite/right.png', {frameWidth: 32, frameHeight: 32});
-    this.load.spritesheet('left', 'sprite/left.png', {frameWidth: 32, frameHeight: 32});
-    this.load.spritesheet('up', 'sprite/back.png', {frameWidth: 32, frameHeight: 32});
-    this.load.spritesheet('down', 'sprite/forward.png', {frameWidth: 32, frameHeight: 32});
+    this.load.spritesheet('right', 'Free/Main Characters/Ninja Frog/Run (32x32).png', {frameWidth: 32, frameHeight: 32});
+    this.load.spritesheet('left', 'Free/Main Characters/Ninja Frog/RunL (32x32).png', {frameWidth: 32, frameHeight: 32});
+    // this.load.spritesheet('up', 'Free/Main Characters/Ninja Frog/Idle.png', {frameWidth: 32, frameHeight: 32});
+    // this.load.spritesheet('down', 'Free/Main Characters/Ninja Frog/Idle.png', {frameWidth: 32, frameHeight: 32});
     this.load.image('wall', 'Interior/Wall.png');
     this.load.image('floor', 'Interior/Floor.png');
     this.load.image('sideWall', 'Interior/SideWall.png');
+    this.load.image('door', 'Free/Background/Pink.png');
     // add item image
     // 28 X 24
     this.load.image('box', 'Free/Items/Boxes/Box1/Idle.png')
@@ -65,6 +66,7 @@ create(){
     for (x = 23; x < 830; x += 46){
         platforms.create(x, 0, 'wall').setScale(1).refreshBody();
     }
+    this.add.image(800, 200, 'door');
     //Game Text
     graphics = this.add.graphics();
     graphics.fillStyle(0x000000, 1);
@@ -88,38 +90,42 @@ create(){
     border.width = 36;
     border.height = 36;//(29, 26);
 
+    // border door
+    let border_door = this.physics.add.sprite(750, 200);
+    border.width = 36;
+    border.height = 36;
 
     //animations
     this.anims.create({
         key: 'Idle',
-        frames: this.anims.generateFrameNumbers('character', {start:0, end: 3}),
+        frames: this.anims.generateFrameNumbers('character', {start:0, end: 10}),
         frameRate: 10,
         repeat: -1
     });
     this.anims.create({
         key: 'right',
-        frames: this.anims.generateFrameNumbers('right', { start: 0, end: 3 }),
+        frames: this.anims.generateFrameNumbers('right', { start: 0, end: 10 }),
         frameRate: 10,
         repeat: -1
     });
     this.anims.create({
         key: 'left',
-        frames: this.anims.generateFrameNumbers('left', { start: 0, end: 3 }),
+        frames: this.anims.generateFrameNumbers('left', { start: 0, end: 10 }),
         frameRate: 10,
         repeat: -1
     });
-    this.anims.create({
-        key: 'up',
-        frames: this.anims.generateFrameNumbers('up', { start: 0, end: 3 }),
-        frameRate: 10,
-        repeat: -1
-    });
-    this.anims.create({
-        key: 'down',
-        frames: this.anims.generateFrameNumbers('down', { start: 0, end: 3 }),
-        frameRate: 10,
-        repeat: -1
-    });
+    // this.anims.create({
+    //     key: 'up',
+    //     frames: this.anims.generateFrameNumbers('up', { start: 0, end: 3 }),
+    //     frameRate: 10,
+    //     repeat: -1
+    // });
+    // this.anims.create({
+    //     key: 'down',
+    //     frames: this.anims.generateFrameNumbers('down', { start: 0, end: 3 }),
+    //     frameRate: 10,
+    //     repeat: -1
+    // });
     cursors = this.input.keyboard.createCursorKeys();
     var isSpaceDown = cursors.space.isDown;
     this.physics.add.collider(player, platforms);
@@ -142,6 +148,7 @@ create(){
     items.setTint(0xff0000)
     this.physics.add.overlap(player, border_sprite, gameItem, null, this);
     this.physics.add.overlap(player, border, gameNpc, null, this);
+    this.physics.add.overlap(player, border_door, gameDoor, null, this);
 
     // function to overlap item
 
@@ -184,6 +191,14 @@ create(){
             this.physics.pause();
         }
     }
+    //door function
+    function gameDoor(){
+        console.log('123');
+        if(cursors.space.isDown){
+            console.log('space');
+            this.scene.start('Scene2');
+    }
+}
 
 
     // player collides w/item
@@ -221,11 +236,11 @@ update(){
     else if (cursors.up.isDown)
         {
             player.setVelocityY(-160);
-            player.anims.play('up', true)
+            // player.anims.play('up', true)
         }
     else if (cursors.down.isDown){
         player.setVelocityY(160);
-        player.anims.play('down', true)
+        // player.anims.play('down', true)
     }
 }
 }
