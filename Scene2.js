@@ -2,6 +2,8 @@
 var x = 0;
 var y = 0;
 
+var engine;
+
 class Scene2 extends Phaser.Scene {
     constructor()
     {
@@ -16,6 +18,8 @@ preload(){
     // this.load.image('wall', 'Interior/Wall.png');
     // this.load.image('floor', 'Interior/Floor.png');
     // this.load.image('sideWall', 'Interior/SideWall.png');
+    
+    //this.load.spritesheet('engine_room', 'engine_interior.png');
 }
 
 // create
@@ -42,7 +46,10 @@ create(){
         platforms.create(x, 0, 'wall').setScale(1).refreshBody();
     }
     player = this.physics.add.sprite(100, 450, 'character');
-
+    
+    // engine
+    engine = this.add.image(200, 200, 'engine_room', [15]);
+    
     //animations
     this.anims.create({
         key: 'Idle',

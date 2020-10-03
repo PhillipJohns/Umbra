@@ -40,7 +40,10 @@ preload(){
 
     // add the npc
     this.load.image('npc1', 'Scifi Character/jump.png');
-
+    
+    // level 2 assets
+    this.load.image('engine_room', 'engine_interior.png');
+    
 }
 
 create(){
