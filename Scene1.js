@@ -12,6 +12,7 @@ var npc_text;
 var player1 = {name: "name1", inventory: []};
 var npc1 = {name: "npc1", dialogue: {1: 'Can you find my box?', 2: 'Thank you!'}};
 var graphics;
+var box;
 
 // items
 var box_added = false;
@@ -43,6 +44,9 @@ preload(){
     
     // level 2 assets
     this.load.image('engine_room', 'engine_interior.png');
+    this.load.spritesheet('engine_door', 'door.png', {frameWidth: 32, frameHeight: 16});
+    this.load.spritesheet('powerPad', 'powerPad.png', {frameWidth: 32, frameHeight: 16});
+    this.load.spritesheet('powerSource', 'powerSource.png', {frameWidth: 16, frameHeight: 30});
     
 }
 
@@ -145,7 +149,7 @@ create(){
     // Spacebar starts item interaction
     items = this.physics.add.staticGroup();
 
-    items.create(300, 300, 'box');
+    box = items.create(300, 300, 'box');
 
 //    this.physics.add.collider(player, items);
     items.setTint(0xff0000)
@@ -155,7 +159,6 @@ create(){
 
     // function to overlap item
 
-    // BUG = BOX is still there, even if invisible
     function gameItem(){
         inZone = true;
         items.setTint(0x777777);
@@ -167,7 +170,9 @@ create(){
               player1.inventory.push(new Item("box", "box", text1));
               console.info(player1.inventory);
               box_added = true;
-              items.setVisible(false);
+              items.remove(box);
+              box.setVisible(false);
+                
 
             }
             this.physics.pause();

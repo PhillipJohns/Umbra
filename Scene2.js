@@ -3,6 +3,12 @@ var x = 0;
 var y = 0;
 var items;
 var engine;
+var engineOff;
+var engineOn;
+var door;
+var door_open = false;
+var powerOn = false;
+var power;
 
 class Scene2 extends Phaser.Scene {
     constructor()
@@ -48,7 +54,12 @@ create(){
     player = this.physics.add.sprite(100, 450, 'character');
     
     // engine
-    //engine = this.add.image(200, 200, 'box');
+    engine = this.physics.add.staticGroup();
+    engineOff = engine.create(200, 200, 'powerSource');
+
+    // engine door
+    door = this.physics.add.sprite(300, 20, 'engine_door');
+    // door.create(300, 20, 'engine_door');
     
     items = this.physics.add.group();
 
@@ -75,10 +86,55 @@ create(){
         frameRate: 10,
         repeat: -1
     });
+    this.anims.create({
+        key: 'open',
+        frames: this.anims.generateFrameNumbers('engine_door', { start: 0, end: 11 }),
+        frameRate: 10,
+        repeat: 0
+    });
+    this.anims.create({
+        key: 'engineOn',
+        frames: this.anims.generateFrameNumbers('powerSource', { start: 0, end: 2 }),
+        frameRate: 4,
+        repeat: 0
+    });
     cursors = this.input.keyboard.createCursorKeys();
+    //door border
+    let border_door = this.physics.add.sprite(300, 20);
+    border_door.width = 32;
+    border_door.height = 28;//(29, 26);
+    //power source border
+    let border_power = this.physics.add.sprite(200, 200);
+    border_power.width = 40;
+    border_power.height = 30;
+
+    // door open function
+    function doorOpen(){
+        if (door_open == false){
+            door.anims.play('open', true);
+            door_open = true;
+        }
+    }
+    //power source on
+    function engineOn(){
+        if ((cursors.space.isDown) && (!powerOn)){
+            power = this.physics.add.sprite(200, 200, 'powerSource')
+            engine.remove(engineOff);
+            engineOff.setVisible(false);
+            power.anims.play('engineOn', true);
+            console.log('yes');
+            this.physics.add.collider(player, power);
+            powerOn = true;
+        }
+    }
     
     
     this.physics.add.collider(player, items);
+    this.physics.add.collider(player, platforms);
+    this.physics.add.collider(player, door);
+    this.physics.add.collider(player, engine);
+    this.physics.add.overlap(player, border_door, doorOpen, null, this);
+    this.physics.add.overlap(player, border_power, engineOn, null, this);
 }    
     
 // update
@@ -105,6 +161,10 @@ update(){
     else if (cursors.down.isDown){
         player.setVelocityY(160);
         // player.anims.play('down', true)
+    }
+    if (powerOn){
+        power.setVelocityX(0);
+        power.setVelocityY(0);
     }
 }
 }
