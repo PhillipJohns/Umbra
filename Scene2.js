@@ -48,22 +48,28 @@ create(){
     for (x = 0; x < 800; x += 15){
         platforms.create(x, 630, 'sideWall');
     }
+    
+    // tutorial section
+    for (x = 0; x < 450; x += 15){
+        platforms.create(x, 200, 'sideWall');
+    }
+    
     for (x = 23; x < 830; x += 46){
         platforms.create(x, 0, 'wall').setScale(1).refreshBody();
     }
-    player = this.physics.add.sprite(100, 450, 'character');
+    player = this.physics.add.sprite(50, 150, 'character');
     
     // engine
     engine = this.physics.add.staticGroup();
-    engineOff = engine.create(200, 200, 'powerSource');
+    engineOff = engine.create(600, 200, 'powerSource');
 
     // engine door
-    door = this.physics.add.sprite(300, 20, 'engine_door');
+    door = this.physics.add.sprite(600, 20, 'engine_door');
     // door.create(300, 20, 'engine_door');
     
     items = this.physics.add.group();
 
-    items.create(300, 300, 'box');
+    items.create(650, 450, 'box');
     
     // engine battery
     
@@ -100,11 +106,11 @@ create(){
     });
     cursors = this.input.keyboard.createCursorKeys();
     //door border
-    let border_door = this.physics.add.sprite(300, 20);
+    let border_door = this.physics.add.sprite(600, 20);
     border_door.width = 32;
     border_door.height = 28;//(29, 26);
     //power source border
-    let border_power = this.physics.add.sprite(200, 200);
+    let border_power = this.physics.add.sprite(600, 200);
     border_power.width = 40;
     border_power.height = 30;
 
@@ -118,7 +124,7 @@ create(){
     //power source on
     function engineOn(){
         if ((cursors.space.isDown) && (!powerOn)){
-            power = this.physics.add.sprite(200, 200, 'powerSource')
+            power = this.physics.add.sprite(600, 200, 'powerSource')
             engine.remove(engineOff);
             engineOff.setVisible(false);
             power.anims.play('engineOn', true);
