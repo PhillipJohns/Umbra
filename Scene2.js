@@ -1,7 +1,7 @@
 // level 2
 var x = 0;
 var y = 0;
-
+var items;
 var engine;
 
 class Scene2 extends Phaser.Scene {
@@ -48,7 +48,13 @@ create(){
     player = this.physics.add.sprite(100, 450, 'character');
     
     // engine
-    engine = this.add.image(200, 200, 'engine_room', [15]);
+    //engine = this.add.image(200, 200, 'box');
+    
+    items = this.physics.add.group();
+
+    items.create(300, 300, 'box');
+    
+    // engine battery
     
     //animations
     this.anims.create({
@@ -70,12 +76,19 @@ create(){
         repeat: -1
     });
     cursors = this.input.keyboard.createCursorKeys();
+    
+    
+    this.physics.add.collider(player, items);
 }    
     
 // update
 update(){
+    //make the object moveable
+    items.setVelocityX(0);
+    items.setVelocityY(0);
     player.setVelocityX(0);
     player.setVelocityY(0);
+    
     if (cursors.right.isDown){
         player.setVelocityX(160);
         player.anims.play('right', true);
