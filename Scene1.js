@@ -45,8 +45,9 @@ preload(){
     // level 2 assets
     this.load.image('engine_room', 'engine_interior.png');
     this.load.spritesheet('engine_door', 'door.png', {frameWidth: 32, frameHeight: 16});
-    this.load.spritesheet('powerPad', 'powerPad.png', {frameWidth: 32, frameHeight: 16});
+    this.load.spritesheet('powerPad', 'powerPad.png', {frameWidth: 47, frameHeight: 46});
     this.load.spritesheet('powerSource', 'powerSource.png', {frameWidth: 16, frameHeight: 30});
+    this.load.image('backwall', 'BackWall.png');
     
 }
 
@@ -234,20 +235,20 @@ update(){
 //    items.setVelocityY(0);
 
     if (cursors.right.isDown){
-        player.setVelocityX(160);
+        player.setVelocityX(360);
         player.anims.play('right', true);
     }
     else if (cursors.left.isDown){
-        player.setVelocityX(-160);
+        player.setVelocityX(-360);
         player.anims.play('left', true);
     }
     else if (cursors.up.isDown)
         {
-            player.setVelocityY(-160);
+            player.setVelocityY(-360);
             // player.anims.play('up', true)
         }
     else if (cursors.down.isDown){
-        player.setVelocityY(160);
+        player.setVelocityY(360);
         // player.anims.play('down', true)
     }
 }

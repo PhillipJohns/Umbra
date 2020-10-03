@@ -9,6 +9,9 @@ var door;
 var door_open = false;
 var powerOn = false;
 var power;
+var startDoor;
+var startPad;
+var startTouchPad = false;
 
 class Scene2 extends Phaser.Scene {
     constructor()
@@ -31,7 +34,10 @@ preload(){
 // create
 create(){
     //Make background
+    // also a placeholder for objects that will be removed
     let platforms = this.physics.add.staticGroup();
+    
+    
     y = 30
     while (y != 600){
         for (x = 30; x < 850; x += 30){
@@ -50,9 +56,23 @@ create(){
     }
     
     // tutorial section
-    for (x = 0; x < 450; x += 15){
-        platforms.create(x, 200, 'sideWall');
+    for (x = 0; x < 17; x += 15){
+        platforms.create(x, 200, 'backwall');
     }
+    for (x = 180; x < 350; x += 15){
+        platforms.create(x, 200, 'backwall');
+    }
+    
+    // will delete eventually, so added to platforms group (does not matter where it is stored)
+    startDoor = platforms.create(98, 200, 'engine_door');
+    startPad = this.physics.add.sprite(350, 70, 'powerPad');
+    
+    for (y = 0; y < 150; y += 15){
+        platforms.create(400, y, 'sideWall');
+    }
+    
+    //
+    
     
     for (x = 23; x < 830; x += 46){
         platforms.create(x, 0, 'wall').setScale(1).refreshBody();
@@ -104,6 +124,14 @@ create(){
         frameRate: 4,
         repeat: 0
     });
+    // start pad animation
+    this.anims.create({
+        key: 'startPadOn',
+        frames: this.anims.generateFrameNumbers('powerPad', { start: 0, end: 1 }),
+        frameRate: 4,
+        repeat: 0
+    });
+    
     cursors = this.input.keyboard.createCursorKeys();
     //door border
     let border_door = this.physics.add.sprite(600, 20);
@@ -113,7 +141,8 @@ create(){
     let border_power = this.physics.add.sprite(600, 200);
     border_power.width = 40;
     border_power.height = 30;
-
+    
+    
     // door open function
     function doorOpen(){
         if (door_open == false){
@@ -134,6 +163,16 @@ create(){
         }
     }
     
+    // start pad on
+    //power source on
+    function startPadOnFunc(){
+        if(!startTouchPad){
+         console.log("hello!");
+        startPad.anims.play('startPadOn', true);
+            startTouchPad = true;
+        }
+    }
+    
     
     this.physics.add.collider(player, items);
     this.physics.add.collider(player, platforms);
@@ -141,10 +180,15 @@ create(){
     this.physics.add.collider(player, engine);
     this.physics.add.overlap(player, border_door, doorOpen, null, this);
     this.physics.add.overlap(player, border_power, engineOn, null, this);
+    this.physics.add.overlap(player, startPad, startPadOnFunc, null, this);
 }    
     
 // update
 update(){
+//    if(!overlap(startPad, player)){
+//        startTouchPad = false;
+//    }
+    //startTouchPad = false;
     //make the object moveable
     items.setVelocityX(0);
     items.setVelocityY(0);
@@ -152,20 +196,20 @@ update(){
     player.setVelocityY(0);
     
     if (cursors.right.isDown){
-        player.setVelocityX(160);
+        player.setVelocityX(360);
         player.anims.play('right', true);
     }
     else if (cursors.left.isDown){
-        player.setVelocityX(-160);
+        player.setVelocityX(-360);
         player.anims.play('left', true);
     }
     else if (cursors.up.isDown)
         {
-            player.setVelocityY(-160);
+            player.setVelocityY(-360);
             // player.anims.play('up', true)
         }
     else if (cursors.down.isDown){
-        player.setVelocityY(160);
+        player.setVelocityY(360);
         // player.anims.play('down', true)
     }
     if (powerOn){
