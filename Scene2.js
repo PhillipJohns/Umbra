@@ -212,6 +212,9 @@ update(){
         player.setVelocityY(360);
         // player.anims.play('down', true)
     }
+    else{
+      player.anims.play('Idle',true)
+    }
     if (powerOn){
         power.setVelocityX(0);
         power.setVelocityY(0);
