@@ -7,6 +7,7 @@ var engineOff;
 var engineOn;
 var door;
 var door_open = false;
+var startDoor_open = false;
 var powerOn = false;
 var power;
 var startDoor;
@@ -56,16 +57,16 @@ create(){
     }
 
     // tutorial section
-    for (x = 0; x < 17; x += 15){
+    for (x = 0; x < 10; x += 15){
         platforms.create(x, 200, 'backwall');
     }
-    for (x = 180; x < 350; x += 15){
+    for (x = 204; x < 350; x += 15){
         platforms.create(x, 200, 'backwall');
     }
 
     // will delete eventually, so added to platforms group (does not matter where it is stored)
-    startDoor = platforms.create(98, 200, 'engine_door');
-    startPad = this.physics.add.sprite(350, 70, 'powerPad');
+    startDoor = platforms.create(101, 200, 'engine_door').setScale(2);
+    startPad = this.physics.add.sprite(350, 140, 'powerPad');
 
     for (y = 0; y < 150; y += 15){
         platforms.create(400, y, 'sideWall');
@@ -84,7 +85,7 @@ create(){
     engineOff = engine.create(600, 200, 'powerSource');
 
     // engine door
-    door = this.physics.add.sprite(600, 20, 'engine_door');
+    door = this.physics.add.sprite(600, 16, 'engine_door').setScale(2);
     // door.create(300, 20, 'engine_door');
 
     items = this.physics.add.group();
@@ -150,6 +151,16 @@ create(){
             door_open = true;
         }
     }
+    //start door open function
+    // function startDoorOpen(){
+    //     if (startDoor_open == false){
+    //         platforms.remove(startDoor);
+    //         startDoor.setVisible(false);
+    //         startDoor = this.physics.add.sprite(104, 200, 'engine_door').setScale(1.5);
+    //         startDoor.anims.play('open', true);
+    //         startDoor_open = true;
+    //     }
+    // }
     //power source on
     function engineOn(){
         if ((cursors.space.isDown) && (!powerOn)){
@@ -167,9 +178,15 @@ create(){
     //power source on
     function startPadOnFunc(){
         if(!startTouchPad){
-         console.log("hello!");
         startPad.anims.play('startPadOn', true);
             startTouchPad = true;
+        }
+        if (startDoor_open == false){
+            platforms.remove(startDoor);
+            startDoor.setVisible(false);
+            startDoor = this.physics.add.sprite(104, 200, 'engine_door').setScale(2);
+            startDoor.anims.play('open', true);
+            startDoor_open = true;
         }
     }
 
