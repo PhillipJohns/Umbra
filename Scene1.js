@@ -25,12 +25,13 @@ class Scene1 extends Phaser.Scene {
 
     }
 preload(){
-    this.load.spritesheet('character', 'Free/Main Characters/Ninja Frog/Idle (32x32).png', {frameWidth: 32, frameHeight: 32});
+    this.load.spritesheet('character', 'sprite/char1.png', {frameWidth: 239, frameHeight: 500});
     player1.sprite_sheet = 'character';
-    this.load.spritesheet('right', 'Free/Main Characters/Ninja Frog/Run (32x32).png', {frameWidth: 32, frameHeight: 32});
-    this.load.spritesheet('left', 'Free/Main Characters/Ninja Frog/RunL (32x32).png', {frameWidth: 32, frameHeight: 32});
+    //this.load.spritesheet('right', 'Free/Main Characters/Ninja Frog/Run (32x32).png', {frameWidth: 32, frameHeight: 32});
+    //this.load.spritesheet('left', 'Free/Main Characters/Ninja Frog/RunL (32x32).png', {frameWidth: 32, frameHeight: 32});
     // this.load.spritesheet('up', 'Free/Main Characters/Ninja Frog/Idle.png', {frameWidth: 32, frameHeight: 32});
     // this.load.spritesheet('down', 'Free/Main Characters/Ninja Frog/Idle.png', {frameWidth: 32, frameHeight: 32});
+    this.load.image('background', 'sprite/bedroom.png');
     this.load.image('wall', 'Interior/Wall.png');
     this.load.image('floor', 'Interior/Floor.png');
     this.load.image('sideWall', 'Interior/SideWall.png');
@@ -40,15 +41,15 @@ preload(){
     this.load.image('box', 'Free/Items/Boxes/Box1/Idle.png')
 
     // add the npc
-    this.load.image('npc1', 'Scifi Character/jump.png');
-    
+    this.load.image('npc1', 'sprite/npcidle.png');
+
     // level 2 assets
     this.load.image('engine_room', 'engine_interior.png');
     this.load.spritesheet('engine_door', 'door.png', {frameWidth: 32, frameHeight: 16});
     this.load.spritesheet('powerPad', 'powerPad.png', {frameWidth: 47, frameHeight: 46});
     this.load.spritesheet('powerSource', 'powerSource.png', {frameWidth: 16, frameHeight: 30});
     this.load.image('backwall', 'BackWall.png');
-    
+
 }
 
 create(){
@@ -74,7 +75,9 @@ create(){
     for (x = 23; x < 830; x += 46){
         platforms.create(x, 0, 'wall').setScale(1).refreshBody();
     }
-    this.add.image(800, 200, 'door');
+    this.add.image(400,300,'background').setScale(.37 );
+    this.add.image(800, 275, 'door');
+
     //Game Text
     graphics = this.add.graphics();
     graphics.fillStyle(0x000000, 1);
@@ -86,7 +89,7 @@ create(){
     //Make Character
 
     npc_text = this.add.text(50, 545, 'Hello there! Welcome to the tutorial!', { fontSize: '32px', fill: '#999' }).setVisible(false);
-    player = this.physics.add.sprite(100, 450, 'character');
+    player = this.physics.add.sprite(300, 150, 'character').setScale(.25);
 
     // border sprite
     let border_sprite = this.physics.add.sprite(300, 300);
@@ -94,46 +97,46 @@ create(){
     border_sprite.height = 28;//(29, 26);
 
     // border npc
-    let border = this.physics.add.sprite(200, 450);
+    let border = this.physics.add.sprite(200, 150);
     border.width = 36;
     border.height = 36;//(29, 26);
 
     // border door
-    let border_door = this.physics.add.sprite(750, 200);
+    let border_door = this.physics.add.sprite(750, 275);
     border.width = 36;
     border.height = 36;
 
     //animations
     this.anims.create({
         key: 'Idle',
-        frames: this.anims.generateFrameNumbers('character', {start:0, end: 10}),
+        frames: this.anims.generateFrameNumbers('character', {start:6, end: 6}),
         frameRate: 10,
         repeat: -1
     });
     this.anims.create({
         key: 'right',
-        frames: this.anims.generateFrameNumbers('right', { start: 0, end: 10 }),
+        frames: this.anims.generateFrameNumbers('character', { start: 3, end: 5 }),
         frameRate: 10,
         repeat: -1
     });
     this.anims.create({
         key: 'left',
-        frames: this.anims.generateFrameNumbers('left', { start: 0, end: 10 }),
+        frames: this.anims.generateFrameNumbers('character', { start: 9, end: 11 }),
         frameRate: 10,
         repeat: -1
     });
-    // this.anims.create({
-    //     key: 'up',
-    //     frames: this.anims.generateFrameNumbers('up', { start: 0, end: 3 }),
-    //     frameRate: 10,
-    //     repeat: -1
-    // });
-    // this.anims.create({
-    //     key: 'down',
-    //     frames: this.anims.generateFrameNumbers('down', { start: 0, end: 3 }),
-    //     frameRate: 10,
-    //     repeat: -1
-    // });
+    this.anims.create({
+        key: 'up',
+        frames: this.anims.generateFrameNumbers('character', { start: 0, end: 2 }),
+        frameRate: 10,
+        repeat: -1
+    });
+    this.anims.create({
+        key: 'down',
+        frames: this.anims.generateFrameNumbers('character', { start: 6, end: 8 }),
+        frameRate: 10,
+        repeat: -1
+    });
     cursors = this.input.keyboard.createCursorKeys();
     var isSpaceDown = cursors.space.isDown;
     this.physics.add.collider(player, platforms);
@@ -141,7 +144,7 @@ create(){
 
     // make npc 1
     npc = this.physics.add.staticGroup();
-    npc.create(200, 450, 'npc1');
+    npc.create(200, 150, 'npc1').setScale(.25);
     npc.width = 32;
     npc.height = 32;
 
@@ -173,7 +176,7 @@ create(){
               box_added = true;
               items.remove(box);
               box.setVisible(false);
-                
+
 
             }
             this.physics.pause();
@@ -245,11 +248,14 @@ update(){
     else if (cursors.up.isDown)
         {
             player.setVelocityY(-360);
-            // player.anims.play('up', true)
+            player.anims.play('up', true)
         }
     else if (cursors.down.isDown){
         player.setVelocityY(360);
-        // player.anims.play('down', true)
+        player.anims.play('down', true)
+    }
+    else{
+      player.anims.play('Idle',true)
     }
 }
 }

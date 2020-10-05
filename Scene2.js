@@ -27,7 +27,7 @@ preload(){
     // this.load.image('wall', 'Interior/Wall.png');
     // this.load.image('floor', 'Interior/Floor.png');
     // this.load.image('sideWall', 'Interior/SideWall.png');
-    
+
     //this.load.spritesheet('engine_room', 'engine_interior.png');
 }
 
@@ -36,8 +36,8 @@ create(){
     //Make background
     // also a placeholder for objects that will be removed
     let platforms = this.physics.add.staticGroup();
-    
-    
+
+
     y = 30
     while (y != 600){
         for (x = 30; x < 850; x += 30){
@@ -54,7 +54,7 @@ create(){
     for (x = 0; x < 800; x += 15){
         platforms.create(x, 630, 'sideWall');
     }
-    
+
     // tutorial section
     for (x = 0; x < 17; x += 15){
         platforms.create(x, 200, 'backwall');
@@ -62,23 +62,23 @@ create(){
     for (x = 180; x < 350; x += 15){
         platforms.create(x, 200, 'backwall');
     }
-    
+
     // will delete eventually, so added to platforms group (does not matter where it is stored)
     startDoor = platforms.create(98, 200, 'engine_door');
     startPad = this.physics.add.sprite(350, 70, 'powerPad');
-    
+
     for (y = 0; y < 150; y += 15){
         platforms.create(400, y, 'sideWall');
     }
-    
+
     //
-    
-    
+
+
     for (x = 23; x < 830; x += 46){
         platforms.create(x, 0, 'wall').setScale(1).refreshBody();
     }
-    player = this.physics.add.sprite(50, 150, 'character');
-    
+    player = this.physics.add.sprite(50, 130, 'character').setScale(.25);
+
     // engine
     engine = this.physics.add.staticGroup();
     engineOff = engine.create(600, 200, 'powerSource');
@@ -86,13 +86,13 @@ create(){
     // engine door
     door = this.physics.add.sprite(600, 20, 'engine_door');
     // door.create(300, 20, 'engine_door');
-    
+
     items = this.physics.add.group();
 
     items.create(650, 450, 'box');
-    
+
     // engine battery
-    
+
     //animations
     this.anims.create({
         key: 'Idle',
@@ -131,7 +131,7 @@ create(){
         frameRate: 4,
         repeat: 0
     });
-    
+
     cursors = this.input.keyboard.createCursorKeys();
     //door border
     let border_door = this.physics.add.sprite(600, 20);
@@ -141,8 +141,8 @@ create(){
     let border_power = this.physics.add.sprite(600, 200);
     border_power.width = 40;
     border_power.height = 30;
-    
-    
+
+
     // door open function
     function doorOpen(){
         if (door_open == false){
@@ -162,7 +162,7 @@ create(){
             powerOn = true;
         }
     }
-    
+
     // start pad on
     //power source on
     function startPadOnFunc(){
@@ -172,8 +172,8 @@ create(){
             startTouchPad = true;
         }
     }
-    
-    
+
+
     this.physics.add.collider(player, items);
     this.physics.add.collider(player, platforms);
     this.physics.add.collider(player, door);
@@ -181,8 +181,8 @@ create(){
     this.physics.add.overlap(player, border_door, doorOpen, null, this);
     this.physics.add.overlap(player, border_power, engineOn, null, this);
     this.physics.add.overlap(player, startPad, startPadOnFunc, null, this);
-}    
-    
+}
+
 // update
 update(){
 //    if(!overlap(startPad, player)){
@@ -194,7 +194,7 @@ update(){
     items.setVelocityY(0);
     player.setVelocityX(0);
     player.setVelocityY(0);
-    
+
     if (cursors.right.isDown){
         player.setVelocityX(360);
         player.anims.play('right', true);
