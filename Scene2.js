@@ -14,6 +14,7 @@ var startDoor;
 var startPad;
 var startTouchPad = false;
 
+var startPowerSupply;
 class Scene2 extends Phaser.Scene {
     constructor()
     {
@@ -37,8 +38,7 @@ create(){
     //Make background
     // also a placeholder for objects that will be removed
     let platforms = this.physics.add.staticGroup();
-
-
+    
     y = 30
     while (y != 600){
         for (x = 30; x < 850; x += 30){
@@ -72,14 +72,15 @@ create(){
         platforms.create(400, y, 'sideWall');
     }
 
-    //
-
-
     for (x = 23; x < 830; x += 46){
         platforms.create(x, 0, 'wall').setScale(1).refreshBody();
     }
     player = this.physics.add.sprite(50, 130, 'character').setScale(.25);
-
+    
+    
+    // powersupply sprite
+    startPowerSupply = this.physics.add.sprite(150, 120, 'powerSource', 2);
+    
     // engine
     engine = this.physics.add.staticGroup();
     engineOff = engine.create(600, 200, 'powerSource');
@@ -182,6 +183,8 @@ create(){
             startTouchPad = true;
         }
         if (startDoor_open == false){
+            platforms.create(350, 140, 'powerSource', 2);
+            startPowerSupply.setVisible(false);
             platforms.remove(startDoor);
             startDoor.setVisible(false);
             startDoor = this.physics.add.sprite(104, 200, 'engine_door').setScale(2);
@@ -195,9 +198,13 @@ create(){
     this.physics.add.collider(player, platforms);
     this.physics.add.collider(player, door);
     this.physics.add.collider(player, engine);
+    this.physics.add.collider(player, startPowerSupply);
+    
+    // powersupply is clipping through wall, collision not working?
+    this.physics.add.collider(platforms, startPowerSupply);
     this.physics.add.overlap(player, border_door, doorOpen, null, this);
     this.physics.add.overlap(player, border_power, engineOn, null, this);
-    this.physics.add.overlap(player, startPad, startPadOnFunc, null, this);
+    this.physics.add.overlap(startPowerSupply, startPad, startPadOnFunc, null, this);
 }
 
 // update
@@ -211,6 +218,8 @@ update(){
     items.setVelocityY(0);
     player.setVelocityX(0);
     player.setVelocityY(0);
+    startPowerSupply.setVelocityX(0);
+    startPowerSupply.setVelocityY(0);
 
     if (cursors.right.isDown){
         player.setVelocityX(360);
