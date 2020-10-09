@@ -38,7 +38,7 @@ create(){
     //Make background
     // also a placeholder for objects that will be removed
     let platforms = this.physics.add.staticGroup();
-    
+
     y = 30
     while (y != 600){
         for (x = 30; x < 850; x += 30){
@@ -65,7 +65,7 @@ create(){
     }
 
     // will delete eventually, so added to platforms group (does not matter where it is stored)
-    startDoor = platforms.create(101, 200, 'engine_door').setScale(2);
+    startDoor = platforms.create(101, 200, 'engine_door').setScale(.15);
     startPad = this.physics.add.sprite(350, 140, 'powerPad');
 
     for (y = 0; y < 150; y += 15){
@@ -76,17 +76,17 @@ create(){
         platforms.create(x, 0, 'wall').setScale(1).refreshBody();
     }
     player = this.physics.add.sprite(50, 130, 'character').setScale(.25);
-    
-    
+
+
     // powersupply sprite
     startPowerSupply = this.physics.add.sprite(150, 120, 'powerSource', 2);
-    
+
     // engine
     engine = this.physics.add.staticGroup();
     engineOff = engine.create(600, 200, 'powerSource');
 
     // engine door
-    door = this.physics.add.sprite(600, 16, 'engine_door').setScale(2);
+    door = this.physics.add.sprite(600, 12, 'engine_door').setScale(.15);
     // door.create(300, 20, 'engine_door');
 
     items = this.physics.add.group();
@@ -116,7 +116,7 @@ create(){
     });
     this.anims.create({
         key: 'open',
-        frames: this.anims.generateFrameNumbers('engine_door', { start: 0, end: 11 }),
+        frames: this.anims.generateFrameNumbers('engine_door', { start: 0, end: 6 }),
         frameRate: 10,
         repeat: 0
     });
@@ -187,7 +187,7 @@ create(){
             startPowerSupply.setVisible(false);
             platforms.remove(startDoor);
             startDoor.setVisible(false);
-            startDoor = this.physics.add.sprite(104, 200, 'engine_door').setScale(2);
+            startDoor = this.physics.add.sprite(104, 200, 'engine_door').setScale(.15);
             startDoor.anims.play('open', true);
             startDoor_open = true;
         }
@@ -199,7 +199,7 @@ create(){
     this.physics.add.collider(player, door);
     this.physics.add.collider(player, engine);
     this.physics.add.collider(player, startPowerSupply);
-    
+
     // powersupply is clipping through wall, collision not working?
     this.physics.add.collider(platforms, startPowerSupply);
     this.physics.add.overlap(player, border_door, doorOpen, null, this);
@@ -232,11 +232,11 @@ update(){
     else if (cursors.up.isDown)
         {
             player.setVelocityY(-360);
-            // player.anims.play('up', true)
+            player.anims.play('up', true)
         }
     else if (cursors.down.isDown){
         player.setVelocityY(360);
-        // player.anims.play('down', true)
+        player.anims.play('down', true)
     }
     else{
       player.anims.play('Idle',true)

@@ -13,6 +13,7 @@ var player1 = {name: "name1", inventory: []};
 var npc1 = {name: "npc1", dialogue: {1: 'Can you find my box?', 2: 'Thank you!'}};
 var graphics;
 var box;
+var door;
 
 // items
 var box_added = false;
@@ -25,7 +26,7 @@ class Scene1 extends Phaser.Scene {
 
     }
 preload(){
-    this.load.spritesheet('character', 'sprite/char1.png', {frameWidth: 239, frameHeight: 500});
+    this.load.spritesheet('character', 'sprite/char2.png', {frameWidth: 239, frameHeight: 500});
     player1.sprite_sheet = 'character';
     //this.load.spritesheet('right', 'Free/Main Characters/Ninja Frog/Run (32x32).png', {frameWidth: 32, frameHeight: 32});
     //this.load.spritesheet('left', 'Free/Main Characters/Ninja Frog/RunL (32x32).png', {frameWidth: 32, frameHeight: 32});
@@ -35,7 +36,7 @@ preload(){
     this.load.image('wall', 'Interior/Wall.png');
     this.load.image('floor', 'Interior/Floor.png');
     this.load.image('sideWall', 'Interior/SideWall.png');
-    this.load.image('door', 'Free/Background/Pink.png');
+    this.load.spritesheet('door', 'sprite/doorr.png', {frameWidth: 225, frameHeight: 500});
     // add item image
     // 28 X 24
     this.load.image('box', 'Free/Items/Boxes/Box1/Idle.png')
@@ -45,7 +46,7 @@ preload(){
 
     // level 2 assets
     this.load.image('engine_room', 'engine_interior.png');
-    this.load.spritesheet('engine_door', 'door.png', {frameWidth: 32, frameHeight: 16});
+    this.load.spritesheet('engine_door', 'sprite/door.png', {frameWidth: 500, frameHeight: 225});
     this.load.spritesheet('powerPad', 'powerPad.png', {frameWidth: 47, frameHeight: 46});
     this.load.spritesheet('powerSource', 'powerSource.png', {frameWidth: 16, frameHeight: 30});
     this.load.image('backwall', 'BackWall.png');
@@ -76,7 +77,7 @@ create(){
         platforms.create(x, 0, 'wall').setScale(1).refreshBody();
     }
     this.add.image(400,300,'background').setScale(.37 );
-    this.add.image(800, 275, 'door');
+    door = platforms.create(780, 275, 'door').setScale(.15);
 
     //Game Text
     graphics = this.add.graphics();
@@ -136,6 +137,12 @@ create(){
         frames: this.anims.generateFrameNumbers('character', { start: 6, end: 8 }),
         frameRate: 10,
         repeat: -1
+    });
+    this.anims.create({
+        key: 'open2',
+        frames: this.anims.generateFrameNumbers('doorr', { start: 0, end: 6 }),
+        frameRate: 10,
+        repeat: 0
     });
     cursors = this.input.keyboard.createCursorKeys();
     var isSpaceDown = cursors.space.isDown;
@@ -206,6 +213,8 @@ create(){
     //door function
     function gameDoor(){
         console.log('123');
+        door = this.physics.add.sprite(780, 275, 'doorr').setScale(.15);
+        door.anims.play('open2', true);
         if(cursors.space.isDown){
             console.log('space');
             this.scene.start('Scene2');
@@ -248,14 +257,14 @@ update(){
     else if (cursors.up.isDown)
         {
             player.setVelocityY(-360);
-            player.anims.play('up', true)
+            player.anims.play('up', true);
         }
     else if (cursors.down.isDown){
         player.setVelocityY(360);
-        player.anims.play('down', true)
+        player.anims.play('down', true);
     }
     else{
-      player.anims.play('Idle',true)
+      player.anims.play('Idle',true);
     }
 }
 }
