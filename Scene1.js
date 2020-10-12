@@ -50,9 +50,10 @@ preload(){
     this.load.image('engine_room', 'engine_interior.png');
     this.load.spritesheet('engine_door', 'sprite/door.png', {frameWidth: 500, frameHeight: 225});
     this.load.spritesheet('powerSource', 'sprite/powersource.png', {frameWidth: 185, frameHeight: 280});
-    this.load.spritesheet('fixbattery', 'sprite/fixbattery.png', {frameWidth: 170, frameHeight: 260});
+    this.load.spritesheet('fixbattery', 'sprite/fixbattery.png', {frameWidth: 165, frameHeight: 255});
     this.load.image('battery', 'sprite/battery.png');
     this.load.image('backwall', 'BackWall.png');
+    this.load.image('button', 'Free/Menu/Buttons/Achievements.png');
 
 }
 

@@ -14,6 +14,10 @@ var startDoor;
 var startPad;
 var startTouchPad = false;
 var player;
+var mazeDoor;
+var mazeDoorOpen;
+var toolKitFound;
+var toolKit;
 
 var startPowerSupply;
 class Scene2 extends Phaser.Scene {
@@ -68,7 +72,7 @@ create(){
     }
 
     // will delete eventually, so added to platforms group (does not matter where it is stored)
-    startDoor = platforms.create(101, 200, 'engine_door').setScale(.15);
+    startDoor = platforms.create(98, 195, 'engine_door').setScale(.17).setSize(75,34).setOffset(220,100);
     startPad = this.physics.add.sprite(350, 130, 'powerSource').setScale(.4);
 
     for (y = 0; y < 150; y += 15){
@@ -94,10 +98,13 @@ create(){
     platforms.create(670, 190, 'backwall').setScale(.8).setDisplaySize(50, 20).setSize(50,20).setOffset(40, 0);
     platforms.create(650, 140, 'sideWall').setScale(.8);
     platforms.create(650, 90, 'sideWall').setScale(.8);
-    //make player
-    player = this.physics.add.sprite(50, 130, 'character').setScale(.25);
-    player.setSize(120, 250);
-    player.setOffset(70, 220);
+
+    //maze doors and buttons
+    mazeDoor = platforms.create(740, 180, 'engine_door').setScale(.15).setSize(75,34).setOffset(220,100);
+    this.add.image(200, 200, 'button');
+    this.add.image(750, 20, 'button');
+    mazeDoorOpen = this.physics.add.sprite(740, 180, 'engine_door').setScale(.15).setSize(75,34).setOffset(220,100).setVisible(false);
+    
 
 
 
@@ -111,10 +118,11 @@ create(){
 
     // engine door
     door = this.physics.add.sprite(600, 12, 'engine_door').setScale(.15);
-    // door.create(300, 20, 'engine_door');
+
+    
 
     items = this.physics.add.group();
-    platforms.create(700, 50, 'box');
+    toolKit = platforms.create(700, 50, 'box');
 
 
 
@@ -150,12 +158,12 @@ create(){
         repeat: 0
     });
     // start pad animation
-    this.anims.create({
-        key: 'fixed',
-        frames: this.anims.generateFrameNumbers('powerPad', { start: 0, end: 0 }),
-        frameRate: 4,
-        repeat: 0
-    });
+    // this.anims.create({
+    //     key: 'fixed',
+    //     frames: this.anims.generateFrameNumbers('powerPad', { start: 1, end: 0 }),
+    //     frameRate: 4,
+    //     repeat: 0
+    // });
 
     cursors = this.input.keyboard.createCursorKeys();
     //door border
@@ -167,6 +175,11 @@ create(){
     // border_power.width = 300;
     // border_power.height = 300;
     border_power.setSize(70,100);
+    //border for maze door button
+    let borderButton1 = this.physics.add.sprite(200, 200).setSize(30, 30);
+    let borderButton2 = this.physics.add.sprite(750, 25).setSize(30, 30);
+    //tool kit border
+    let kitBorder = this.physics.add.sprite(700, 50).setSize(30, 30);
 
     // door open function
     function doorOpen(){
@@ -187,11 +200,11 @@ create(){
     // }
     //power source on
     function engineOn(){
-        if ((cursors.space.isDown) && (!powerOn)){
-            power = this.physics.add.sprite(500, 150, 'fixbattery', 1).setScale(.4);
+        if ((cursors.space.isDown) && (toolKitFound)){
+            power = this.physics.add.sprite(500, 150, 'fixbattery').setScale(.4);
             engine.remove(engineOff);
             engineOff.setVisible(false);
-            power.anims.play('fixed', true);
+            // power.anims.play('fixed', true);
             console.log('yes');
             this.physics.add.collider(player, power);
             powerOn = true;
@@ -210,11 +223,57 @@ create(){
             startPowerSupply.setVisible(false);
             platforms.remove(startDoor);
             startDoor.setVisible(false);
-            startDoor = this.physics.add.sprite(104, 200, 'engine_door').setScale(.15);
+            startDoor = this.physics.add.sprite(98, 195, 'engine_door').setScale(.17);
             startDoor.anims.play('open', true);
             startDoor_open = true;
         }
     }
+
+    function mazeDoorTimer(){
+        if (cursors.space.isDown){
+            platforms.remove(mazeDoor);
+            mazeDoor.setVisible(false);
+            mazeDoorOpen.setVisible(true);
+            mazeDoorOpen.anims.play('open', true);
+            timer = this.time.delayedCall(8000, mazeDoorClose, null, this);
+        }
+    }
+
+    function mazeDoorClose(){
+        platforms.add(mazeDoor);
+        mazeDoor.setVisible(true);
+        mazeDoorOpen.setVisible(false);
+    }
+    function addToolKit(){
+        if (cursors.space.isDown){
+            player1.inventory.push(new Item("Tool Kit", "box", "You've found a tool kit!"));
+            platforms.remove(toolKit);
+            toolKit.setVisible(false);
+            toolKitFound = true;
+        }
+    }
+    function mazeDoorFinalOpen(){
+        if (cursors.space.isDown){
+            platforms.remove(mazeDoor);
+            mazeDoor.setVisible(false);
+            mazeDoorOpen.setVisible(true);
+            mazeDoorOpen.anims.play('open', true);
+        }
+    }
+    function exitRoom(){
+        if ((cursors.space.isDown) && (powerOn)){
+            door.anims.play('open', true);
+            timer = this.time.delayedCall(1000, changeScene, null, this);
+        }
+    }
+    function changeScene(){
+        this.scene.start('Scene3');
+    }
+
+    //make player
+    player = this.physics.add.sprite(50, 130, 'character').setScale(.25);
+    player.setSize(120, 250);
+    player.setOffset(70, 220);
 
 
     this.physics.add.collider(player, items);
@@ -225,9 +284,14 @@ create(){
 
     // powersupply is clipping through wall, collision not working?
     this.physics.add.collider(platforms, startPowerSupply);
-    this.physics.add.overlap(player, border_door, doorOpen, null, this);
+    this.physics.add.overlap(player, border_door, exitRoom, null, this);
     this.physics.add.overlap(player, border_power, engineOn, null, this);
     this.physics.add.overlap(startPowerSupply, startPad, startPadOnFunc, null, this);
+    this.physics.add.overlap(player, borderButton1, mazeDoorTimer, null, this);
+    this.physics.add.overlap(player, borderButton2, mazeDoorFinalOpen, null, this);
+    this.physics.add.overlap(player, kitBorder, addToolKit, null, this);
+
+    
 }
 
 // update
