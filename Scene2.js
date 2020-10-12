@@ -201,7 +201,7 @@ create(){
     //power source on
     function engineOn(){
         if ((cursors.space.isDown) && (toolKitFound)){
-            power = this.physics.add.sprite(500, 150, 'fixbattery').setScale(.4);
+            power = platforms.create(500, 150, 'fixbattery').setScale(.4).setSize(65,95).setOffset(50,75);
             engine.remove(engineOff);
             engineOff.setVisible(false);
             // power.anims.play('fixed', true);
@@ -328,9 +328,9 @@ update(){
     else{
       player.anims.play('Idle',true)
     }
-    if (powerOn){
-        power.setVelocityX(0);
-        power.setVelocityY(0);
-    }
+    // if (powerOn){
+    //     power.setVelocityX(0);
+    //     power.setVelocityY(0);
+    // }
 }
 }
