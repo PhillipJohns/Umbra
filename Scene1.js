@@ -14,6 +14,8 @@ var npc1 = {name: "npc1", dialogue: {1: 'Can you find my box?', 2: 'Thank you!'}
 var graphics;
 var box;
 var door;
+var doorOpen = false;
+var timer;
 
 // items
 var box_added = false;
@@ -36,7 +38,7 @@ preload(){
     this.load.image('wall', 'Interior/Wall.png');
     this.load.image('floor', 'Interior/Floor.png');
     this.load.image('sideWall', 'Interior/SideWall.png');
-    this.load.spritesheet('door', 'sprite/doorr.png', {frameWidth: 225, frameHeight: 500});
+    this.load.spritesheet('door', 'sprite/doorr.png', {frameWidth: 225, frameHeight: 480});
     // add item image
     // 28 X 24
     this.load.image('box', 'Free/Items/Boxes/Box1/Idle.png')
@@ -54,6 +56,8 @@ preload(){
 }
 
 create(){
+    //create event timer
+    
 
     let platforms = this.physics.add.staticGroup();
     //Make background
@@ -77,7 +81,8 @@ create(){
         platforms.create(x, 0, 'wall').setScale(1).refreshBody();
     }
     this.add.image(400,300,'background').setScale(.37 );
-    door = platforms.create(780, 275, 'door').setScale(.15);
+    // door = platforms.create(780, 275, 'door').setScale(.15);
+    door = this.physics.add.sprite(780, 275, 'door').setScale(.15);
 
     //Game Text
     graphics = this.add.graphics();
@@ -91,6 +96,8 @@ create(){
 
     npc_text = this.add.text(50, 545, 'Hello there! Welcome to the tutorial!', { fontSize: '32px', fill: '#999' }).setVisible(false);
     player = this.physics.add.sprite(300, 150, 'character').setScale(.25);
+    player.setSize(120, 250);
+    player.setOffset(70, 220);
 
     // border sprite
     let border_sprite = this.physics.add.sprite(300, 300);
@@ -140,7 +147,7 @@ create(){
     });
     this.anims.create({
         key: 'open2',
-        frames: this.anims.generateFrameNumbers('doorr', { start: 0, end: 6 }),
+        frames: this.anims.generateFrameNumbers('door', { start: 0, end: 6 }),
         frameRate: 10,
         repeat: 0
     });
@@ -213,13 +220,17 @@ create(){
     //door function
     function gameDoor(){
         console.log('123');
-        door = this.physics.add.sprite(780, 275, 'doorr').setScale(.15);
-        door.anims.play('open2', true);
+        // door = this.physics.add.sprite(780, 275, 'door').setScale(.15);
         if(cursors.space.isDown){
             console.log('space');
-            this.scene.start('Scene2');
+            door.anims.play('open2', true);
+            timer = this.time.delayedCall(1000, changeScene, null, this);
+            
     }
 }
+    function changeScene(){
+        this.scene.start('Scene2');
+    }
 
 
     // player collides w/item

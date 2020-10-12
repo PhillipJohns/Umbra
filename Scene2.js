@@ -13,6 +13,7 @@ var power;
 var startDoor;
 var startPad;
 var startTouchPad = false;
+var player;
 
 var startPowerSupply;
 class Scene2 extends Phaser.Scene {
@@ -38,6 +39,7 @@ create(){
     //Make background
     // also a placeholder for objects that will be removed
     let platforms = this.physics.add.staticGroup();
+    
 
     y = 30
     while (y != 600){
@@ -75,7 +77,28 @@ create(){
     for (x = 23; x < 830; x += 46){
         platforms.create(x, 0, 'wall').setScale(1).refreshBody();
     }
+    // Maze and room
+    platforms.create(150, 400, 'sideWall').setScale(.8);
+    platforms.create(210, 448, 'backwall').setScale(.8);
+    platforms.create(315, 448, 'backwall').setScale(.8);
+    platforms.create(376, 400, 'sideWall').setScale(.8);
+    platforms.create(450, 500, 'sideWall').setScale(.8);
+    platforms.create(440, 350, 'backwall').setScale(.8);
+    platforms.create(540, 350, 'backwall').setScale(.8);
+    platforms.create(580, 415, 'sideWall').setScale(.8);
+    platforms.create(640, 460, 'backwall').setScale(.8);
+    for (y = 400; y > 200; y -= 50){
+        platforms.create(700, y, 'sideWall');
+    }
+    platforms.create(670, 190, 'backwall').setScale(.8).setDisplaySize(50, 20).setSize(50,20).setOffset(40, 0);
+    platforms.create(650, 140, 'sideWall').setScale(.8);
+    platforms.create(650, 90, 'sideWall').setScale(.8);
+    //make player
     player = this.physics.add.sprite(50, 130, 'character').setScale(.25);
+    player.setSize(120, 250);
+    player.setOffset(70, 220);
+
+    
 
 
     // powersupply sprite
@@ -83,17 +106,16 @@ create(){
 
     // engine
     engine = this.physics.add.staticGroup();
-    engineOff = engine.create(600, 200, 'powerSource');
+    engineOff = engine.create(500, 150, 'powerSource');
 
     // engine door
     door = this.physics.add.sprite(600, 12, 'engine_door').setScale(.15);
     // door.create(300, 20, 'engine_door');
 
     items = this.physics.add.group();
-
-    items.create(650, 450, 'box');
-
-    // engine battery
+    platforms.create(700, 50, 'box');
+    
+    
 
     //animations
     this.anims.create({
@@ -140,7 +162,7 @@ create(){
     border_door.width = 32;
     border_door.height = 28;//(29, 26);
     //power source border
-    let border_power = this.physics.add.sprite(600, 200);
+    let border_power = this.physics.add.sprite(500, 150);
     border_power.width = 40;
     border_power.height = 30;
 
@@ -165,7 +187,7 @@ create(){
     //power source on
     function engineOn(){
         if ((cursors.space.isDown) && (!powerOn)){
-            power = this.physics.add.sprite(600, 200, 'powerSource')
+            power = this.physics.add.sprite(500, 150, 'powerSource')
             engine.remove(engineOff);
             engineOff.setVisible(false);
             power.anims.play('engineOn', true);
