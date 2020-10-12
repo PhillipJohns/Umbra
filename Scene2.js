@@ -18,6 +18,23 @@ var mazeDoor;
 var mazeDoorOpen;
 var toolKitFound;
 var toolKit;
+var graphics;
+
+// text variables
+var powerSupplyFixedText;
+var doorFixedText;
+var toolBoxAcquiredText;
+
+// power supply is broken, I need a took kit
+var powerSupplyFixed = false;
+
+// door to scene 3
+// Door is broken, need to fix power supply
+var doorFixed = false;
+
+// Toolbox to fix powersupply
+// I found the toolbox
+//var toolBoxAcquired = false;
 
 var startPowerSupply;
 class Scene2 extends Phaser.Scene {
@@ -105,9 +122,23 @@ create(){
     this.add.image(750, 20, 'button');
     mazeDoorOpen = this.physics.add.sprite(740, 180, 'engine_door').setScale(.15).setSize(75,34).setOffset(220,100).setVisible(false);
     
-
-
-
+    // In-game text for Scene 2
+    // black box for text
+    graphics = this.add.graphics();
+    graphics.fillStyle(0x000000, 1);
+    graphics.fillRect(25, 525, 750, 500).setVisible(false);
+    
+    // text for power supply being broken (middle of room)
+    // power supply is broken, I need a took kit
+    powerSupplyFixedText = this.add.text(50, 545, 'The power supply is broken, I need a tool kit to fix it.', { fontSize: '32px', fill: '#999' }).setVisible(false);
+    
+    // door to scene 3
+    // Door is broken, need to fix power supply
+    doorFixedText = this.add.text(50, 545, 'The door is broken, I need the power supply to be on.', { fontSize: '32px', fill: '#999' }).setVisible(false);
+    
+    // Toolbox to fix powersupply
+    // I found the toolbox
+    toolBoxAcquiredText = this.add.text(50, 545, 'You picked up the toolbox!', { fontSize: '32px', fill: '#999' }).setVisible(false);
 
     // powersupply sprite
     startPowerSupply = this.physics.add.sprite(150, 120, 'battery', 2).setScale(.4);
@@ -209,6 +240,11 @@ create(){
             this.physics.add.collider(player, power);
             powerOn = true;
         }
+        else if ((cursors.space.isDown) && (!toolKitFound)){
+            graphics.setVisible(true);
+            powerSupplyFixedText.setVisible(true);
+            this.physics.pause();
+        }
     }
 
     // start pad on
@@ -244,14 +280,19 @@ create(){
         mazeDoor.setVisible(true);
         mazeDoorOpen.setVisible(false);
     }
+    
     function addToolKit(){
         if (cursors.space.isDown){
             player1.inventory.push(new Item("Tool Kit", "box", "You've found a tool kit!"));
             platforms.remove(toolKit);
             toolKit.setVisible(false);
             toolKitFound = true;
+            graphics.setVisible(true);
+            toolBoxAcquiredText.setVisible(true);
+            this.physics.pause();
         }
     }
+    
     function mazeDoorFinalOpen(){
         if (cursors.space.isDown){
             platforms.remove(mazeDoor);
@@ -260,12 +301,19 @@ create(){
             mazeDoorOpen.anims.play('open', true);
         }
     }
+    
     function exitRoom(){
         if ((cursors.space.isDown) && (powerOn)){
             door.anims.play('open', true);
             timer = this.time.delayedCall(1000, changeScene, null, this);
         }
+        else if((cursors.space.isDown) && (!powerOn)){
+            graphics.setVisible(true);
+            doorFixedText.setVisible(true);
+            this.physics.pause();
+        }
     }
+    
     function changeScene(){
         this.scene.start('Scene3');
     }
@@ -307,7 +355,15 @@ update(){
     player.setVelocityY(0);
     startPowerSupply.setVelocityX(0);
     startPowerSupply.setVelocityY(0);
-
+    
+    if(cursors.shift.isDown){
+        powerSupplyFixedText.setVisible(false);
+        doorFixedText.setVisible(false);
+        toolBoxAcquiredText.setVisible(false);
+        graphics.setVisible(false);
+        this.physics.resume();
+    }
+    
     if (cursors.right.isDown){
         player.setVelocityX(360);
         player.anims.play('right', true);
