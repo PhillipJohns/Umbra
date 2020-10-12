@@ -36,7 +36,7 @@ preload(){
     // this.load.spritesheet('down', 'Free/Main Characters/Ninja Frog/Idle.png', {frameWidth: 32, frameHeight: 32});
     this.load.image('background', 'sprite/bedroom.png');
     this.load.image('wall', 'Interior/Wall.png');
-    this.load.image('floor', 'Interior/Floor.png');
+    this.load.image('bbackground', 'sprite/bbackground.png');
     this.load.image('sideWall', 'Interior/SideWall.png');
     this.load.spritesheet('door', 'sprite/doorr.png', {frameWidth: 225, frameHeight: 480});
     // add item image
@@ -49,15 +49,16 @@ preload(){
     // level 2 assets
     this.load.image('engine_room', 'engine_interior.png');
     this.load.spritesheet('engine_door', 'sprite/door.png', {frameWidth: 500, frameHeight: 225});
-    this.load.spritesheet('powerPad', 'powerPad.png', {frameWidth: 47, frameHeight: 46});
-    this.load.spritesheet('powerSource', 'powerSource.png', {frameWidth: 16, frameHeight: 30});
+    this.load.spritesheet('powerSource', 'sprite/powersource.png', {frameWidth: 185, frameHeight: 280});
+    this.load.spritesheet('fixbattery', 'sprite/fixbattery.png', {frameWidth: 170, frameHeight: 260});
+    this.load.image('battery', 'sprite/battery.png');
     this.load.image('backwall', 'BackWall.png');
 
 }
 
 create(){
     //create event timer
-    
+
 
     let platforms = this.physics.add.staticGroup();
     //Make background
@@ -82,7 +83,7 @@ create(){
     }
     this.add.image(400,300,'background').setScale(.37 );
     // door = platforms.create(780, 275, 'door').setScale(.15);
-    door = this.physics.add.sprite(780, 275, 'door').setScale(.15);
+    door = this.physics.add.sprite(775, 275, 'door').setScale(.25);
 
     //Game Text
     graphics = this.add.graphics();
@@ -225,7 +226,7 @@ create(){
             console.log('space');
             door.anims.play('open2', true);
             timer = this.time.delayedCall(1000, changeScene, null, this);
-            
+
     }
 }
     function changeScene(){

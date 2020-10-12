@@ -39,15 +39,16 @@ create(){
     //Make background
     // also a placeholder for objects that will be removed
     let platforms = this.physics.add.staticGroup();
-    
 
-    y = 30
-    while (y != 600){
-        for (x = 30; x < 850; x += 30){
-            this.add.image(x, y, 'floor');
-        }
-        y += 30
-    }
+
+    // y = 30
+    // while (y != 600){
+    //     for (x = 30; x < 850; x += 30){
+    //
+    //     }
+    //     y += 30
+    // }
+    this.add.image(x, y, 'bbackground').setScale(2);
     for (y = 15; y < 700; y += 15){
         platforms.create(10, y, 'sideWall');
     }
@@ -68,7 +69,7 @@ create(){
 
     // will delete eventually, so added to platforms group (does not matter where it is stored)
     startDoor = platforms.create(101, 200, 'engine_door').setScale(.15);
-    startPad = this.physics.add.sprite(350, 140, 'powerPad');
+    startPad = this.physics.add.sprite(350, 130, 'powerSource').setScale(.4);
 
     for (y = 0; y < 150; y += 15){
         platforms.create(400, y, 'sideWall');
@@ -98,15 +99,15 @@ create(){
     player.setSize(120, 250);
     player.setOffset(70, 220);
 
-    
+
 
 
     // powersupply sprite
-    startPowerSupply = this.physics.add.sprite(150, 120, 'powerSource', 2);
+    startPowerSupply = this.physics.add.sprite(150, 120, 'battery', 2).setScale(.4);
 
     // engine
     engine = this.physics.add.staticGroup();
-    engineOff = engine.create(500, 150, 'powerSource');
+    engineOff = engine.create(500, 150, 'fixbattery', 1).setScale(.4).setSize(65,95).setOffset(50,75);
 
     // engine door
     door = this.physics.add.sprite(600, 12, 'engine_door').setScale(.15);
@@ -114,8 +115,8 @@ create(){
 
     items = this.physics.add.group();
     platforms.create(700, 50, 'box');
-    
-    
+
+
 
     //animations
     this.anims.create({
@@ -144,14 +145,14 @@ create(){
     });
     this.anims.create({
         key: 'engineOn',
-        frames: this.anims.generateFrameNumbers('powerSource', { start: 0, end: 2 }),
+        frames: this.anims.generateFrameNumbers('powerSource', { start: 2, end: 2 }),
         frameRate: 4,
         repeat: 0
     });
     // start pad animation
     this.anims.create({
-        key: 'startPadOn',
-        frames: this.anims.generateFrameNumbers('powerPad', { start: 0, end: 1 }),
+        key: 'fixed',
+        frames: this.anims.generateFrameNumbers('powerPad', { start: 0, end: 0 }),
         frameRate: 4,
         repeat: 0
     });
@@ -163,9 +164,9 @@ create(){
     border_door.height = 28;//(29, 26);
     //power source border
     let border_power = this.physics.add.sprite(500, 150);
-    border_power.width = 40;
-    border_power.height = 30;
-
+    // border_power.width = 300;
+    // border_power.height = 300;
+    border_power.setSize(70,100);
 
     // door open function
     function doorOpen(){
@@ -187,10 +188,10 @@ create(){
     //power source on
     function engineOn(){
         if ((cursors.space.isDown) && (!powerOn)){
-            power = this.physics.add.sprite(500, 150, 'powerSource')
+            power = this.physics.add.sprite(500, 150, 'fixbattery', 1).setScale(.4);
             engine.remove(engineOff);
             engineOff.setVisible(false);
-            power.anims.play('engineOn', true);
+            power.anims.play('fixed', true);
             console.log('yes');
             this.physics.add.collider(player, power);
             powerOn = true;
@@ -201,11 +202,11 @@ create(){
     //power source on
     function startPadOnFunc(){
         if(!startTouchPad){
-        startPad.anims.play('startPadOn', true);
+        startPad.anims.play('engineOn', true);
             startTouchPad = true;
         }
         if (startDoor_open == false){
-            platforms.create(350, 140, 'powerSource', 2);
+          //  platforms.create(350, 140, 'powerSource', 2);
             startPowerSupply.setVisible(false);
             platforms.remove(startDoor);
             startDoor.setVisible(false);
