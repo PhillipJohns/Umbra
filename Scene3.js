@@ -43,9 +43,9 @@ create(){
     spriteCoord = this.add.text(50, 50, 'The sprites X and Y: ', { fontSize: '18px', fill: '#900' });
     
     // create door sprites
-    let door1 = this.physics.add.sprite(0, 0, 'engine_door').setScale(.5);
-    
-    let door2 = this.physics.add.sprite(250, 0, 'engine_door', 6).setScale(.5);
+//    let door1 = this.physics.add.sprite(0, 0, 'engine_door').setScale(.5);
+//    
+//    let door2 = this.physics.add.sprite(250, 0, 'engine_door', 6).setScale(.5);
     
     //animations
     this.anims.create({
@@ -95,33 +95,32 @@ create(){
     player.setOffset(70, 220);
     
     // open door functions
-    function open_door(){
-        //if (cursors.space.isDown){
-           if(door1Open == false){
-               console.info("door 1 open");
-               door1.anims.play('open', true);
-               door2.anims.play('close', true);
-               door1Open = true;
-           }
-            else{
-               console.info("door 1 close");
-               door1.anims.play('close', true);
-               door2.anims.play('open', true);
-               door1Open = false;
-            }
-        //}
-    }
+//    function open_door(){
+//        //if (cursors.space.isDown){
+//           if(door1Open == false){
+//               console.info("door 1 open");
+//               door1.anims.play('open', true);
+//               door2.anims.play('close', true);
+//               door1Open = true;
+//           }
+//            else{
+//               console.info("door 1 close");
+//               door1.anims.play('close', true);
+//               door2.anims.play('open', true);
+//               door1Open = false;
+//            }
+//        //}
+//    }
     
     // timer function
     function openDoorTimer(){
         if(cursors.space.justDown){
             timer = this.time.delayedCall(1000, open_door, null, this);
         }
-    }
-    
+    }    
     
     // overlap functions
-    this.physics.add.overlap(player, door1, openDoorTimer, null, this);
+    //this.physics.add.overlap(player, door1, openDoorTimer, null, this);
     
 }
 
