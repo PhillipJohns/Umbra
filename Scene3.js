@@ -31,13 +31,18 @@ class Scene3 extends Phaser.Scene {
     }
 
 preload(){
-    
+    this.load.image("tiles", "Interior/tileset.png");
+    this.load.tilemapTiledJSON("maze", "MazeMap.json");
 
 }
 
 create(){
     // background
     bg = this.add.image(0, 0, 'bbackground').setScale(4);
+    const maze = this.make.tilemap({ key: "maze" });
+    const tileset = maze.addTilesetImage("tileset", "tiles");
+    const worldLayer = maze.createStaticLayer('Tile Layer 1', tileset, 0, 0);
+    worldLayer.setCollisionByProperty({ Collision: true });
     
     // show the Spirtes X and Y coord
     spriteCoord = this.add.text(50, 50, 'The sprites X and Y: ', { fontSize: '18px', fill: '#900' });
@@ -121,6 +126,15 @@ create(){
     
     // overlap functions
     //this.physics.add.overlap(player, door1, openDoorTimer, null, this);
+
+    //Player Collision
+    this.physics.add.collider(player, worldLayer);
+//     const debugGraphics = this.add.graphics().setAlpha(0.75);
+//     worldLayer.renderDebug(debugGraphics, {
+//         tileColor: null, // Color of non-colliding tiles
+//         collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
+//         faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
+// });
     
 }
 
