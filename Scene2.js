@@ -19,6 +19,10 @@ var mazeDoorOpen;
 var toolKitFound;
 var toolKit;
 var graphics;
+// coordinates
+var sprite_x;
+var sprite_y;
+var spriteCoord;
 
 // text variables
 var powerSupplyFixedText;
@@ -139,7 +143,10 @@ create(){
     // Toolbox to fix powersupply
     // I found the toolbox
     toolBoxAcquiredText = this.add.text(50, 545, 'You picked up the toolbox!', { fontSize: '32px', fill: '#999' }).setVisible(false);
-
+    
+    // show the Spirtes X and Y coord
+    spriteCoord = this.add.text(50, 50, 'The sprites X and Y: ', { fontSize: '18px', fill: '#900' });
+    
     // powersupply sprite
     startPowerSupply = this.physics.add.sprite(150, 120, 'battery', 2).setScale(.4);
 
@@ -344,6 +351,10 @@ create(){
 
 // update
 update(){
+    // keep track of the sprite X and Y
+    spriteCoord.setText('Sprite X: ' + parseFloat(player.x).toFixed(2) + " Sprite Y: " + parseFloat(player.y).toFixed(2));
+    
+    
 //    if(!overlap(startPad, player)){
 //        startTouchPad = false;
 //    }

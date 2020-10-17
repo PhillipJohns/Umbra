@@ -16,6 +16,11 @@ var box;
 var door;
 var doorOpen = false;
 var timer;
+// coordinates
+var sprite_x;
+var sprite_y;
+var spriteCoord;
+
 
 // items
 var box_added = false;
@@ -100,6 +105,9 @@ create(){
     player = this.physics.add.sprite(300, 150, 'character').setScale(.25);
     player.setSize(120, 250);
     player.setOffset(70, 220);
+    
+    // show the Spirtes X and Y coord
+    spriteCoord = this.add.text(50, 50, 'The sprites X and Y: ', { fontSize: '18px', fill: '#900' });
 
     // border sprite
     let border_sprite = this.physics.add.sprite(300, 300);
@@ -231,7 +239,8 @@ create(){
     }
 }
     function changeScene(){
-        this.scene.start('Scene2');
+        // 
+        this.scene.start('Scene3');
     }
 
 
@@ -243,6 +252,10 @@ create(){
 
 // update function
 update(){
+    // keep track of the sprite X and Y
+    spriteCoord.setText('Sprite X: ' + parseFloat(player.x).toFixed(2) + " Sprite Y: " + parseFloat(player.y).toFixed(2));
+    
+    
     player.setVelocityX(0);
     player.setVelocityY(0);
 
