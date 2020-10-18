@@ -14,12 +14,32 @@ var y = 0;
 
 
 // timer
-var timer;
+// var timer;
 
 // coordinates
 var sprite_x;
 var sprite_y;
 var spriteCoord;
+
+//doors
+var door1;
+var door2;
+var door3;
+var door4;
+var door5;
+var door6;
+var door7;
+var door8;
+var door9;
+var door10;
+var door11;
+var door12;
+var door13;
+var door14;
+var game = this;
+
+//Buttons
+var room1Button;
 
 var player;
 
@@ -30,6 +50,7 @@ class Scene3 extends Phaser.Scene {
         super('Scene3');
     }
 
+
 preload(){
     this.load.image("tiles", "Interior/tileset.png");
     this.load.tilemapTiledJSON("maze", "MazeMap.json");
@@ -38,7 +59,7 @@ preload(){
 
 create(){
     // background
-    bg = this.add.image(0, 0, 'bbackground').setScale(4);
+    bg = this.add.image(0, 0, 'bbackground').setScale(6);
     const maze = this.make.tilemap({ key: "maze" });
     const tileset = maze.addTilesetImage("tileset", "tiles");
     const worldLayer = maze.createStaticLayer('Tile Layer 1', tileset, 0, 0);
@@ -46,6 +67,10 @@ create(){
     
     // show the Spirtes X and Y coord
     spriteCoord = this.add.text(50, 50, 'The sprites X and Y: ', { fontSize: '18px', fill: '#900' });
+
+    //Door buttons
+    this.add.image(2336, 2480, 'button');
+    let borderButton1 = this.physics.add.sprite(2336, 2480).setSize(40, 40);
     
     // create door sprites
 //    let door1 = this.physics.add.sprite(0, 0, 'engine_door').setScale(.5);
@@ -78,8 +103,14 @@ create(){
         repeat: 0
     });
     this.anims.create({
-        key: 'close',
-        frames: this.anims.generateFrameNumbers('engine_door', { start: 6, end: 0 }),
+        key: 'openR',
+        frames: this.anims.generateFrameNumbers('door', { start: 0, end: 6 }),
+        frameRate: 10,
+        repeat: 0
+    });
+    this.anims.create({
+        key: 'openL',
+        frames: this.anims.generateFrameNumbers('doorL', { start: 0, end: 6 }),
         frameRate: 10,
         repeat: 0
     });
@@ -94,47 +125,87 @@ create(){
     // cursors
     cursors = this.input.keyboard.createCursorKeys();
     
-    //make player
-    player = this.physics.add.sprite(50, 130, 'character').setScale(.25);
-    player.setSize(120, 250);
-    player.setOffset(70, 220);
+    
+
+    //Test Door
+    // Test Value was 2464(56), 2464(15)
+    let platforms = this.physics.add.staticGroup();
+    door2 = platforms.create(2520, 2459, 'engine_door').setScale(.35).setSize(170,70).setOffset(170,80);
+    //Test2
+    door4 = platforms.create(1432, 2554, 'engine_door').setScale(.35).setSize(170,70).setOffset(170,80);
+    //Test3
+    door5 = platforms.create(1432, 2714, 'engine_door').setScale(.35).setSize(170,70).setOffset(170,80);
+    //Test Side door
+    // Test value was 2784(22), 2592(56)
+    door1 = platforms.create(2806, 2648, 'door').setScale(.35).setSize(70,160).setOffset(80,165);
+    //Test Right facing side door
+    //Test value was 2208(2), 2592(56)
+    door3 = platforms.create(2206, 2648, 'doorL').setScale(.35).setSize(70,160).setOffset(80,165);
+    //All door test
+    door6 = platforms.create(834, 2648, 'doorL').setScale(.35).setSize(70,160).setOffset(80,165);
+    door7 = platforms.create(2934, 1976, 'door').setScale(.35).setSize(70,160).setOffset(80,165);
+    door8 = platforms.create(1718, 2072, 'door').setScale(.35).setSize(70,160).setOffset(80,165);
+    door9 = platforms.create(1154, 2072, 'doorL').setScale(.35).setSize(70,160).setOffset(80,165);
+    door10 = platforms.create(3800, 143, 'engine_door').setScale(.35).setSize(170,70).setOffset(170,80);
+    door11= platforms.create(3266, 472, 'door').setScale(.35).setSize(70,160).setOffset(80,165);
+    door12 = platforms.create(1718, 792, 'door').setScale(.35).setSize(70,160).setOffset(80,165);
+    door13 = platforms.create(856, 495, 'engine_door').setScale(.35).setSize(170,70).setOffset(170,80);
+    door14 = platforms.create(568, 1519, 'engine_door').setScale(.35).setSize(170,70).setOffset(170,80);
+    //Door position list
+    let Hdoors = [door2, door4, door5, door10, door13, door14];
+    let VdoorsL = [door3, door6, door9];
+
     
     // open door functions
-//    function open_door(){
-//        //if (cursors.space.isDown){
-//           if(door1Open == false){
-//               console.info("door 1 open");
-//               door1.anims.play('open', true);
-//               door2.anims.play('close', true);
-//               door1Open = true;
-//           }
-//            else{
-//               console.info("door 1 close");
-//               door1.anims.play('close', true);
-//               door2.anims.play('open', true);
-//               door1Open = false;
-//            }
-//        //}
-//    }
-    
-    // timer function
-    function openDoorTimer(){
-        if(cursors.space.justDown){
-            timer = this.time.delayedCall(1000, open_door, null, this);
+    function open_door(doorList){
+        // console.log(this);
+        if (cursors.space.isDown){
+            console.log(this);
+            timer = this.time.delayedCall(5000, close_door(), null, this);
+            console.log('OpenDoor')
+            for(let doorNumber = 0; doorNumber < doorList.length; doorNumber ++){
+                if (Hdoors.includes(doorList[doorNumber])){
+                    doorList[doorNumber].anims.play('open', true);
+                    platforms.remove(doorList[doorNumber]);
+                } 
+                else if(VdoorsL.includes(doorList[doorNumber])){
+                    doorList[doorNumber].anims.play('openL', true);
+                    platforms.remove(doorList[doorNumber]);
+                }
+                else{
+                    doorList[doorNumber].anims.play('openR', true);
+                    platforms.remove(doorList[doorNumber]);
+                }
+                }    
+            }
         }
-    }    
-    
-    // overlap functions
-    //this.physics.add.overlap(player, door1, openDoorTimer, null, this);
+
+
+
+    // Close door function
+    function close_door(){
+        console.log('CloseDoor')
+        for(let doorNumber = 0; doorNumber < doorList.length; doorNumber ++){
+            doorList[doorNumber].setFrame(0);
+            platforms.add(doorList[doorNumber]);
+
+        }
+    }
+         
+
+    //make player
+    player = this.physics.add.sprite(2500, 3100, 'character').setScale(.25);
+    player.setSize(120, 250);
+    player.setOffset(70, 220);
 
     //Player Collision
     this.physics.add.collider(player, worldLayer);
-//     const debugGraphics = this.add.graphics().setAlpha(0.75);
-//     worldLayer.renderDebug(debugGraphics, {
-//         tileColor: null, // Color of non-colliding tiles
-//         collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
-//         faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
-// });
+    this.physics.add.collider(player, platforms);
+    
+
+    //Player Overlap
+    this.physics.add.overlap(player, borderButton1, function(){open_door([door1, door2, door3])}, null, this);
+
     
 }
 
@@ -180,3 +251,4 @@ update(){
     
     
 }
+

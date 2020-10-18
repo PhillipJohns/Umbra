@@ -274,6 +274,7 @@ create(){
 
     function mazeDoorTimer(){
         if (cursors.space.isDown){
+            console.log(this);
             platforms.remove(mazeDoor);
             mazeDoor.setVisible(false);
             mazeDoorOpen.setVisible(true);

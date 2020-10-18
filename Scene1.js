@@ -60,6 +60,9 @@ preload(){
     this.load.image('backwall', 'BackWall.png');
     this.load.image('button', 'Free/Menu/Buttons/Achievements.png');
 
+    // level 3 assets
+    this.load.spritesheet('doorL', 'sprite/doorL.png', {frameWidth: 225, frameHeight: 480});
+
 }
 
 create(){
