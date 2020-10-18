@@ -160,9 +160,9 @@ create(){
     function open_door(doorList){
         // console.log(this);
         if (cursors.space.isDown){
-            console.log(this);
-            timer = this.time.delayedCall(5000, close_door(), null, this);
-            console.log('OpenDoor')
+            //console.log(this);
+            timer = this.time.delayedCall(5000, function(){close_door(doorList)}, null, this);
+            //console.log('OpenDoor')
             for(let doorNumber = 0; doorNumber < doorList.length; doorNumber ++){
                 if (Hdoors.includes(doorList[doorNumber])){
                     doorList[doorNumber].anims.play('open', true);
@@ -181,10 +181,9 @@ create(){
         }
 
 
-
     // Close door function
-    function close_door(){
-        console.log('CloseDoor')
+    function close_door(doorList){
+        //console.log('CloseDoor')
         for(let doorNumber = 0; doorNumber < doorList.length; doorNumber ++){
             doorList[doorNumber].setFrame(0);
             platforms.add(doorList[doorNumber]);
@@ -204,8 +203,10 @@ create(){
     
 
     //Player Overlap
-    this.physics.add.overlap(player, borderButton1, function(){open_door([door1, door2, door3])}, null, this);
-
+//    this.physics.add.overlap(player, borderButton1, function(){open_door([door1, door2, door3])}, null, this);
+    
+    // use .call on open_door function to provide context i.e. see below
+    this.physics.add.overlap(player, borderButton1, function(){open_door.call(this, [door1, door2, door3])}, null, this);
     
 }
 
