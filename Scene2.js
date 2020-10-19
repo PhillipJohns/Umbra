@@ -73,7 +73,7 @@ create(){
     //     }
     //     y += 30
     // }
-    this.add.image(x, y, 'bbackground').setScale(2);
+    this.add.image(x, y, 'background').setScale(2);
     for (y = 15; y < 700; y += 15){
         platforms.create(10, y, 'sideWall');
     }
@@ -125,28 +125,28 @@ create(){
     this.add.image(200, 200, 'button');
     this.add.image(750, 20, 'button');
     mazeDoorOpen = this.physics.add.sprite(740, 180, 'engine_door').setScale(.15).setSize(75,34).setOffset(220,100).setVisible(false);
-    
+
     // In-game text for Scene 2
     // black box for text
     graphics = this.add.graphics();
     graphics.fillStyle(0x000000, 1);
     graphics.fillRect(25, 525, 750, 500).setVisible(false);
-    
+
     // text for power supply being broken (middle of room)
     // power supply is broken, I need a took kit
     powerSupplyFixedText = this.add.text(50, 545, 'The power supply is broken, I need a tool kit to fix it.', { fontSize: '32px', fill: '#999' }).setVisible(false);
-    
+
     // door to scene 3
     // Door is broken, need to fix power supply
     doorFixedText = this.add.text(50, 545, 'The door is broken, I need the power supply to be on.', { fontSize: '32px', fill: '#999' }).setVisible(false);
-    
+
     // Toolbox to fix powersupply
     // I found the toolbox
     toolBoxAcquiredText = this.add.text(50, 545, 'You picked up the toolbox!', { fontSize: '32px', fill: '#999' }).setVisible(false);
-    
+
     // show the Spirtes X and Y coord
     spriteCoord = this.add.text(50, 50, 'The sprites X and Y: ', { fontSize: '18px', fill: '#900' });
-    
+
     // powersupply sprite
     startPowerSupply = this.physics.add.sprite(150, 120, 'battery', 2).setScale(.4);
 
@@ -157,7 +157,7 @@ create(){
     // engine door
     door = this.physics.add.sprite(600, 12, 'engine_door').setScale(.15);
 
-    
+
 
     items = this.physics.add.group();
     toolKit = platforms.create(700, 50, 'box');
@@ -288,7 +288,7 @@ create(){
         mazeDoor.setVisible(true);
         mazeDoorOpen.setVisible(false);
     }
-    
+
     function addToolKit(){
         if (cursors.space.isDown){
             player1.inventory.push(new Item("Tool Kit", "box", "You've found a tool kit!"));
@@ -300,7 +300,7 @@ create(){
             this.physics.pause();
         }
     }
-    
+
     function mazeDoorFinalOpen(){
         if (cursors.space.isDown){
             platforms.remove(mazeDoor);
@@ -309,7 +309,7 @@ create(){
             mazeDoorOpen.anims.play('open', true);
         }
     }
-    
+
     function exitRoom(){
         if ((cursors.space.isDown) && (powerOn)){
             door.anims.play('open', true);
@@ -321,7 +321,7 @@ create(){
             this.physics.pause();
         }
     }
-    
+
     function changeScene(){
         this.scene.start('Scene3');
     }
@@ -347,15 +347,15 @@ create(){
     this.physics.add.overlap(player, borderButton2, mazeDoorFinalOpen, null, this);
     this.physics.add.overlap(player, kitBorder, addToolKit, null, this);
 
-    
+
 }
 
 // update
 update(){
     // keep track of the sprite X and Y
     spriteCoord.setText('Sprite X: ' + parseFloat(player.x).toFixed(2) + " Sprite Y: " + parseFloat(player.y).toFixed(2));
-    
-    
+
+
 //    if(!overlap(startPad, player)){
 //        startTouchPad = false;
 //    }
@@ -367,7 +367,7 @@ update(){
     player.setVelocityY(0);
     startPowerSupply.setVelocityX(0);
     startPowerSupply.setVelocityY(0);
-    
+
     if(cursors.shift.isDown){
         powerSupplyFixedText.setVisible(false);
         doorFixedText.setVisible(false);
@@ -375,7 +375,7 @@ update(){
         graphics.setVisible(false);
         this.physics.resume();
     }
-    
+
     if (cursors.right.isDown){
         player.setVelocityX(360);
         player.anims.play('right', true);

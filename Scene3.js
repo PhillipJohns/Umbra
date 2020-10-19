@@ -79,32 +79,37 @@ preload(){
 create(){
     let platforms = this.physics.add.staticGroup();
     // background
-    bg = this.add.image(0, 0, 'bbackground').setScale(6);
+    bg = this.add.image(0, 0, 'background').setScale(6);
     const maze = this.make.tilemap({ key: "maze" });
     const tileset = maze.addTilesetImage("tileset", "tiles");
     const worldLayer = maze.createStaticLayer('Tile Layer 1', tileset, 0, 0);
     worldLayer.setCollisionByProperty({ Collision: true });
-    
+
+    //make player
+    player = this.physics.add.sprite(2500, 3100, 'character').setScale(.25);
+    player.setSize(120, 250);
+    player.setOffset(70, 220);
+
     // show the Spirtes X and Y coord
     spriteCoord = this.add.text(50, 50, 'The sprites X and Y: ', { fontSize: '18px', fill: '#900' });
 
     //Door buttons
     this.add.image(2336, 2480, 'button');
     let borderButton1 = this.physics.add.sprite(2336, 2480).setSize(40, 40);
-    
+
     // door buttons room 2
     // tiled coordinates = (1632, 2560)
     // added 16 px to Y
     this.add.image(1632, 2576, 'button');
     let borderButton2 = this.physics.add.sprite(1632, 2576).setSize(40, 40);
-    
+
     // door buttons room 3
     // tiled coordinates = (1152, 1888)
     // added 16 px to Y
     // added 16 px to X
     this.add.image(1168, 1904, 'button');
     let borderButton3 = this.physics.add.sprite(1168, 1904).setSize(40, 40);
-    
+
     // door buttons room 3b
     // tiled coordinates = (1696, 2208)
     // added 16 px to Y
@@ -190,12 +195,12 @@ create(){
             }
         }
     }
-    
+
     // create door sprites
 //    let door1 = this.physics.add.sprite(0, 0, 'engine_door').setScale(.5);
-//    
+//
 //    let door2 = this.physics.add.sprite(250, 0, 'engine_door', 6).setScale(.5);
-    
+
     //animations
     this.anims.create({
         key: 'Idle',
@@ -246,26 +251,26 @@ create(){
     //     frameRate: 4,
     //     repeat: 0
     // });
-    
+
     // cursors
     cursors = this.input.keyboard.createCursorKeys();
-    
-    
+
+
 
     //Test Door
     // Test Value was 2464(56), 2464(15)
-    
-    door2 = platforms.create(2520, 2459, 'engine_door').setScale(.35).setSize(170,70).setOffset(170,80);
+
+    door2 = platforms.create(2520, 2464, 'engine_door').setScale(.35).setSize(170,70).setOffset(170,60);
     //Test2
     door4 = platforms.create(1432, 2554, 'engine_door').setScale(.35).setSize(170,70).setOffset(170,80);
     //Test3
     door5 = platforms.create(1432, 2714, 'engine_door').setScale(.35).setSize(170,70).setOffset(170,80);
     //Test Side door
     // Test value was 2784(22), 2592(56)
-    door1 = platforms.create(2806, 2648, 'door').setScale(.35).setSize(70,160).setOffset(80,165);
+    door1 = platforms.create(2811, 2648, 'door').setScale(.35).setSize(70,160).setOffset(65,165);
     //Test Right facing side door
     //Test value was 2208(2), 2592(56)
-    door3 = platforms.create(2206, 2648, 'doorL').setScale(.35).setSize(70,160).setOffset(80,165);
+    door3 = platforms.create(2210, 2648, 'doorL').setScale(.35).setSize(70,160).setOffset(60,165);
     //All door test
     door6 = platforms.create(834, 2648, 'doorL').setScale(.35).setSize(70,160).setOffset(80,165);
     door7 = platforms.create(2934, 1976, 'door').setScale(.35).setSize(70,160).setOffset(80,165);
@@ -280,7 +285,7 @@ create(){
     let Hdoors = [door2, door4, door5, door10, door13, door14];
     let VdoorsL = [door3, door6, door9];
 
-    
+
     // open door functions
     function open_door(doorList){
         // console.log(this);
@@ -292,7 +297,7 @@ create(){
                 if (Hdoors.includes(doorList[doorNumber])){
                     doorList[doorNumber].anims.play('open', true);
                     platforms.remove(doorList[doorNumber]);
-                } 
+                }
                 else if(VdoorsL.includes(doorList[doorNumber])){
                     doorList[doorNumber].anims.play('openL', true);
                     platforms.remove(doorList[doorNumber]);
@@ -301,7 +306,7 @@ create(){
                     doorList[doorNumber].anims.play('openR', true);
                     platforms.remove(doorList[doorNumber]);
                 }
-                }    
+                }
             }
         }
 
@@ -315,30 +320,25 @@ create(){
 
         }
     }
-         
 
-    //make player
-    player = this.physics.add.sprite(2500, 3100, 'character').setScale(.25);
-    player.setSize(120, 250);
-    player.setOffset(70, 220);
 
     //Player Collision
     this.physics.add.collider(player, worldLayer);
     this.physics.add.collider(player, platforms);
     this.physics.add.collider(player, batteries);
     this.physics.add.collider(worldLayer, batteries);
-    
+
 
     //Player Overlap
     // use .call on open_door function to provide context i.e. see below
     this.physics.add.overlap(player, borderButton1, function(){open_door.call(this, [door1, door2, door3])}, null, this);
-    
+
     // border button 2
     this.physics.add.overlap(player, borderButton2, function(){open_door.call(this, [door4, door5, door6])}, null, this);
-    
+
     // border button 3
     this.physics.add.overlap(player, borderButton3, function(){open_door.call(this, [door4, door5, door6])}, null, this);
-    
+
     // border button 3b
     this.physics.add.overlap(player, borderButton3b, function(){open_door.call(this, [door4, door5, door6])}, null, this);
 
@@ -348,7 +348,7 @@ create(){
     // border button 4b
     this.physics.add.overlap(player, borderButton4b, function(){open_door.call(this, [door2])}, null, this);
 
-    //Battery1 
+    //Battery1
     this.physics.add.overlap(battery1, powerPad1, addBattery1, null, this);
     //Battery2
     this.physics.add.overlap(battery2, powerPad2, addBattery2, null, this);
@@ -367,15 +367,15 @@ create(){
 update(){
     // camera follows the player
     this.cameras.main.startFollow(player);
-    
+
     // keep track of the sprite X and Y
     spriteCoord.setText('Sprite X: ' + parseFloat(player.x).toFixed(2) + " Sprite Y: " + parseFloat(player.y).toFixed(2));
-    
+
     player.setVelocityX(0);
     player.setVelocityY(0);
     batteries.setVelocityX(0);
     batteries.setVelocityY(0);
-    
+
 //    if(cursors.shift.isDown){
 //        powerSupplyFixedText.setVisible(false);
 //        doorFixedText.setVisible(false);
@@ -383,7 +383,7 @@ update(){
 //        graphics.setVisible(false);
 //        this.physics.resume();
 //    }
-    
+
     if (cursors.right.isDown){
         player.setVelocityX(360);
         player.anims.play('right', true);
@@ -404,8 +404,7 @@ update(){
     else{
       player.anims.play('Idle',true)
     }
-}  
-    
-    
 }
 
+
+}

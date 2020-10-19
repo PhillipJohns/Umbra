@@ -39,11 +39,13 @@ preload(){
     //this.load.spritesheet('left', 'Free/Main Characters/Ninja Frog/RunL (32x32).png', {frameWidth: 32, frameHeight: 32});
     // this.load.spritesheet('up', 'Free/Main Characters/Ninja Frog/Idle.png', {frameWidth: 32, frameHeight: 32});
     // this.load.spritesheet('down', 'Free/Main Characters/Ninja Frog/Idle.png', {frameWidth: 32, frameHeight: 32});
-    this.load.image('background', 'sprite/bedroom.png');
+    this.load.image('background', 'sprite/bbackground.png');
+    this.load.image('beds', 'sprite/beds.png');
     this.load.image('wall', 'Interior/Wall.png');
-    this.load.image('bbackground', 'sprite/bbackground.png');
+    //this.load.image('bbackground', 'sprite/bbackground.png');
     this.load.image('sideWall', 'Interior/SideWall.png');
-    this.load.spritesheet('door', 'sprite/doorr.png', {frameWidth: 225, frameHeight: 480});
+    this.load.spritesheet('door', 'sprite/doorr1.png', {frameWidth: 195, frameHeight: 480});
+    this.load.spritesheet('doorB', 'sprite/doorr.png',  {frameWidth: 225, frameHeight: 480});
     // add item image
     // 28 X 24
     this.load.image('box', 'Free/Items/Boxes/Box1/Idle.png')
@@ -53,7 +55,7 @@ preload(){
 
     // level 2 assets
     this.load.image('engine_room', 'engine_interior.png');
-    this.load.spritesheet('engine_door', 'sprite/door.png', {frameWidth: 500, frameHeight: 225});
+    this.load.spritesheet('engine_door', 'sprite/dooru.png', {frameWidth: 500, frameHeight: 195});
     this.load.spritesheet('powerSource', 'sprite/powersource.png', {frameWidth: 185, frameHeight: 280});
     this.load.spritesheet('fixbattery', 'sprite/fixbattery.png', {frameWidth: 165, frameHeight: 255});
     this.load.image('battery', 'sprite/battery.png');
@@ -61,8 +63,8 @@ preload(){
     this.load.image('button', 'Free/Menu/Buttons/Achievements.png');
 
     // level 3 assets
-    this.load.spritesheet('doorL', 'sprite/doorL.png', {frameWidth: 225, frameHeight: 480});
-
+    this.load.spritesheet('doorL', 'sprite/doorl1.png', {frameWidth: 195, frameHeight: 480});
+    this.load.spritesheet('doorD', 'sprite/doord.png', {frameWidth: 500, frameHeight: 195});
 }
 
 create(){
@@ -79,20 +81,21 @@ create(){
         y += 30
     }
     for (y = 15; y < 700; y += 15){
-        platforms.create(10, y, 'sideWall');
+        platforms.create(45, y, 'sideWall');
     }
     for (y = 15; y < 700; y += 15){
-        platforms.create(790, y, 'sideWall');
+        platforms.create(755, y, 'sideWall');
     }
     for (x = 0; x < 800; x += 15){
-        platforms.create(x, 630, 'sideWall');
+        platforms.create(x, 600, 'sideWall');
     }
     for (x = 23; x < 830; x += 46){
         platforms.create(x, 0, 'wall').setScale(1).refreshBody();
     }
     this.add.image(400,300,'background').setScale(.37 );
+    this.add.image(400,300,'beds').setScale(.37);
     // door = platforms.create(780, 275, 'door').setScale(.15);
-    door = this.physics.add.sprite(775, 275, 'door').setScale(.25);
+    door = this.physics.add.sprite(775, 275, 'doorB').setScale(.25);
 
     //Game Text
     graphics = this.add.graphics();
@@ -108,7 +111,7 @@ create(){
     player = this.physics.add.sprite(300, 150, 'character').setScale(.25);
     player.setSize(120, 250);
     player.setOffset(70, 220);
-    
+
     // show the Spirtes X and Y coord
     spriteCoord = this.add.text(50, 50, 'The sprites X and Y: ', { fontSize: '18px', fill: '#900' });
 
@@ -160,7 +163,7 @@ create(){
     });
     this.anims.create({
         key: 'open2',
-        frames: this.anims.generateFrameNumbers('door', { start: 0, end: 6 }),
+        frames: this.anims.generateFrameNumbers('doorB', { start: 0, end: 6 }),
         frameRate: 10,
         repeat: 0
     });
@@ -181,6 +184,12 @@ create(){
     items = this.physics.add.staticGroup();
 
     box = items.create(300, 300, 'box');
+    items.create(165, 75, 'box').setVisible(false).setScale(5).refreshBody();
+    items.create(415, 75, 'box').setVisible(false).setScale(5).refreshBody();
+    items.create(650, 75, 'box').setVisible(false).setScale(5).refreshBody();
+    items.create(165, 405, 'box').setVisible(false).setScale(5).refreshBody();
+    items.create(415, 405, 'box').setVisible(false).setScale(5).refreshBody();
+    items.create(650, 410, 'box').setVisible(false).setScale(5).refreshBody();
 
 //    this.physics.add.collider(player, items);
     items.setTint(0xff0000)
@@ -242,7 +251,7 @@ create(){
     }
 }
     function changeScene(){
-        // 
+        //
         this.scene.start('Scene3');
     }
 
@@ -257,8 +266,8 @@ create(){
 update(){
     // keep track of the sprite X and Y
     spriteCoord.setText('Sprite X: ' + parseFloat(player.x).toFixed(2) + " Sprite Y: " + parseFloat(player.y).toFixed(2));
-    
-    
+
+
     player.setVelocityX(0);
     player.setVelocityY(0);
 
