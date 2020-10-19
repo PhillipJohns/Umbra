@@ -130,22 +130,22 @@ create(){
     // black box for text
     graphics = this.add.graphics();
     graphics.fillStyle(0x000000, 1);
-    graphics.fillRect(25, 525, 750, 500).setVisible(false);
+    graphics.fillRect(0, 525, 850, 500).setVisible(false);
 
     // text for power supply being broken (middle of room)
     // power supply is broken, I need a took kit
-    powerSupplyFixedText = this.add.text(50, 545, 'The power supply is broken, I need a tool kit to fix it.', { fontSize: '32px', fill: '#999' }).setVisible(false);
+    powerSupplyFixedText = this.add.text(30, 545, 'The power supply is broken, I need a tool kit to fix it.', { fontSize: '28px', fill: '#999' }).setVisible(false);
 
     // door to scene 3
     // Door is broken, need to fix power supply
-    doorFixedText = this.add.text(50, 545, 'The door is broken, I need the power supply to be on.', { fontSize: '32px', fill: '#999' }).setVisible(false);
+    doorFixedText = this.add.text(30, 545, 'The door is broken, I need the power supply to be on.', { fontSize: '28', fill: '#999' }).setVisible(false);
 
     // Toolbox to fix powersupply
     // I found the toolbox
     toolBoxAcquiredText = this.add.text(50, 545, 'You picked up the toolbox!', { fontSize: '32px', fill: '#999' }).setVisible(false);
 
     // show the Spirtes X and Y coord
-    spriteCoord = this.add.text(50, 50, 'The sprites X and Y: ', { fontSize: '18px', fill: '#900' });
+    // spriteCoord = this.add.text(50, 50, 'The sprites X and Y: ', { fontSize: '18px', fill: '#900' });
 
     // powersupply sprite
     startPowerSupply = this.physics.add.sprite(150, 120, 'battery', 2).setScale(.4);
@@ -353,7 +353,7 @@ create(){
 // update
 update(){
     // keep track of the sprite X and Y
-    spriteCoord.setText('Sprite X: ' + parseFloat(player.x).toFixed(2) + " Sprite Y: " + parseFloat(player.y).toFixed(2));
+    // spriteCoord.setText('Sprite X: ' + parseFloat(player.x).toFixed(2) + " Sprite Y: " + parseFloat(player.y).toFixed(2));
 
 
 //    if(!overlap(startPad, player)){

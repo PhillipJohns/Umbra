@@ -7,15 +7,18 @@ var inZone = false;
 var npc;
 var info;
 var info2;
+var info3;
 var text1;
 var npc_text;
 var player1 = {name: "name1", inventory: []};
-var npc1 = {name: "npc1", dialogue: {1: 'Can you find my box?', 2: 'Thank you!'}};
+var npc1 = {name: "npc1", dialogue: {1: "Can you find my box? I'll give you a key out.", 2: 'Thank you! Take this key.'}};
 var graphics;
 var box;
 var door;
 var doorOpen = false;
 var timer;
+var haveKey = false;
+var keyText;
 // coordinates
 var sprite_x;
 var sprite_y;
@@ -100,30 +103,28 @@ create(){
     //Game Text
     graphics = this.add.graphics();
     graphics.fillStyle(0x000000, 1);
-    graphics.fillRect(25, 525, 750, 500).setVisible(false);
+    graphics.fillRect(0, 500, 850, 500).setVisible(false);
     text1 = this.add.text(50, 545, 'You picked up the box!', { fontSize: '32px', fill: '#999' }).setVisible(false);
-    info = this.add.text(350, 60, 'Spacebar to interact', { fontSize: '32px', fill: '#900' });
-    info2 = this.add.text(350, 90, 'Shift to end message', { fontSize: '32px', fill: '#900' });
+    info = this.add.text(50, 505, 'Spacebar to interact', { fontSize: '32px', fill: '#999' }).setVisible(false);
+    info3 = this.add.text(50, 525, 'Arrow Keys to move', { fontSize: '32px', fill: '#999' }).setVisible(false);
+    info2 = this.add.text(50, 545, 'Shift to end message', { fontSize: '32px', fill: '#999' }).setVisible(false);
+    keyText = this.add.text(50, 545, 'I need a key.', { fontSize: '32px', fill: '#999' }).setVisible(false);
 
     //Make Character
 
-    npc_text = this.add.text(50, 545, 'Hello there! Welcome to the tutorial!', { fontSize: '32px', fill: '#999' }).setVisible(false);
+    npc_text = this.add.text(50, 545, 'Hello there! Welcome to the tutorial!', { fontSize: '28px', fill: '#999' }).setVisible(false);
     player = this.physics.add.sprite(300, 150, 'character').setScale(.25);
     player.setSize(120, 250);
     player.setOffset(70, 220);
 
     // show the Spirtes X and Y coord
-    spriteCoord = this.add.text(50, 50, 'The sprites X and Y: ', { fontSize: '18px', fill: '#900' });
+    // spriteCoord = this.add.text(50, 50, 'The sprites X and Y: ', { fontSize: '18px', fill: '#900' });
 
     // border sprite
-    let border_sprite = this.physics.add.sprite(300, 300);
-    border_sprite.width = 32;
-    border_sprite.height = 28;//(29, 26);
+    let border_sprite = this.physics.add.sprite(300, 300).setSize(32, 32);
 
     // border npc
-    let border = this.physics.add.sprite(200, 150);
-    border.width = 36;
-    border.height = 36;//(29, 26);
+    let border = this.physics.add.sprite(200, 150).setSize(50, 115).setOffset(-5,0);;
 
     // border door
     let border_door = this.physics.add.sprite(750, 275);
@@ -192,16 +193,25 @@ create(){
     items.create(650, 410, 'box').setVisible(false).setScale(5).refreshBody();
 
 //    this.physics.add.collider(player, items);
-    items.setTint(0xff0000)
+    // items.setTint(0xff0000)
     this.physics.add.overlap(player, border_sprite, gameItem, null, this);
     this.physics.add.overlap(player, border, gameNpc, null, this);
     this.physics.add.overlap(player, border_door, gameDoor, null, this);
 
+    //Tutorial Text function
+    timer = this.time.delayedCall(1000, tutorialText, null, this);
+    function tutorialText(){
+        info.setVisible(true);
+        info2.setVisible(true);
+        info3.setVisible(true);
+        graphics.setVisible(true);
+        this.physics.pause();
+    }
     // function to overlap item
 
     function gameItem(){
         inZone = true;
-        items.setTint(0x777777);
+        // items.setTint(0x777777);
         // console.info("overlap");
         if(cursors.space.isDown){
             text1.setVisible(true);
@@ -230,6 +240,7 @@ create(){
                 npc_text.setVisible(true);
                 graphics.setVisible(true);
                 console.log(npc1.dialogue[1]);
+                haveKey = true;
             }
             else{
                 npc_text.setText(npc1.dialogue[1]);
@@ -241,18 +252,24 @@ create(){
     }
     //door function
     function gameDoor(){
-        console.log('123');
-        // door = this.physics.add.sprite(780, 275, 'door').setScale(.15);
-        if(cursors.space.isDown){
-            console.log('space');
-            door.anims.play('open2', true);
-            timer = this.time.delayedCall(1000, changeScene, null, this);
-
+        if (cursors.space.isDown){
+            if(haveKey){
+                if(cursors.space.isDown){
+                    console.log('space');
+                    door.anims.play('open2', true);
+                    timer = this.time.delayedCall(1000, changeScene, null, this);
+                }
+        }
+            else{
+                graphics.setVisible(true);
+                keyText.setVisible(true);
+                this.physics.pause();
     }
+}
 }
     function changeScene(){
         //
-        this.scene.start('Scene3');
+        this.scene.start('Scene2');
     }
 
 
@@ -265,7 +282,7 @@ create(){
 // update function
 update(){
     // keep track of the sprite X and Y
-    spriteCoord.setText('Sprite X: ' + parseFloat(player.x).toFixed(2) + " Sprite Y: " + parseFloat(player.y).toFixed(2));
+    // spriteCoord.setText('Sprite X: ' + parseFloat(player.x).toFixed(2) + " Sprite Y: " + parseFloat(player.y).toFixed(2));
 
 
     player.setVelocityX(0);
@@ -274,8 +291,12 @@ update(){
     // resumes game after text is read
     if(cursors.shift.isDown){
             text1.setVisible(false);
+            info.setVisible(false);
+            info2.setVisible(false);
+            info3.setVisible(false);
             npc_text.setVisible(false);
             graphics.setVisible(false);
+            keyText.setVisible(false);
             this.physics.resume();
     }
 

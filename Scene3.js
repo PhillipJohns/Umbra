@@ -31,11 +31,18 @@ var brokenBattery1;
 var brokenBattery2;
 var repairKit1;
 var repairKit2;
+var powerPads
+
+//Bools
 var repairKit1Found = false;
 var repairKit2Found = false;
 var battery1Touch = false;
 var battery2Touch = false;
-var powerPads
+var powerPad1On = false;
+var powerPad2On = false;
+var battery1On = false;
+var battery2On = false;
+
 
 //doors
 var door1;
@@ -60,6 +67,11 @@ var room2Button;
 var room5Button;
 var room5Buttonb;
 
+//text
+var repairKitText;
+var terminalText1;
+var terminalText2;
+
 var player;
 
 // scene 3 code
@@ -77,6 +89,11 @@ preload(){
 }
 
 create(){
+    //Create text early to define it
+    repairKitText = this.add.text(player.x - 400, player.y + 150, 'You picked up the toolbox!', { fontSize: '32px', fill: '#999' }).setVisible(false);
+    terminalText1 = this.add.text(player.x - 400, player.y + 100, 'The power in down in this room.', { fontSize: '30px', fill: '#999' }).setVisible(false);
+    terminalText2 = this.add.text(player.x - 400, player.y + 150, 'I need to get the power up so I can escape!', { fontSize: '30px', fill: '#999' }).setVisible(false);
+
     let platforms = this.physics.add.staticGroup();
     // background
     bg = this.add.image(0, 0, 'background').setScale(6);
@@ -89,13 +106,18 @@ create(){
     player = this.physics.add.sprite(2500, 3100, 'character').setScale(.25);
     player.setSize(120, 250);
     player.setOffset(70, 220);
+    
 
     // show the Spirtes X and Y coord
-    spriteCoord = this.add.text(50, 50, 'The sprites X and Y: ', { fontSize: '18px', fill: '#900' });
+    // spriteCoord = this.add.text(50, 50, 'The sprites X and Y: ', { fontSize: '18px', fill: '#900' });
 
     //Door buttons
     this.add.image(2336, 2480, 'button');
     let borderButton1 = this.physics.add.sprite(2336, 2480).setSize(40, 40);
+
+    // door button 1b
+    this.add.image(3280, 2480, 'button');
+    let borderButton1b = this.physics.add.sprite(3280, 2480).setSize(40, 40);
 
     // door buttons room 2
     // tiled coordinates = (1632, 2560)
@@ -103,12 +125,20 @@ create(){
     this.add.image(1632, 2576, 'button');
     let borderButton2 = this.physics.add.sprite(1632, 2576).setSize(40, 40);
 
+    // button 2b
+    this.add.image(2224, 3088, 'button');
+    let borderButton2b = this.physics.add.sprite(2224, 3088).setSize(40, 40);
+
+    // button 2c
+    this.add.image(848, 2896, 'button');
+    let borderButton2c = this.physics.add.sprite(848, 2896).setSize(40, 40);
+
     // door buttons room 3
     // tiled coordinates = (1152, 1888)
     // added 16 px to Y
     // added 16 px to X
-    this.add.image(1168, 1904, 'button');
-    let borderButton3 = this.physics.add.sprite(1168, 1904).setSize(40, 40);
+    this.add.image(1040, 2000, 'button');
+    let borderButton3 = this.physics.add.sprite(1040, 2000).setSize(40, 40);
 
     // door buttons room 3b
     // tiled coordinates = (1696, 2208)
@@ -124,6 +154,27 @@ create(){
     //Button 4b
     this.add.image(2736, 2288, 'button');
     let borderButton4b = this.physics.add.sprite(2736, 2288).setSize(40, 40);
+
+    //Button 5
+    this.add.image(656, 496, 'button');
+    let borderButton5 = this.physics.add.sprite(656, 496).setSize(40, 40);
+
+    //Button 5b
+    this.add.image(1712, 1040, 'button');
+    let borderButton5b = this.physics.add.sprite(1712, 1040).setSize(40, 40);
+
+    //Button 6
+    this.add.image(1936, 1040, 'button');
+    let borderButton6 = this.physics.add.sprite(1936, 1040).setSize(40, 40);
+
+    //Button 6b
+    this.add.image(3280, 656, 'button');
+    let borderButton6b = this.physics.add.sprite(3280, 656).setSize(40, 40);
+
+    //Button 7
+    this.add.image(3920, 144, 'button');
+    let borderButton7 = this.physics.add.sprite(3920, 144).setSize(40, 40);
+
 
     //power supply generation
     batteries = this.physics.add.group();
@@ -141,6 +192,19 @@ create(){
     repairKit2 = platforms.create(864, 128, 'box');
     let repairKit2Border = this.physics.add.sprite(864, 128).setSize(40, 40);
 
+    //Command Terminal (Tells player how to get out of maze)
+    let terminalBorder = this.physics.add.sprite(2525, 2620).setSize(80, 80);
+    function commandTerminal(){
+        if (cursors.space.isDown){
+            graphics = this.add.graphics();
+            graphics.fillStyle(0x000000, 1);
+            graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
+            terminalText1 = this.add.text(player.x - 400, player.y + 100, 'The power in down in this room.', { fontSize: '30px', fill: '#999' }).setVisible(true);
+            terminalText2 = this.add.text(player.x - 400, player.y + 150, 'I need to get the power up so I can escape!', { fontSize: '30px', fill: '#999' }).setVisible(true);
+            this.physics.pause();
+        }
+    }
+
     //Add battery to power pad
     function addBattery1() {
         if(!battery1Touch){
@@ -148,6 +212,7 @@ create(){
             battery1Touch = true;
             battery1.setVisible(false);
             batteries.remove(battery1);
+            powerPad1On = true;
             }
     }
     function addBattery2() {
@@ -156,18 +221,37 @@ create(){
             battery2Touch = true;
             battery2.setVisible(false);
             batteries.remove(battery2);
+            powerPad2On = true;
             }
     }
     //add repair Kit
     function addRepairKit1() {
-        repairKit1Found = true;
-        platforms.remove(repairKit1);
-        repairKit1.setVisible(false);
+        if(!repairKit1Found){
+            if (cursors.space.isDown){
+                repairKit1Found = true;
+                platforms.remove(repairKit1);
+                repairKit1.setVisible(false);
+                graphics = this.add.graphics();
+                graphics.fillStyle(0x000000, 1);
+                graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
+                repairKitText = this.add.text(player.x - 400, player.y + 150, 'You picked up the toolbox!', { fontSize: '32px', fill: '#999' }).setVisible(true);
+                this.physics.pause();
+            }
+        }
     }
     function addRepairKit2() {
-        repairKit2Found = true;
-        platforms.remove(repairKit2);
-        repairKit2.setVisible(false);
+        if(!repairKit2Found){
+            if (cursors.space.isDown){
+                repairKit2Found = true;
+                platforms.remove(repairKit2);
+                repairKit2.setVisible(false);
+                graphics = this.add.graphics();
+                graphics.fillStyle(0x000000, 1);
+                graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
+                repairKitText = this.add.text(player.x - 400, player.y + 150, 'You picked up the toolbox!', { fontSize: '32px', fill: '#999' }).setVisible(true);
+                this.physics.pause();
+            }
+        }
     }
     //Fix Batteries
     function fixBattery1(){
@@ -176,10 +260,12 @@ create(){
             if (repairKit1Found){
                 brokenBattery1.setFrame(0);
                 repairKit1Found = false
+                battery1On = true;
             }
             else if(repairKit2Found){
                 brokenBattery1.setFrame(0);
                 repairKit2Found = false
+                battery1On = true;
             }
     }
 }
@@ -188,10 +274,12 @@ create(){
             if (repairKit1Found){
                 brokenBattery2.setFrame(0);
                 repairKit1Found = false
+                battery2On = true;
             }
             else if(repairKit2Found){
                 brokenBattery2.setFrame(0);
                 repairKit2Found = false
+                battery2On = true;
             }
         }
     }
@@ -310,6 +398,36 @@ create(){
             }
         }
 
+    // Open door to repair kits
+    function openRepairKitdoor1(){
+        if (powerPad1On && !repairKit1Found){
+            if (cursors.space.isDown){
+                door7.anims.play('openR', true);
+                platforms.remove(door7);
+            }
+        }
+    }
+
+    function openRepairKitdoor2(){
+        if (battery1On && !repairKit2Found){
+            if (cursors.space.isDown){
+                door13.anims.play('open', true);
+                platforms.remove(door13);
+            }
+        }
+    }
+
+    function finalDoor(){
+        if (powerPad1On && powerPad2On && battery1On && battery2){
+            door10.anims.play('open', true);
+            platforms.remove(door10);
+            timer = this.time.delayedCall(3000, changeScene, null, this);
+        }
+    }
+
+    function changeScene(){
+        this.scene.start('Scene4');
+    }
 
     // Close door function
     function close_door(doorList){
@@ -330,23 +448,50 @@ create(){
 
 
     //Player Overlap
+    // Terminal
+    this.physics.add.overlap(player, terminalBorder, commandTerminal, null, this);
+
     // use .call on open_door function to provide context i.e. see below
     this.physics.add.overlap(player, borderButton1, function(){open_door.call(this, [door1, door2, door3])}, null, this);
+
+    // border button 1b
+    this.physics.add.overlap(player, borderButton1b, function(){open_door.call(this, [door1])}, null, this);
 
     // border button 2
     this.physics.add.overlap(player, borderButton2, function(){open_door.call(this, [door4, door5, door6])}, null, this);
 
+    // border button 2b
+    this.physics.add.overlap(player, borderButton2b, function(){open_door.call(this, [door5])}, null, this);
+
+    // border button 2b
+    this.physics.add.overlap(player, borderButton2c, function(){open_door.call(this, [door6])}, null, this);
+
     // border button 3
-    this.physics.add.overlap(player, borderButton3, function(){open_door.call(this, [door4, door5, door6])}, null, this);
+    this.physics.add.overlap(player, borderButton3, function(){open_door.call(this, [door9, door14])}, null, this);
 
     // border button 3b
-    this.physics.add.overlap(player, borderButton3b, function(){open_door.call(this, [door4, door5, door6])}, null, this);
+    this.physics.add.overlap(player, borderButton3b, function(){open_door.call(this, [door8, door9])}, null, this);
 
     // border button 4
-    this.physics.add.overlap(player, borderButton4, function(){open_door.call(this, [door7])}, null, this);
+    this.physics.add.overlap(player, borderButton4, openRepairKitdoor1, null, this);
 
     // border button 4b
     this.physics.add.overlap(player, borderButton4b, function(){open_door.call(this, [door2])}, null, this);
+
+    // border button 5
+    this.physics.add.overlap(player, borderButton5, openRepairKitdoor2, null, this);
+
+    // border button 5b
+    this.physics.add.overlap(player, borderButton5b, function(){open_door.call(this, [door12])}, null, this);
+
+    // border button 6
+    this.physics.add.overlap(player, borderButton6, function(){open_door.call(this, [door12])}, null, this);
+
+    // border button 6b
+    this.physics.add.overlap(player, borderButton6b, function(){open_door.call(this, [door11])}, null, this);
+
+    // border button 7
+    this.physics.add.overlap(player, borderButton7, finalDoor, null, this);
 
     //Battery1
     this.physics.add.overlap(battery1, powerPad1, addBattery1, null, this);
@@ -362,6 +507,9 @@ create(){
     this.physics.add.overlap(player, brokenBattery1Border, fixBattery1, null, this);
     //brokenBattery2
     this.physics.add.overlap(player, brokenBattery2Border, fixBattery2, null, this);
+
+    //Set up text box
+    
 }
 
 update(){
@@ -369,7 +517,7 @@ update(){
     this.cameras.main.startFollow(player);
 
     // keep track of the sprite X and Y
-    spriteCoord.setText('Sprite X: ' + parseFloat(player.x).toFixed(2) + " Sprite Y: " + parseFloat(player.y).toFixed(2));
+    // spriteCoord.setText('Sprite X: ' + parseFloat(player.x).toFixed(2) + " Sprite Y: " + parseFloat(player.y).toFixed(2));
 
     player.setVelocityX(0);
     player.setVelocityY(0);
@@ -383,6 +531,13 @@ update(){
 //        graphics.setVisible(false);
 //        this.physics.resume();
 //    }
+    if(cursors.shift.isDown){
+        graphics.setVisible(false);
+        repairKitText.setVisible(false);
+        terminalText1.setVisible(false);
+        terminalText1.setVisible(false);
+        this.physics.resume();
+}
 
     if (cursors.right.isDown){
         player.setVelocityX(360);
