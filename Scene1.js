@@ -19,6 +19,7 @@ var doorOpen = false;
 var timer;
 var haveKey = false;
 var keyText;
+var npcStatic;
 // coordinates
 var sprite_x;
 var sprite_y;
@@ -124,7 +125,7 @@ create(){
     let border_sprite = this.physics.add.sprite(300, 300).setSize(32, 32);
 
     // border npc
-    let border = this.physics.add.sprite(200, 150).setSize(50, 115).setOffset(-5,0);;
+    let border = this.physics.add.sprite(200, 150).setSize(50, 115).setOffset(-5,0);
 
     // border door
     let border_door = this.physics.add.sprite(750, 275);
@@ -176,6 +177,7 @@ create(){
     // make npc 1
     npc = this.physics.add.staticGroup();
     npc.create(200, 150, 'npc1').setScale(.25);
+    npcStatic = this.physics.add.staticSprite(200, 150).setSize(45, 110).setOffset(-2,2);
     npc.width = 32;
     npc.height = 32;
 
@@ -275,7 +277,7 @@ create(){
 
     // player collides w/item
     this.physics.add.collider(player, items);
-    this.physics.add.collider(player, npc);
+    this.physics.add.collider(player, npcStatic);
 }
 
 

@@ -19,6 +19,8 @@ var mazeDoorOpen;
 var toolKitFound;
 var toolKit;
 var graphics;
+var buttonPush = false;
+var toolsAdded = false;
 // coordinates
 var sprite_x;
 var sprite_y;
@@ -290,7 +292,7 @@ create(){
     }
 
     function addToolKit(){
-        if (cursors.space.isDown){
+        if (cursors.space.isDown && !toolsAdded){
             player1.inventory.push(new Item("Tool Kit", "box", "You've found a tool kit!"));
             platforms.remove(toolKit);
             toolKit.setVisible(false);
@@ -298,15 +300,17 @@ create(){
             graphics.setVisible(true);
             toolBoxAcquiredText.setVisible(true);
             this.physics.pause();
+            toolsAdded = true;
         }
     }
 
     function mazeDoorFinalOpen(){
-        if (cursors.space.isDown){
+        if (cursors.space.isDown && !buttonPush){
             platforms.remove(mazeDoor);
             mazeDoor.setVisible(false);
             mazeDoorOpen.setVisible(true);
             mazeDoorOpen.anims.play('open', true);
+            buttonPush = true;
         }
     }
 

@@ -444,7 +444,8 @@ create(){
     this.physics.add.collider(player, worldLayer);
     this.physics.add.collider(player, platforms);
     this.physics.add.collider(player, batteries);
-    this.physics.add.collider(worldLayer, batteries);
+    this.physics.add.collider(batteries, worldLayer);
+    this.physics.add.collider(platforms, batteries);
 
 
     //Player Overlap
@@ -535,7 +536,7 @@ update(){
         graphics.setVisible(false);
         repairKitText.setVisible(false);
         terminalText1.setVisible(false);
-        terminalText1.setVisible(false);
+        terminalText2.setVisible(false);
         this.physics.resume();
 }
 
