@@ -40,6 +40,9 @@ var game = this;
 
 //Buttons
 var room1Button;
+var room2Button;
+var room5Button;
+var room5Buttonb;
 
 var player;
 
@@ -71,6 +74,26 @@ create(){
     //Door buttons
     this.add.image(2336, 2480, 'button');
     let borderButton1 = this.physics.add.sprite(2336, 2480).setSize(40, 40);
+    
+    // door buttons room 2
+    // tiled coordinates = (1632, 2560)
+    // added 16 px to Y
+    this.add.image(1632, 2576, 'button');
+    let borderButton2 = this.physics.add.sprite(1632, 2576).setSize(40, 40);
+    
+    // door buttons room 3
+    // tiled coordinates = (1152, 1888)
+    // added 16 px to Y
+    // added 16 px to X
+    this.add.image(1168, 1904, 'button');
+    let borderButton3 = this.physics.add.sprite(1168, 1904).setSize(40, 40);
+    
+    // door buttons room 3b
+    // tiled coordinates = (1696, 2208)
+    // added 16 px to Y
+    // added 16 px to X
+    this.add.image(1712, 2224, 'button');
+    let borderButton3b = this.physics.add.sprite(1712, 2224).setSize(40, 40);
     
     // create door sprites
 //    let door1 = this.physics.add.sprite(0, 0, 'engine_door').setScale(.5);
@@ -203,11 +226,17 @@ create(){
     
 
     //Player Overlap
-//    this.physics.add.overlap(player, borderButton1, function(){open_door([door1, door2, door3])}, null, this);
-    
     // use .call on open_door function to provide context i.e. see below
     this.physics.add.overlap(player, borderButton1, function(){open_door.call(this, [door1, door2, door3])}, null, this);
     
+    // border button 2
+    this.physics.add.overlap(player, borderButton2, function(){open_door.call(this, [door4, door5, door6])}, null, this);
+    
+    // border button 3
+    this.physics.add.overlap(player, borderButton3, function(){open_door.call(this, [door4, door5, door6])}, null, this);
+    
+    // border button 3b
+    this.physics.add.overlap(player, borderButton3b, function(){open_door.call(this, [door4, door5, door6])}, null, this);
 }
 
 update(){
