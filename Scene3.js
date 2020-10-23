@@ -96,7 +96,7 @@ create(){
 
     let platforms = this.physics.add.staticGroup();
     // background
-    bg = this.add.image(0, 0, 'background').setScale(6);
+    // bg = this.add.image(0, 0, 'background').setScale(6);
     const maze = this.make.tilemap({ key: "maze" });
     const tileset = maze.addTilesetImage("tileset", "tiles");
     const worldLayer = maze.createStaticLayer('Tile Layer 1', tileset, 0, 0);
@@ -171,9 +171,17 @@ create(){
     this.add.image(3280, 656, 'button');
     let borderButton6b = this.physics.add.sprite(3280, 656).setSize(40, 40);
 
+    //Button 6c
+    this.add.image(754, 1520, 'button');
+    let borderButton6c = this.physics.add.sprite(754, 1520).setSize(40, 40);
+
     //Button 7
     this.add.image(3920, 144, 'button');
     let borderButton7 = this.physics.add.sprite(3920, 144).setSize(40, 40);
+
+    //Button 7b
+    this.add.image(3472, 720, 'button');
+    let borderButton7b = this.physics.add.sprite(3472, 720).setSize(40, 40);
 
 
     //power supply generation
@@ -491,8 +499,14 @@ create(){
     // border button 6b
     this.physics.add.overlap(player, borderButton6b, function(){open_door.call(this, [door11])}, null, this);
 
+    // border button 6c
+    this.physics.add.overlap(player, borderButton6c, function(){open_door.call(this, [door14])}, null, this);
+
     // border button 7
     this.physics.add.overlap(player, borderButton7, finalDoor, null, this);
+
+    // border button 7b
+    this.physics.add.overlap(player, borderButton7b, function(){open_door.call(this, [door12])}, null, this);
 
     //Battery1
     this.physics.add.overlap(battery1, powerPad1, addBattery1, null, this);

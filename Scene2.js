@@ -286,9 +286,11 @@ create(){
     }
 
     function mazeDoorClose(){
-        platforms.add(mazeDoor);
-        mazeDoor.setVisible(true);
-        mazeDoorOpen.setVisible(false);
+        if (!buttonPush){
+            platforms.add(mazeDoor);
+            mazeDoor.setVisible(true);
+            mazeDoorOpen.setVisible(false);
+        }
     }
 
     function addToolKit(){
