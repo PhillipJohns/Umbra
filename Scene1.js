@@ -12,6 +12,12 @@ var text1;
 var npc_text;
 var player1 = {name: "name1", inventory: []};
 var npc1 = {name: "npc1", dialogue: {1: "Can you find my box? I'll give you a key out.", 2: 'Thank you! Take this key.'}};
+
+// Test npc
+var theTestNPC;
+var test_npc = {name: "test_npc", dialogue: {1: "The ship is under attack! You need to escape.", }};
+var test_npcStatic;
+
 var graphics;
 var box;
 var door;
@@ -126,6 +132,10 @@ create(){
 
     // border npc
     let border = this.physics.add.sprite(200, 150).setSize(50, 115).setOffset(-5,0);
+    
+    
+    // border for test npc
+    let border_testNPC = this.physics.add.sprite(500, 150).setSize(50, 115).setOffset(-5,0);
 
     // border door
     let border_door = this.physics.add.sprite(750, 275);
@@ -180,6 +190,13 @@ create(){
     npcStatic = this.physics.add.staticSprite(200, 150).setSize(45, 110).setOffset(-2,2);
     npc.width = 32;
     npc.height = 32;
+    
+    // test npc
+    theTestNPC = this.physics.add.staticGroup();
+    theTestNPC.create(500, 150, 'npc1').setScale(.25);
+    test_npcStatic = this.physics.add.staticSprite(500, 150).setSize(45, 110).setOffset(-2,2);
+    theTestNPC.width = 32;
+    theTestNPC.height = 32;
 
     //Make item
     // Player collision causes item to become white
@@ -199,6 +216,9 @@ create(){
     this.physics.add.overlap(player, border_sprite, gameItem, null, this);
     this.physics.add.overlap(player, border, gameNpc, null, this);
     this.physics.add.overlap(player, border_door, gameDoor, null, this);
+    
+    // test NPC
+    this.physics.add.overlap(player, border_testNPC, testNPC, null, this);
 
     //Tutorial Text function
     timer = this.time.delayedCall(1000, tutorialText, null, this);
@@ -252,6 +272,19 @@ create(){
             this.physics.pause();
         }
     }
+    
+    // test_npc function
+    function testNPC(){
+        //console.log(test_npc);
+        if(cursors.space.isDown){
+            //console.log(test_npc.dialogue[1]);
+                npc_text.setText(test_npc.dialogue[1]);
+                npc_text.setVisible(true);
+                graphics.setVisible(true);
+//                console.log(test_npc.dialogue[1]);
+                this.physics.pause();
+            }
+        }
     //door function
     function gameDoor(){
         if (cursors.space.isDown){
@@ -278,6 +311,9 @@ create(){
     // player collides w/item
     this.physics.add.collider(player, items);
     this.physics.add.collider(player, npcStatic);
+    
+    // test npc collider
+    this.physics.add.collider(player, test_npcStatic);
 }
 
 
