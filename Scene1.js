@@ -11,11 +11,11 @@ var info3;
 var text1;
 var npc_text;
 var player1 = {name: "name1", inventory: []};
-var npc1 = {name: "npc1", dialogue: {1: "Can you find my box? I'll give you a key out.", 2: 'Thank you! Take this key.'}};
+var npc1 = {name: "npc1", dialogue: {1: "Can you find my box?\nI'll give you a key out.", 2: 'Thank you! Take this key.'}};
 
 // Test npc
 var theTestNPC;
-var test_npc = {name: "test_npc", dialogue: {1: "The ship is under attack! You need to escape.", }};
+var test_npc = {name: "test_npc", dialogue: {1: "We've been hit! We're going down \nwe need to fix the ship before we crash.", }};
 var test_npcStatic;
 
 var graphics;
@@ -23,6 +23,7 @@ var box;
 var door;
 var doorOpen = false;
 var timer;
+var timerr;
 var haveKey = false;
 var keyText;
 var npcStatic;
@@ -30,7 +31,7 @@ var npcStatic;
 var sprite_x;
 var sprite_y;
 var spriteCoord;
-
+var boxGray = false;
 
 // items
 var box_added = false;
@@ -56,18 +57,19 @@ preload(){
     this.load.image('sideWall', 'Interior/SideWall.png');
     this.load.spritesheet('door', 'sprite/doorr1.png', {frameWidth: 195, frameHeight: 480});
     this.load.spritesheet('doorB', 'sprite/doorr.png',  {frameWidth: 225, frameHeight: 480});
+    this.load.spritesheet('doorBB', 'sprite/door.png', {frameWidth: 500, frameHeight: 225});
     // add item image
     // 28 X 24
     this.load.image('box', 'Free/Items/Boxes/Box1/Idle.png')
 
     // add the npc
-    this.load.image('npc1', 'sprite/npcidle.png');
+    this.load.spritesheet('npc1', 'sprite/npc1.png', {frameWidth: 275, frameHeight: 550});
 
     // level 2 assets
     this.load.image('engine_room', 'engine_interior.png');
     this.load.spritesheet('engine_door', 'sprite/dooru.png', {frameWidth: 500, frameHeight: 195});
     this.load.spritesheet('powerSource', 'sprite/powersource.png', {frameWidth: 185, frameHeight: 280});
-    this.load.spritesheet('fixbattery', 'sprite/fixbattery.png', {frameWidth: 165, frameHeight: 255});
+    this.load.spritesheet('fixbattery', 'sprite/fixbattery.png', {frameWidth: 170, frameHeight: 255});
     this.load.image('battery', 'sprite/battery.png');
     this.load.image('backwall', 'BackWall.png');
     this.load.image('button', 'Free/Menu/Buttons/Achievements.png');
@@ -79,7 +81,6 @@ preload(){
 
 create(){
     //create event timer
-
 
     let platforms = this.physics.add.staticGroup();
     //Make background
@@ -119,10 +120,14 @@ create(){
 
     //Make Character
 
-    npc_text = this.add.text(50, 545, 'Hello there! Welcome to the tutorial!', { fontSize: '28px', fill: '#999' }).setVisible(false);
+    npc_text = this.add.text(50, 530, 'Hello there! Welcome to the tutorial!', { fontSize: '28px', fill: '#999' }).setVisible(false);
     player = this.physics.add.sprite(300, 150, 'character').setScale(.25);
     player.setSize(120, 250);
     player.setOffset(70, 220);
+
+    //container
+    var container = this.add.container();
+    container.add(player);
 
     // show the Spirtes X and Y coord
     // spriteCoord = this.add.text(50, 50, 'The sprites X and Y: ', { fontSize: '18px', fill: '#900' });
@@ -132,8 +137,8 @@ create(){
 
     // border npc
     let border = this.physics.add.sprite(200, 150).setSize(50, 115).setOffset(-5,0);
-    
-    
+
+
     // border for test npc
     let border_testNPC = this.physics.add.sprite(500, 150).setSize(50, 115).setOffset(-5,0);
 
@@ -186,14 +191,14 @@ create(){
 
     // make npc 1
     npc = this.physics.add.staticGroup();
-    npc.create(200, 150, 'npc1').setScale(.25);
+    npc.create(200, 190, 'npc1').setScale(.25).setFrame(0);
     npcStatic = this.physics.add.staticSprite(200, 150).setSize(45, 110).setOffset(-2,2);
     npc.width = 32;
     npc.height = 32;
-    
+
     // test npc
     theTestNPC = this.physics.add.staticGroup();
-    theTestNPC.create(500, 150, 'npc1').setScale(.25);
+    theTestNPC.create(510, 190, 'npc1').setScale(.25).setFrame(1);
     test_npcStatic = this.physics.add.staticSprite(500, 150).setSize(45, 110).setOffset(-2,2);
     theTestNPC.width = 32;
     theTestNPC.height = 32;
@@ -216,12 +221,12 @@ create(){
     this.physics.add.overlap(player, border_sprite, gameItem, null, this);
     this.physics.add.overlap(player, border, gameNpc, null, this);
     this.physics.add.overlap(player, border_door, gameDoor, null, this);
-    
+
     // test NPC
     this.physics.add.overlap(player, border_testNPC, testNPC, null, this);
 
     //Tutorial Text function
-    timer = this.time.delayedCall(1000, tutorialText, null, this);
+    timer = this.time.delayedCall(2500, tutorialText, null, this);
     function tutorialText(){
         info.setVisible(true);
         info2.setVisible(true);
@@ -229,8 +234,31 @@ create(){
         graphics.setVisible(true);
         this.physics.pause();
     }
-    // function to overlap item
 
+    this.cameras.main.shake(2000);
+    //object tint timer
+    timerr = this.time.addEvent({
+    delay: 2500,
+    callback: objTint,
+    //args: [],
+    // callbackScope: thisArg,
+    loop: true
+    });
+
+    function objTint(){
+      if (boxGray){
+        box.setTint();
+        door.setTint();
+        boxGray = false;
+      }
+      else{
+        box.setTint(0x999999);
+        door.setTint(0x999999);
+        boxGray = true;
+      }
+    }
+
+    // function to overlap item
     function gameItem(){
         inZone = true;
         // items.setTint(0x777777);
@@ -272,7 +300,7 @@ create(){
             this.physics.pause();
         }
     }
-    
+
     // test_npc function
     function testNPC(){
         //console.log(test_npc);
@@ -302,6 +330,7 @@ create(){
     }
 }
 }
+
     function changeScene(){
         //
         this.scene.start('Scene2');
@@ -311,11 +340,10 @@ create(){
     // player collides w/item
     this.physics.add.collider(player, items);
     this.physics.add.collider(player, npcStatic);
-    
+
     // test npc collider
     this.physics.add.collider(player, test_npcStatic);
 }
-
 
 // update function
 update(){

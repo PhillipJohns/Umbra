@@ -21,6 +21,7 @@ var toolKit;
 var graphics;
 var buttonPush = false;
 var toolsAdded = false;
+var boxGray = false;
 // coordinates
 var sprite_x;
 var sprite_y;
@@ -38,6 +39,11 @@ var powerSupplyFixed = false;
 // Door is broken, need to fix power supply
 var doorFixed = false;
 
+//npc
+var npc;
+var npcStatic;
+var npc2 = {name: "npc1", dialogue: {1: "Thank you for fixing the power source!\nWe can't get through the next door\nwithout a toolkit to fix that power supply."}};
+var npc_text;
 // Toolbox to fix powersupply
 // I found the toolbox
 //var toolBoxAcquired = false;
@@ -124,15 +130,15 @@ create(){
 
     //maze doors and buttons
     mazeDoor = platforms.create(740, 180, 'engine_door').setScale(.15).setSize(75,34).setOffset(220,100);
-    this.add.image(200, 200, 'button');
-    this.add.image(750, 20, 'button');
+    let button1 = this.add.image(200, 200, 'button');
+    let button2 = this.add.image(750, 20, 'button');
     mazeDoorOpen = this.physics.add.sprite(740, 180, 'engine_door').setScale(.15).setSize(75,34).setOffset(220,100).setVisible(false);
 
     // In-game text for Scene 2
     // black box for text
     graphics = this.add.graphics();
     graphics.fillStyle(0x000000, 1);
-    graphics.fillRect(0, 525, 850, 500).setVisible(false);
+    graphics.fillRect(0, 480, 850, 500).setVisible(false);
 
     // text for power supply being broken (middle of room)
     // power supply is broken, I need a took kit
@@ -146,6 +152,9 @@ create(){
     // I found the toolbox
     toolBoxAcquiredText = this.add.text(50, 545, 'You picked up the toolbox!', { fontSize: '32px', fill: '#999' }).setVisible(false);
 
+    //npc text
+    npc_text =  this.add.text(30, 500, 'You picked up the toolbox!', { fontSize: '28px', fill: '#999' }).setVisible(false);
+
     // show the Spirtes X and Y coord
     // spriteCoord = this.add.text(50, 50, 'The sprites X and Y: ', { fontSize: '18px', fill: '#900' });
 
@@ -157,13 +166,62 @@ create(){
     engineOff = engine.create(500, 150, 'fixbattery', 1).setScale(.4).setSize(65,95).setOffset(50,75);
 
     // engine door
-    door = this.physics.add.sprite(600, 12, 'engine_door').setScale(.15);
-
-
+    door = this.physics.add.sprite(600, 12, 'doorBB').setScale(.15);
 
     items = this.physics.add.group();
     toolKit = platforms.create(700, 50, 'box');
 
+    //object tint timer
+    timerr = this.time.addEvent({
+    delay: 2500,
+    callback: objTint,
+    //args: [],
+    // callbackScope: thisArg,
+    loop: true
+    });
+
+    // border npc
+    let border = this.physics.add.sprite(240, 330).setSize(50, 115).setOffset(-5,0);
+    //npc
+    npc = this.physics.add.staticGroup();
+    npc.create(250, 375, 'npc1').setScale(.25).setFrame(2);
+    npcStatic = this.physics.add.staticSprite(240, 330).setSize(45, 110).setOffset(-2,2);
+    npc.width = 32;
+    npc.height = 32;
+
+    function gameNpc(){
+        // console.log("!!!");
+        inZone = true;
+        //console.info("overlap");
+        if(cursors.space.isDown){
+            npc_text.setText(npc2.dialogue[1]);
+            npc_text.setVisible(true);
+            graphics.setVisible(true);
+            console.log(npc1.dialogue[1]);
+            this.physics.pause();
+        }
+    }
+
+    function objTint(){
+      if (boxGray){
+        startPowerSupply.setTint();
+        engine.setTint();
+        door.setTint();
+        toolKit.setTint();
+        button1.setTint();
+        button2.setTint();
+        boxGray = false;
+      }
+      else{
+        startPowerSupply.setTint(0x999999);
+        engine.setTint(0x999999);
+        door.setTint(0x999999);
+        toolKit.setTint(0x999999);
+        button1.setTint(0x999999);
+        button2.setTint(0x999999);
+        boxGray = true;
+      }
+    }
 
 
     //animations
@@ -188,6 +246,12 @@ create(){
     this.anims.create({
         key: 'open',
         frames: this.anims.generateFrameNumbers('engine_door', { start: 0, end: 6 }),
+        frameRate: 10,
+        repeat: 0
+    });
+    this.anims.create({
+        key: 'openB',
+        frames: this.anims.generateFrameNumbers('doorBB', { start: 0, end: 6 }),
         frameRate: 10,
         repeat: 0
     });
@@ -318,7 +382,7 @@ create(){
 
     function exitRoom(){
         if ((cursors.space.isDown) && (powerOn)){
-            door.anims.play('open', true);
+            door.anims.play('openB', true);
             timer = this.time.delayedCall(1000, changeScene, null, this);
         }
         else if((cursors.space.isDown) && (!powerOn)){
@@ -352,7 +416,8 @@ create(){
     this.physics.add.overlap(player, borderButton1, mazeDoorTimer, null, this);
     this.physics.add.overlap(player, borderButton2, mazeDoorFinalOpen, null, this);
     this.physics.add.overlap(player, kitBorder, addToolKit, null, this);
-
+    this.physics.add.overlap(player, border, gameNpc, null, this);
+    this.physics.add.collider(player, npcStatic);
 
 }
 
@@ -378,6 +443,7 @@ update(){
         powerSupplyFixedText.setVisible(false);
         doorFixedText.setVisible(false);
         toolBoxAcquiredText.setVisible(false);
+        npc_text.setVisible(false);
         graphics.setVisible(false);
         this.physics.resume();
     }

@@ -32,6 +32,7 @@ var brokenBattery2;
 var repairKit1;
 var repairKit2;
 var powerPads
+var container;
 
 //Bools
 var repairKit1Found = false;
@@ -102,11 +103,15 @@ create(){
     const worldLayer = maze.createStaticLayer('Tile Layer 1', tileset, 0, 0);
     worldLayer.setCollisionByProperty({ Collision: true });
 
+    //container
+    container = this.add.container();
+    container.add(player);
+
     //make player
     player = this.physics.add.sprite(2500, 3100, 'character').setScale(.25);
     player.setSize(120, 250);
     player.setOffset(70, 220);
-    
+
 
     // show the Spirtes X and Y coord
     // spriteCoord = this.add.text(50, 50, 'The sprites X and Y: ', { fontSize: '18px', fill: '#900' });
@@ -524,7 +529,7 @@ create(){
     this.physics.add.overlap(player, brokenBattery2Border, fixBattery2, null, this);
 
     //Set up text box
-    
+
 }
 
 update(){
@@ -571,6 +576,10 @@ update(){
         player.setVelocityY(360);
         player.anims.play('down', true)
     }
+    // else if (cursors.space.isDown){
+    //     container.add(battery1);
+    //     console.log(container.count());
+    // }
     else{
       player.anims.play('Idle',true)
     }
