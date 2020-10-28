@@ -44,6 +44,9 @@ var powerPad2On = false;
 var battery1On = false;
 var battery2On = false;
 
+//Mini Map
+var minimap;
+
 
 //doors
 var door1;
@@ -386,6 +389,8 @@ create(){
     let Hdoors = [door2, door4, door5, door10, door13, door14];
     let VdoorsL = [door3, door6, door9];
 
+    
+
 
     // open door functions
     function open_door(doorList){
@@ -529,6 +534,11 @@ create(){
     this.physics.add.overlap(player, brokenBattery2Border, fixBattery2, null, this);
 
     //Set up text box
+    //Mini Map
+    this.minimap = this.cameras.add(500, 10, 200, 160).setZoom(.05).setName('mini');
+    this.minimap.setBackgroundColor(0x002244);
+    this.minimap.scrollX = 2000;
+    this.minimap.scrollY = 1500;
 
 }
 
