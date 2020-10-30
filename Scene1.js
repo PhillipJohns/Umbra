@@ -36,6 +36,10 @@ var boxGray = false;
 // items
 var box_added = false;
 
+// sound
+var bgm;
+
+
 class Scene1 extends Phaser.Scene {
     constructor()
     {
@@ -77,11 +81,17 @@ preload(){
     // level 3 assets
     this.load.spritesheet('doorL', 'sprite/doorl1.png', {frameWidth: 195, frameHeight: 480});
     this.load.spritesheet('doorD', 'sprite/doord.png', {frameWidth: 500, frameHeight: 195});
+    
+    // load sounds
+    this.load.audio('bgm', 'Sounds/darren-curtis-intruder-aboard.mp3');
 }
 
 create(){
     //create event timer
-
+    
+    // sound
+    bgm = this.sound.add('bgm');
+    
     let platforms = this.physics.add.staticGroup();
     //Make background
     y = 30
@@ -343,10 +353,14 @@ create(){
 
     // test npc collider
     this.physics.add.collider(player, test_npcStatic);
+    
+    // resume music
+    bgm.resume();
 }
 
 // update function
 update(){
+    //bgm.play();
     // keep track of the sprite X and Y
     // spriteCoord.setText('Sprite X: ' + parseFloat(player.x).toFixed(2) + " Sprite Y: " + parseFloat(player.y).toFixed(2));
 
@@ -356,6 +370,8 @@ update(){
 
     // resumes game after text is read
     if(cursors.shift.isDown){
+        // start the music
+        bgm.play();
             text1.setVisible(false);
             info.setVisible(false);
             info2.setVisible(false);
