@@ -38,6 +38,8 @@ var box_added = false;
 
 // sound
 var bgm;
+var musicStarted = false;
+var doorSound;
 
 
 class Scene1 extends Phaser.Scene {
@@ -84,6 +86,7 @@ preload(){
     
     // load sounds
     this.load.audio('bgm', 'Sounds/darren-curtis-intruder-aboard.mp3');
+    this.load.audio('doorSound', 'Sounds/door.mp3');
 }
 
 create(){
@@ -91,6 +94,7 @@ create(){
     
     // sound
     bgm = this.sound.add('bgm');
+    doorSound = this.sound.add('doorSound');
     
     let platforms = this.physics.add.staticGroup();
     //Make background
@@ -329,6 +333,7 @@ create(){
             if(haveKey){
                 if(cursors.space.isDown){
                     console.log('space');
+                    doorSound.play();
                     door.anims.play('open2', true);
                     timer = this.time.delayedCall(1000, changeScene, null, this);
                 }
@@ -371,7 +376,12 @@ update(){
     // resumes game after text is read
     if(cursors.shift.isDown){
         // start the music
-        bgm.play();
+        if(musicStarted == false){
+            bgm.resume();
+            bgm.play();
+            bgm.setLoop(true) 
+            musicStarted = true;
+        }
             text1.setVisible(false);
             info.setVisible(false);
             info2.setVisible(false);
