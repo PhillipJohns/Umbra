@@ -83,7 +83,7 @@ preload(){
     // level 3 assets
     this.load.spritesheet('doorL', 'sprite/doorl1.png', {frameWidth: 195, frameHeight: 480});
     this.load.spritesheet('doorD', 'sprite/doord.png', {frameWidth: 500, frameHeight: 195});
-    
+
     // load sounds
     this.load.audio('bgm', 'Sounds/darren-curtis-intruder-aboard.mp3');
     this.load.audio('doorSound', 'Sounds/door.mp3');
@@ -91,11 +91,11 @@ preload(){
 
 create(){
     //create event timer
-    
+
     // sound
     bgm = this.sound.add('bgm');
     doorSound = this.sound.add('doorSound');
-    
+
     let platforms = this.physics.add.staticGroup();
     //Make background
     y = 30
@@ -348,7 +348,7 @@ create(){
 
     function changeScene(){
         //
-        this.scene.start('Scene2');
+        this.scene.start('Scene3');
     }
 
 
@@ -358,7 +358,7 @@ create(){
 
     // test npc collider
     this.physics.add.collider(player, test_npcStatic);
-    
+
     // resume music
     bgm.resume();
 }
@@ -379,7 +379,7 @@ update(){
         if(musicStarted == false){
             bgm.resume();
             bgm.play();
-            bgm.setLoop(true) 
+            bgm.setLoop(true)
             musicStarted = true;
         }
             text1.setVisible(false);

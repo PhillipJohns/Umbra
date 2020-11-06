@@ -38,6 +38,7 @@ var powerSupplyFixed = false;
 // door to scene 3
 // Door is broken, need to fix power supply
 var doorFixed = false;
+var doorSound;
 
 //npc
 var npc;
@@ -73,6 +74,8 @@ create(){
     // also a placeholder for objects that will be removed
     let platforms = this.physics.add.staticGroup();
 
+    //sounds
+    doorSound = this.sound.add('doorSound');
 
     // y = 30
     // while (y != 600){
@@ -288,6 +291,7 @@ create(){
     // door open function
     function doorOpen(){
         if (door_open == false){
+            doorSound.play();
             door.anims.play('open', true);
             door_open = true;
         }
@@ -344,6 +348,7 @@ create(){
             platforms.remove(mazeDoor);
             mazeDoor.setVisible(false);
             mazeDoorOpen.setVisible(true);
+            doorSound.play();
             mazeDoorOpen.anims.play('open', true);
             timer = this.time.delayedCall(8000, mazeDoorClose, null, this);
         }
@@ -375,6 +380,7 @@ create(){
             platforms.remove(mazeDoor);
             mazeDoor.setVisible(false);
             mazeDoorOpen.setVisible(true);
+            doorSound.play();
             mazeDoorOpen.anims.play('open', true);
             buttonPush = true;
         }
@@ -382,6 +388,7 @@ create(){
 
     function exitRoom(){
         if ((cursors.space.isDown) && (powerOn)){
+            doorSound.play();
             door.anims.play('openB', true);
             timer = this.time.delayedCall(1000, changeScene, null, this);
         }

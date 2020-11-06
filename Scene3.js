@@ -47,6 +47,8 @@ var battery2On = false;
 //Mini Map
 var minimap;
 
+//sounds
+var doorSound;
 
 //doors
 var door1;
@@ -64,6 +66,7 @@ var door12;
 var door13;
 var door14;
 var game = this;
+var finaldoor = false;
 
 //Buttons
 var room1Button;
@@ -115,6 +118,8 @@ create(){
     player.setSize(120, 250);
     player.setOffset(70, 220);
 
+    //sounds
+    doorSound = this.sound.add('doorSound');
 
     // show the Spirtes X and Y coord
     // spriteCoord = this.add.text(50, 50, 'The sprites X and Y: ', { fontSize: '18px', fill: '#900' });
@@ -389,7 +394,7 @@ create(){
     let Hdoors = [door2, door4, door5, door10, door13, door14];
     let VdoorsL = [door3, door6, door9];
 
-    
+
 
 
     // open door functions
@@ -401,15 +406,18 @@ create(){
             //console.log('OpenDoor')
             for(let doorNumber = 0; doorNumber < doorList.length; doorNumber ++){
                 if (Hdoors.includes(doorList[doorNumber])){
+                    doorSound.play();
                     doorList[doorNumber].anims.play('open', true);
                     platforms.remove(doorList[doorNumber]);
                 }
                 else if(VdoorsL.includes(doorList[doorNumber])){
+                    doorSound.play();
                     doorList[doorNumber].anims.play('openL', true);
                     platforms.remove(doorList[doorNumber]);
                 }
                 else{
                     doorList[doorNumber].anims.play('openR', true);
+                    doorSound.play();
                     platforms.remove(doorList[doorNumber]);
                 }
                 }
@@ -420,6 +428,7 @@ create(){
     function openRepairKitdoor1(){
         if (powerPad1On && !repairKit1Found){
             if (cursors.space.isDown){
+                doorSound.play();
                 door7.anims.play('openR', true);
                 platforms.remove(door7);
             }
@@ -429,6 +438,7 @@ create(){
     function openRepairKitdoor2(){
         if (battery1On && !repairKit2Found){
             if (cursors.space.isDown){
+                doorSound.play();
                 door13.anims.play('open', true);
                 platforms.remove(door13);
             }
@@ -436,7 +446,9 @@ create(){
     }
 
     function finalDoor(){
-        if (powerPad1On && powerPad2On && battery1On && battery2){
+        if (powerPad1On && powerPad2On && battery1On && battery2 && finaldoor == false && cursors.space.isDown){
+            doorSound.play();
+            finaldoor = true;
             door10.anims.play('open', true);
             platforms.remove(door10);
             timer = this.time.delayedCall(3000, changeScene, null, this);
