@@ -83,6 +83,11 @@ preload(){
     // level 3 assets
     this.load.spritesheet('doorL', 'sprite/doorl1.png', {frameWidth: 195, frameHeight: 480});
     this.load.spritesheet('doorD', 'sprite/doord.png', {frameWidth: 500, frameHeight: 195});
+    //coded buttons
+    this.load.image('code1', 'Free/Menu/Buttons/Levels/01.png');
+    this.load.image('code2', 'Free/Menu/Buttons/Levels/02.png');
+    this.load.image('code3', 'Free/Menu/Buttons/Levels/03.png');
+    this.load.image('code4', 'Free/Menu/Buttons/Levels/04.png');
 
     // load sounds
     this.load.audio('bgm', 'Sounds/darren-curtis-intruder-aboard.mp3');

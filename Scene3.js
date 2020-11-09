@@ -196,6 +196,9 @@ create(){
     this.add.image(3472, 720, 'button');
     let borderButton7b = this.physics.add.sprite(3472, 720).setSize(40, 40);
 
+    //Coded buttons
+    
+
 
     //power supply generation
     batteries = this.physics.add.group();
