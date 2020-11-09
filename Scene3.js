@@ -79,6 +79,12 @@ var repairKitText;
 var terminalText1;
 var terminalText2;
 
+// Scene3 NPCs
+var scene3Npc1;
+var scene3Npc1Obj = {name: "scene3Npc1Obj", dialogue: {1: "We need to talk to the computer! It will tell us what we need to do.", }};
+var scene3Npc1Static;
+
+// player
 var player;
 
 // scene 3 code
@@ -308,6 +314,25 @@ create(){
         }
     }
 
+    // NPC dialogues
+    function scene3Npc1Talk(){
+        //console.log(test_npc);
+        if(cursors.space.isDown){
+            //console.log(test_npc.dialogue[1]);
+                graphics = this.add.graphics();
+                graphics.fillStyle(0x000000, 1);
+                graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
+                repairKitText = this.add.text(player.x - 400, player.y + 150, scene3Npc1Obj.dialogue[1], { fontSize: '16px', fill: '#999' }).setVisible(true);
+                terminalText2.setText(scene3Npc1Obj.dialogue[1]);
+                terminalText2.setVisible(true);
+                graphics.setVisible(true);
+//                console.log(test_npc.dialogue[1]);
+                this.physics.pause();
+            }
+        }
+
+    
+    
     // create door sprites
 //    let door1 = this.physics.add.sprite(0, 0, 'engine_door').setScale(.5);
 //
@@ -366,7 +391,17 @@ create(){
 
     // cursors
     cursors = this.input.keyboard.createCursorKeys();
-
+    
+    // scene3 border sprite npc1
+    let border_scene3Npc1 = this.physics.add.sprite(2380, 2740).setSize(50, 115).setOffset(-5,0);
+    
+    
+    // scene3 npc 1
+    scene3Npc1 = this.physics.add.staticGroup();
+    scene3Npc1.create(2380, 2780, 'npc1').setScale(.25).setFrame(0);
+    scene3Npc1Static = this.physics.add.staticSprite(2380, 2740).setSize(45, 110).setOffset(-2,2);
+    scene3Npc1.width = 32;
+    scene3Npc1.height = 32;
 
 
     //Test Door
@@ -471,7 +506,11 @@ create(){
 
         }
     }
-
+    
+    
+    
+    // NPC collision
+    this.physics.add.collider(player, scene3Npc1Static);
 
     //Player Collision
     this.physics.add.collider(player, worldLayer);
@@ -480,7 +519,10 @@ create(){
     this.physics.add.collider(batteries, worldLayer);
     this.physics.add.collider(platforms, batteries);
 
-
+    
+    // NPC overlap
+    this.physics.add.overlap(player, border_scene3Npc1, scene3Npc1Talk, null, this);
+    
     //Player Overlap
     // Terminal
     this.physics.add.overlap(player, terminalBorder, commandTerminal, null, this);

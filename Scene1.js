@@ -21,7 +21,7 @@ var test_npcStatic;
 // Alt-ending NPCs
 var endNpc1;
 var endNpc1Obj = {name: "endNpc1Obj", dialogue: {1: "You saved us! The ship was fixed and we were able to escape!", }};
-var endNpcStatic;
+var endNpc1Static;
 
 var graphics;
 var box;
@@ -166,7 +166,7 @@ create(){
     let border_testNPC = this.physics.add.sprite(500, 150).setSize(50, 115).setOffset(-5,0);
     
     // border sprite for alt endNpc1
-    let border_endNpc1 = this.physics.add.sprite(400, 450).setSize(50, 115).setOffset(-5,0);
+    let border_endNpc1 = this.physics.add.sprite(400, 340).setSize(50, 115).setOffset(-5,0);
 
     // border door
     let border_door = this.physics.add.sprite(750, 275);
@@ -231,8 +231,8 @@ create(){
     
     // alt ending npc 1
     endNpc1 = this.physics.add.staticGroup();
-    endNpc1.create(400, 450, 'npc1').setScale(.25).setFrame(0);
-    endNpc1Static = this.physics.add.staticSprite(400, 450).setSize(45, 110).setOffset(-2,2);
+    endNpc1.create(400, 380, 'npc1').setScale(.25).setFrame(0);
+    endNpc1Static = this.physics.add.staticSprite(400, 340).setSize(45, 110).setOffset(-2,2);
     endNpc1.width = 32;
     endNpc1.height = 32;
 
@@ -257,6 +257,9 @@ create(){
 
     // test NPC
     this.physics.add.overlap(player, border_testNPC, testNPC, null, this);
+    
+    // alt ending npc 1
+    this.physics.add.overlap(player, border_endNpc1, endNpc1Talk, null, this);
 
     //Tutorial Text function
     timer = this.time.delayedCall(2500, tutorialText, null, this);
@@ -345,7 +348,23 @@ create(){
 //                console.log(test_npc.dialogue[1]);
                 this.physics.pause();
             }
+    }
+    
+    // alt ending NPC1
+    // test_npc function
+    function endNpc1Talk(){
+        //console.log(test_npc);
+        if(cursors.space.isDown){
+            //console.log(test_npc.dialogue[1]);
+                npc_text.setText(endNpc1Obj.dialogue[1]);
+                npc_text.setVisible(true);
+                graphics.setVisible(true);
+//                console.log(test_npc.dialogue[1]);
+                this.physics.pause();
+            }
         }
+    
+    
     //door function
     function gameDoor(){
         if (cursors.space.isDown){
@@ -367,7 +386,7 @@ create(){
 
     function changeScene(){
         //
-        this.scene.start('Scene2');
+        this.scene.start('Scene3');
     }
 
 
@@ -377,6 +396,9 @@ create(){
 
     // test npc collider
     this.physics.add.collider(player, test_npcStatic);
+    
+    // alt ending npc 1 collider
+    this.physics.add.collider(player, endNpc1Static);
 
     // resume music
     bgm.resume();
