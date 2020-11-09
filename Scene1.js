@@ -18,6 +18,11 @@ var theTestNPC;
 var test_npc = {name: "test_npc", dialogue: {1: "We've been hit! We're going down \nwe need to fix the ship before we crash.", }};
 var test_npcStatic;
 
+// Alt-ending NPCs
+var endNpc1;
+var endNpc1Obj = {name: "endNpc1Obj", dialogue: {1: "You saved us! The ship was fixed and we were able to escape!", }};
+var endNpcStatic;
+
 var graphics;
 var box;
 var door;
@@ -84,10 +89,10 @@ preload(){
     this.load.spritesheet('doorL', 'sprite/doorl1.png', {frameWidth: 195, frameHeight: 480});
     this.load.spritesheet('doorD', 'sprite/doord.png', {frameWidth: 500, frameHeight: 195});
     //coded buttons
-    this.load.image('code1', 'Free/Menu/Buttons/Levels/01.png');
-    this.load.image('code2', 'Free/Menu/Buttons/Levels/02.png');
-    this.load.image('code3', 'Free/Menu/Buttons/Levels/03.png');
-    this.load.image('code4', 'Free/Menu/Buttons/Levels/04.png');
+    this.load.image('code1', 'Free/Menu/Levels/01.png');
+    this.load.image('code2', 'Free/Menu/Levels/02.png');
+    this.load.image('code3', 'Free/Menu/Levels/03.png');
+    this.load.image('code4', 'Free/Menu/Levels/04.png');
 
     // load sounds
     this.load.audio('bgm', 'Sounds/darren-curtis-intruder-aboard.mp3');
@@ -157,9 +162,11 @@ create(){
     // border npc
     let border = this.physics.add.sprite(200, 150).setSize(50, 115).setOffset(-5,0);
 
-
     // border for test npc
     let border_testNPC = this.physics.add.sprite(500, 150).setSize(50, 115).setOffset(-5,0);
+    
+    // border sprite for alt endNpc1
+    let border_endNpc1 = this.physics.add.sprite(400, 450).setSize(50, 115).setOffset(-5,0);
 
     // border door
     let border_door = this.physics.add.sprite(750, 275);
@@ -221,6 +228,13 @@ create(){
     test_npcStatic = this.physics.add.staticSprite(500, 150).setSize(45, 110).setOffset(-2,2);
     theTestNPC.width = 32;
     theTestNPC.height = 32;
+    
+    // alt ending npc 1
+    endNpc1 = this.physics.add.staticGroup();
+    endNpc1.create(400, 450, 'npc1').setScale(.25).setFrame(0);
+    endNpc1Static = this.physics.add.staticSprite(400, 450).setSize(45, 110).setOffset(-2,2);
+    endNpc1.width = 32;
+    endNpc1.height = 32;
 
     //Make item
     // Player collision causes item to become white
