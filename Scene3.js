@@ -43,6 +43,7 @@ var powerPad1On = false;
 var powerPad2On = false;
 var battery1On = false;
 var battery2On = false;
+var boxGray = false;
 
 //Mini Map
 var minimap;
@@ -79,10 +80,15 @@ var repairKitText;
 var terminalText1;
 var terminalText2;
 
+
 // Scene3 NPCs
 var scene3Npc1;
-var scene3Npc1Obj = {name: "scene3Npc1Obj", dialogue: {1: "We need to talk to the computer! It will tell us what we need to do.", }};
+var scene3Npc1Obj = {name: "scene3Npc1Obj", dialogue: {1: "We need to talk to the computer! \nIt will tell us what we need to do.", }};
 var scene3Npc1Static;
+
+//coded door array
+var doorCode = [];
+var codeDoorOpen = false;
 
 // player
 var player;
@@ -102,6 +108,7 @@ preload(){
 }
 
 create(){
+    
     //Create text early to define it
     repairKitText = this.add.text(player.x - 400, player.y + 150, 'You picked up the toolbox!', { fontSize: '32px', fill: '#999' }).setVisible(false);
     terminalText1 = this.add.text(player.x - 400, player.y + 100, 'The power in down in this room.', { fontSize: '30px', fill: '#999' }).setVisible(false);
@@ -119,10 +126,7 @@ create(){
     container = this.add.container();
     container.add(player);
 
-    //make player
-    player = this.physics.add.sprite(2500, 3100, 'character').setScale(.25);
-    player.setSize(120, 250);
-    player.setOffset(70, 220);
+    
 
     //sounds
     doorSound = this.sound.add('doorSound');
@@ -130,79 +134,87 @@ create(){
     // show the Spirtes X and Y coord
     // spriteCoord = this.add.text(50, 50, 'The sprites X and Y: ', { fontSize: '18px', fill: '#900' });
 
-    //Door buttons
-    this.add.image(2336, 2480, 'button');
-    let borderButton1 = this.physics.add.sprite(2336, 2480).setSize(40, 40);
-
-    // door button 1b
-    this.add.image(3280, 2480, 'button');
-    let borderButton1b = this.physics.add.sprite(3280, 2480).setSize(40, 40);
-
-    // door buttons room 2
-    // tiled coordinates = (1632, 2560)
-    // added 16 px to Y
-    this.add.image(1632, 2576, 'button');
-    let borderButton2 = this.physics.add.sprite(1632, 2576).setSize(40, 40);
-
-    // button 2b
-    this.add.image(2224, 3088, 'button');
-    let borderButton2b = this.physics.add.sprite(2224, 3088).setSize(40, 40);
-
-    // button 2c
-    this.add.image(848, 2896, 'button');
-    let borderButton2c = this.physics.add.sprite(848, 2896).setSize(40, 40);
-
-    // door buttons room 3
-    // tiled coordinates = (1152, 1888)
-    // added 16 px to Y
-    // added 16 px to X
-    this.add.image(1040, 2000, 'button');
-    let borderButton3 = this.physics.add.sprite(1040, 2000).setSize(40, 40);
-
-    // door buttons room 3b
-    // tiled coordinates = (1696, 2208)
-    // added 16 px to Y
-    // added 16 px to X
-    this.add.image(1712, 2224, 'button');
-    let borderButton3b = this.physics.add.sprite(1712, 2224).setSize(40, 40);
-
-    //Button 4
-    this.add.image(2704, 1584, 'button');
-    let borderButton4 = this.physics.add.sprite(2704, 1584).setSize(40, 40);
-
-    //Button 4b
-    this.add.image(2736, 2288, 'button');
-    let borderButton4b = this.physics.add.sprite(2736, 2288).setSize(40, 40);
-
-    //Button 5
-    this.add.image(656, 496, 'button');
-    let borderButton5 = this.physics.add.sprite(656, 496).setSize(40, 40);
-
-    //Button 5b
-    this.add.image(1712, 1040, 'button');
-    let borderButton5b = this.physics.add.sprite(1712, 1040).setSize(40, 40);
-
-    //Button 6
-    this.add.image(1936, 1040, 'button');
-    let borderButton6 = this.physics.add.sprite(1936, 1040).setSize(40, 40);
-
-    //Button 6b
-    this.add.image(3280, 656, 'button');
-    let borderButton6b = this.physics.add.sprite(3280, 656).setSize(40, 40);
-
-    //Button 6c
-    this.add.image(754, 1520, 'button');
-    let borderButton6c = this.physics.add.sprite(754, 1520).setSize(40, 40);
-
-    //Button 7
-    this.add.image(3920, 144, 'button');
-    let borderButton7 = this.physics.add.sprite(3920, 144).setSize(40, 40);
-
-    //Button 7b
-    this.add.image(3472, 720, 'button');
-    let borderButton7b = this.physics.add.sprite(3472, 720).setSize(40, 40);
-
-    //Coded buttons
+     //Door buttons
+     let button1 = this.add.image(2336, 2480, 'button');
+     let borderButton1 = this.physics.add.sprite(2336, 2480).setSize(40, 40);
+ 
+     // door button 1b
+     let button2 = this.add.image(3280, 2480, 'button');
+     let borderButton1b = this.physics.add.sprite(3280, 2480).setSize(40, 40);
+ 
+     // door buttons room 2
+     // tiled coordinates = (1632, 2560)
+     // added 16 px to Y
+     let button3 = this.add.image(1632, 2576, 'button');
+     let borderButton2 = this.physics.add.sprite(1632, 2576).setSize(40, 40);
+ 
+     // button 2b
+     let button4 = this.add.image(2224, 3088, 'button');
+     let borderButton2b = this.physics.add.sprite(2224, 3088).setSize(40, 40);
+ 
+     // button 2c
+     let button5 = this.add.image(848, 2896, 'button');
+     let borderButton2c = this.physics.add.sprite(848, 2896).setSize(40, 40);
+ 
+     // door buttons room 3
+     // tiled coordinates = (1152, 1888)
+     // added 16 px to Y
+     // added 16 px to X
+     let button6 = this.add.image(1040, 2000, 'button');
+     let borderButton3 = this.physics.add.sprite(1040, 2000).setSize(40, 40);
+ 
+     // door buttons room 3b
+     // tiled coordinates = (1696, 2208)
+     // added 16 px to Y
+     // added 16 px to X
+     let button7 = this.add.image(1712, 2224, 'button');
+     let borderButton3b = this.physics.add.sprite(1712, 2224).setSize(40, 40);
+ 
+     //Button 4
+     let button8 = this.add.image(2704, 1584, 'button');
+     let borderButton4 = this.physics.add.sprite(2704, 1584).setSize(40, 40);
+ 
+     //Button 4b
+     let button9 =this.add.image(2736, 2288, 'button');
+     let borderButton4b = this.physics.add.sprite(2736, 2288).setSize(40, 40);
+ 
+     //Button 5
+     let button10 = this.add.image(656, 496, 'button');
+     let borderButton5 = this.physics.add.sprite(656, 496).setSize(40, 40);
+ 
+     //Button 5b
+     // this.add.image(1712, 1040, 'button');
+     // let borderButton5b = this.physics.add.sprite(1712, 1040).setSize(40, 40);
+ 
+     //Button 6
+     // this.add.image(1936, 1040, 'button');
+     // let borderButton6 = this.physics.add.sprite(1936, 1040).setSize(40, 40);
+ 
+     //Button 6b
+     let button11 = this.add.image(3280, 656, 'button');
+     let borderButton6b = this.physics.add.sprite(3280, 656).setSize(40, 40);
+ 
+     //Button 6c
+     let button12 = this.add.image(754, 1520, 'button');
+     let borderButton6c = this.physics.add.sprite(754, 1520).setSize(40, 40);
+ 
+     //Button 7
+     let button13 = this.add.image(3920, 144, 'button');
+     let borderButton7 = this.physics.add.sprite(3920, 144).setSize(40, 40);
+ 
+     //Button 7b
+     let button14 = this.add.image(3472, 720, 'button');
+     let borderButton7b = this.physics.add.sprite(3472, 720).setSize(40, 40);
+ 
+     //Coded buttons
+     let code1Button = this.add.image(1264, 496, 'code1');
+     let code1 = this.physics.add.sprite(1264, 496).setSize(40, 40);
+     let code2Button =this.add.image(1328, 496, 'code2');
+     let code2 = this.physics.add.sprite(1328, 496).setSize(40, 40);
+     let code3Button =this.add.image(1392, 496, 'code3');
+     let code3 = this.physics.add.sprite(1392, 496).setSize(40, 40);
+     let code4Button =this.add.image(1456, 496, 'code4');
+     let code4 = this.physics.add.sprite(1456, 496).setSize(40, 40);
     
 
 
@@ -224,6 +236,14 @@ create(){
 
     //Command Terminal (Tells player how to get out of maze)
     let terminalBorder = this.physics.add.sprite(2525, 2620).setSize(80, 80);
+    let terminal = platforms.create(2525, 2620, 'terminal');
+
+    //make player
+    player = this.physics.add.sprite(2500, 3100, 'character').setScale(.25);
+    player.setSize(120, 250);
+    player.setOffset(70, 220);
+
+
     function commandTerminal(){
         if (cursors.space.isDown){
             graphics = this.add.graphics();
@@ -314,6 +334,48 @@ create(){
         }
     }
 
+    //coded door
+    function codedDoor(num){
+        if (!codeDoorOpen){
+            if (num == 1 && cursors.space.isDown && doorCode.includes(1) == false){
+                if (doorCode.length == 0){
+                    doorCode.push(1);
+                }
+                else{
+                    doorCode = [];
+                }
+            }
+            if (num == 2 && cursors.space.isDown && doorCode.includes(2) == false){
+                if (doorCode[0] == 1 && doorCode.length == 1){
+                    doorCode.push(2);
+                }
+                else{
+                    doorCode = [];
+                }
+            }
+            if (num == 3 && cursors.space.isDown && doorCode.includes(3) == false){
+                if (doorCode[0] == 1 && doorCode[1] == 2 && doorCode.length == 2){
+                    doorCode.push(3);
+            }
+                else{
+                    doorCode = [];
+                }
+            }
+            if (num == 4 && cursors.space.isDown && doorCode.includes(4) == false){
+                if (doorCode[0] == 1 && doorCode[1] == 2 && doorCode[2] == 3 && doorCode.length == 3){
+                    doorCode.push(4);
+                    codeDoorOpen = true
+                    door12.anims.play('openL', true);
+                    platforms.remove(door12);
+                    doorSound.play();
+            }
+                else{
+                    doorCode = [];
+                }
+        }
+        }
+    }
+
     // NPC dialogues
     function scene3Npc1Talk(){
         //console.log(test_npc);
@@ -322,9 +384,9 @@ create(){
                 graphics = this.add.graphics();
                 graphics.fillStyle(0x000000, 1);
                 graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
-                repairKitText = this.add.text(player.x - 400, player.y + 150, scene3Npc1Obj.dialogue[1], { fontSize: '16px', fill: '#999' }).setVisible(true);
-                terminalText2.setText(scene3Npc1Obj.dialogue[1]);
-                terminalText2.setVisible(true);
+                repairKitText = this.add.text(player.x - 400, player.y + 150, scene3Npc1Obj.dialogue[1], { fontSize: '30px', fill: '#999' }).setVisible(true);
+                // terminalText2.setText(scene3Npc1Obj.dialogue[1]);
+                // terminalText2.setVisible(true);
                 graphics.setVisible(true);
 //                console.log(test_npc.dialogue[1]);
                 this.physics.pause();
@@ -558,10 +620,10 @@ create(){
     this.physics.add.overlap(player, borderButton5, openRepairKitdoor2, null, this);
 
     // border button 5b
-    this.physics.add.overlap(player, borderButton5b, function(){open_door.call(this, [door12])}, null, this);
+    // this.physics.add.overlap(player, borderButton5b, function(){open_door.call(this, [door12])}, null, this);
 
     // border button 6
-    this.physics.add.overlap(player, borderButton6, function(){open_door.call(this, [door12])}, null, this);
+    // this.physics.add.overlap(player, borderButton6, function(){open_door.call(this, [door12])}, null, this);
 
     // border button 6b
     this.physics.add.overlap(player, borderButton6b, function(){open_door.call(this, [door11])}, null, this);
@@ -590,12 +652,45 @@ create(){
     //brokenBattery2
     this.physics.add.overlap(player, brokenBattery2Border, fixBattery2, null, this);
 
+    //door codes
+    this.physics.add.overlap(player, code1, function(){codedDoor.call(this, 1)}, null, this);
+    this.physics.add.overlap(player, code2, function(){codedDoor.call(this, 2)}, null, this);
+    this.physics.add.overlap(player, code3, function(){codedDoor.call(this, 3)}, null, this);
+    this.physics.add.overlap(player, code4, function(){codedDoor.call(this, 4)}, null, this);
+    
+
     //Set up text box
     //Mini Map
     this.minimap = this.cameras.add(500, 10, 200, 160).setZoom(.05).setName('mini');
     this.minimap.setBackgroundColor(0x002244);
     this.minimap.scrollX = 2000;
     this.minimap.scrollY = 1500;
+    //object array
+    let interactable = [code1Button, code2Button, code3Button, code4Button, button1, button2, button3, button4, button5, button6, button7, button8, button9, button10, button11, button12, button13, button14, battery1, battery2, brokenBattery1, brokenBattery2, repairKit1, repairKit2, powerPad1, powerPad2, terminal]
+
+    //object tint timer
+    timerr = this.time.addEvent({
+        delay: 2500,
+        callback: objTint,
+        //args: [],
+        // callbackScope: thisArg,
+        loop: true
+        });
+    
+        function objTint(){
+          if (boxGray){
+            for (let i = 0; i < interactable.length; i++){
+                interactable[i].setTint();
+            }
+            boxGray = false;
+          }
+          else{
+            for (let i = 0; i < interactable.length; i++){
+                interactable[i].setTint(0x999999);
+            }
+            boxGray = true;
+          }
+        }
 
 }
 
