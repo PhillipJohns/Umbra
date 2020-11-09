@@ -79,6 +79,9 @@ var room5Buttonb;
 var repairKitText;
 var terminalText1;
 var terminalText2;
+var correctCodeText;
+var incorrectCodeText;
+var powerDownText;
 
 
 // Scene3 NPCs
@@ -113,6 +116,7 @@ create(){
     repairKitText = this.add.text(player.x - 400, player.y + 150, 'You picked up the toolbox!', { fontSize: '32px', fill: '#999' }).setVisible(false);
     terminalText1 = this.add.text(player.x - 400, player.y + 100, 'The power in down in this room.', { fontSize: '30px', fill: '#999' }).setVisible(false);
     terminalText2 = this.add.text(player.x - 400, player.y + 150, 'I need to get the power up so I can escape!', { fontSize: '30px', fill: '#999' }).setVisible(false);
+    powerDownText = this.add.text(player.x - 400, player.y + 100, 'The Power is down I need to get it working!', { fontSize: '30px', fill: '#999' }).setVisible(false);
 
     let platforms = this.physics.add.staticGroup();
     // background
@@ -249,9 +253,14 @@ create(){
             graphics = this.add.graphics();
             graphics.fillStyle(0x000000, 1);
             graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
-            terminalText1 = this.add.text(player.x - 400, player.y + 100, 'The power in down in this room.', { fontSize: '30px', fill: '#999' }).setVisible(true);
-            terminalText2 = this.add.text(player.x - 400, player.y + 150, 'I need to get the power up so I can escape!', { fontSize: '30px', fill: '#999' }).setVisible(true);
-            this.physics.pause();
+            if (!powerPad1On){
+                terminalText1 = this.add.text(player.x - 400, player.y + 100, 'The power is down in this room. \n I need to get the power up so I can escape!', { fontSize: '30px', fill: '#999' }).setVisible(true);
+                this.physics.pause();
+            }
+            else{
+                terminalText2 = this.add.text(player.x - 400, player.y + 100, 'Escape pod room code is 2413', { fontSize: '30px', fill: '#999' }).setVisible(true);
+                this.physics.pause();
+            }
         }
     }
 
@@ -335,44 +344,78 @@ create(){
     }
 
     //coded door
+    correctCodeText = this.add.text(player.x - 400, player.y + 100, 'Correct!', { fontSize: '30px', fill: '#999' }).setVisible(false);
+    incorrectCodeText = this.add.text(player.x - 400, player.y + 100, 'Incorrect code try again!', { fontSize: '30px', fill: '#999' }).setVisible(false);
     function codedDoor(num){
-        if (!codeDoorOpen){
-            if (num == 1 && cursors.space.isDown && doorCode.includes(1) == false){
-                if (doorCode.length == 0){
-                    doorCode.push(1);
+        if (powerPad1On){
+            if (!codeDoorOpen){
+                graphics = this.add.graphics();
+                graphics.fillStyle(0x000000, 1);
+                if (num == 2 && cursors.space.isDown && doorCode.includes(2) == false){
+                    if (doorCode.length == 0){
+                        doorCode.push(2);
+                        graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
+                        correctCodeText = this.add.text(player.x - 400, player.y + 100, 'Correct!', { fontSize: '30px', fill: '#999' }).setVisible(true);
+                        this.physics.pause();
+                    }
+                    else{
+                        doorCode = [];
+                        graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
+                        incorrectCodeText = this.add.text(player.x - 400, player.y + 100, 'Incorrect code try again!', { fontSize: '30px', fill: '#999' }).setVisible(true);
+                        this.physics.pause();
+                    }
                 }
-                else{
-                    doorCode = [];
+                if (num == 4 && cursors.space.isDown && doorCode.includes(4) == false){
+                    if (doorCode[0] == 2 && doorCode.length == 1){
+                        doorCode.push(4);
+                        graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
+                        correctCodeText = this.add.text(player.x - 400, player.y + 100, 'Correct!', { fontSize: '30px', fill: '#999' }).setVisible(true);
+                        this.physics.pause();
+                    }
+                    else{
+                        doorCode = [];
+                        graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
+                        incorrectCodeText = this.add.text(player.x - 400, player.y + 100, 'Incorrect code try again!', { fontSize: '30px', fill: '#999' }).setVisible(true);
+                        this.physics.pause();
+                    }
                 }
+                if (num == 1 && cursors.space.isDown && doorCode.includes(1) == false){
+                    if (doorCode[0] == 2 && doorCode[1] == 4 && doorCode.length == 2){
+                        doorCode.push(1);
+                        graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
+                        correctCodeText = this.add.text(player.x - 400, player.y + 100, 'Correct!', { fontSize: '30px', fill: '#999' }).setVisible(true);
+                        this.physics.pause();
+                }
+                    else{
+                        doorCode = [];
+                        graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
+                        incorrectCodeText = this.add.text(player.x - 400, player.y + 100, 'Incorrect code try again!', { fontSize: '30px', fill: '#999' }).setVisible(true);
+                        this.physics.pause();
+                    }
+                }
+                if (num == 3 && cursors.space.isDown && doorCode.includes(3) == false){
+                    if (doorCode[0] == 2 && doorCode[1] == 4 && doorCode[2] == 1 && doorCode.length == 3){
+                        doorCode.push(3);
+                        graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
+                        correctCodeText = this.add.text(player.x - 400, player.y + 100, 'Correct!', { fontSize: '30px', fill: '#999' }).setVisible(true);
+                        this.physics.pause();
+                        codeDoorOpen = true
+                        door12.anims.play('openL', true);
+                        platforms.remove(door12);
+                        doorSound.play();
+                }
+                    else{
+                        doorCode = [];
+                        graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
+                        incorrectCodeText = this.add.text(player.x - 400, player.y + 100, 'Incorrect code try again!', { fontSize: '30px', fill: '#999' }).setVisible(true);
+                        this.physics.pause();
+                    }
             }
-            if (num == 2 && cursors.space.isDown && doorCode.includes(2) == false){
-                if (doorCode[0] == 1 && doorCode.length == 1){
-                    doorCode.push(2);
-                }
-                else{
-                    doorCode = [];
-                }
             }
-            if (num == 3 && cursors.space.isDown && doorCode.includes(3) == false){
-                if (doorCode[0] == 1 && doorCode[1] == 2 && doorCode.length == 2){
-                    doorCode.push(3);
-            }
-                else{
-                    doorCode = [];
-                }
-            }
-            if (num == 4 && cursors.space.isDown && doorCode.includes(4) == false){
-                if (doorCode[0] == 1 && doorCode[1] == 2 && doorCode[2] == 3 && doorCode.length == 3){
-                    doorCode.push(4);
-                    codeDoorOpen = true
-                    door12.anims.play('openL', true);
-                    platforms.remove(door12);
-                    doorSound.play();
-            }
-                else{
-                    doorCode = [];
-                }
         }
+        else{
+            powerDownText = this.add.text(player.x - 400, player.y + 100, 'The Power is down I need to get it working!', { fontSize: '30px', fill: '#999' }).setVisible(true);
+            this.physics.pause();
         }
     }
 
@@ -533,6 +576,13 @@ create(){
                 platforms.remove(door7);
             }
         }
+        else if (cursors.space.isDown){
+        graphics = this.add.graphics();
+        graphics.fillStyle(0x000000, 1);
+        graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
+        powerDownText = this.add.text(player.x - 400, player.y + 100, 'The Power is down I need to get it working!', { fontSize: '30px', fill: '#999' }).setVisible(true);
+        this.physics.pause();
+        }
     }
 
     function openRepairKitdoor2(){
@@ -542,6 +592,13 @@ create(){
                 door13.anims.play('open', true);
                 platforms.remove(door13);
             }
+        }
+        else if (cursors.space.isDown){
+            graphics = this.add.graphics();
+            graphics.fillStyle(0x000000, 1);
+            graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
+            powerDownText = this.add.text(player.x - 400, player.y + 100, 'The Power is down I need to get it working!', { fontSize: '30px', fill: '#999' }).setVisible(true);
+            this.physics.pause();
         }
     }
 
@@ -578,7 +635,8 @@ create(){
     this.physics.add.collider(player, worldLayer);
     this.physics.add.collider(player, platforms);
     this.physics.add.collider(player, batteries);
-    this.physics.add.collider(batteries, worldLayer);
+    this.physics.add.collider(worldLayer, batteries);
+    this.physics.add.collider(worldLayer, batteries);
     this.physics.add.collider(platforms, batteries);
 
     
@@ -718,6 +776,9 @@ update(){
         repairKitText.setVisible(false);
         terminalText1.setVisible(false);
         terminalText2.setVisible(false);
+        correctCodeText.setVisible(false);
+        incorrectCodeText.setVisible(false);
+        powerDownText.setVisible(false);
         this.physics.resume();
 }
 

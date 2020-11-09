@@ -232,7 +232,7 @@ create(){
     
     // alt ending npc 1
     endNpc1 = this.physics.add.staticGroup();
-    endNpc1.create(400, 380, 'npc1').setScale(.25).setFrame(0);
+    // endNpc1.create(400, 380, 'npc1').setScale(.25).setFrame(0);
     endNpc1Static = this.physics.add.staticSprite(400, 340).setSize(45, 110).setOffset(-2,2);
     endNpc1.width = 32;
     endNpc1.height = 32;
@@ -387,7 +387,7 @@ create(){
 
     function changeScene(){
         //
-        this.scene.start('Scene3');
+        this.scene.start('Scene2');
     }
 
 
