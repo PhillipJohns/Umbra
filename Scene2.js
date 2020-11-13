@@ -141,7 +141,7 @@ create(){
     mazeDoor = platforms.create(744, 188, 'engine_door').setScale(.155).setSize(75,34).setOffset(220,95);
     let button1 = this.add.image(200, 200, 'button');
     let button2 = this.add.image(750, 20, 'button');
-    mazeDoorOpen = this.physics.add.sprite(740, 180, 'engine_door').setScale(.15).setSize(75,34).setOffset(220,100).setVisible(false);
+    mazeDoorOpen = this.physics.add.sprite(744, 188, 'engine_door').setScale(.15).setSize(75,34).setOffset(220,100).setVisible(false);
 
     // In-game text for Scene 2
     // black box for text
@@ -342,7 +342,7 @@ create(){
             startPowerSupply.setVisible(false);
             platforms.remove(startDoor);
             startDoor.setVisible(false);
-            startDoor = this.physics.add.sprite(98, 195, 'engine_door').setScale(.17);
+            startDoor = this.physics.add.sprite(104, 197, 'engine_door').setScale(.17);
             startDoor.anims.play('open', true);
             startDoor_open = true;
         }
