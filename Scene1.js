@@ -142,17 +142,7 @@ create(){
     info3 = this.add.text(50, 525, 'Arrow Keys to move', { fontSize: '32px', fill: '#999' }).setVisible(false);
     info2 = this.add.text(50, 545, 'Shift to end message', { fontSize: '32px', fill: '#999' }).setVisible(false);
     keyText = this.add.text(50, 545, 'I need a key.', { fontSize: '32px', fill: '#999' }).setVisible(false);
-
-    //Make Character
-
     npc_text = this.add.text(50, 530, 'Hello there! Welcome to the tutorial!', { fontSize: '28px', fill: '#999' }).setVisible(false);
-    player = this.physics.add.sprite(300, 150, 'character').setScale(.25);
-    player.setSize(120, 250);
-    player.setOffset(70, 220);
-
-    //container
-    var container = this.add.container();
-    container.add(player);
 
     // show the Spirtes X and Y coord
     // spriteCoord = this.add.text(50, 50, 'The sprites X and Y: ', { fontSize: '18px', fill: '#900' });
@@ -165,7 +155,7 @@ create(){
 
     // border for test npc
     let border_testNPC = this.physics.add.sprite(500, 150).setSize(50, 115).setOffset(-5,0);
-    
+
     // border sprite for alt endNpc1
     let border_endNpc1 = this.physics.add.sprite(400, 340).setSize(50, 115).setOffset(-5,0);
 
@@ -173,6 +163,46 @@ create(){
     let border_door = this.physics.add.sprite(750, 275);
     border.width = 36;
     border.height = 36;
+
+    // make npc 1
+    npc = this.physics.add.staticGroup();
+    npc.create(200, 190, 'npc1').setScale(.25).setFrame(0);
+    npcStatic = this.physics.add.staticSprite(200, 150).setSize(45, 110).setOffset(-2,2);
+    npc.width = 32;
+    npc.height = 32;
+
+    // test npc
+    theTestNPC = this.physics.add.staticGroup();
+    theTestNPC.create(510, 190, 'npc1').setScale(.25).setFrame(1);
+    test_npcStatic = this.physics.add.staticSprite(500, 150).setSize(45, 110).setOffset(-2,2);
+    theTestNPC.width = 32;
+    theTestNPC.height = 32;
+
+    // alt ending npc 1
+    endNpc1 = this.physics.add.staticGroup();
+    // endNpc1.create(400, 380, 'npc1').setScale(.25).setFrame(0);
+    endNpc1Static = this.physics.add.staticSprite(400, 340).setSize(45, 110).setOffset(-2,2);
+    endNpc1.width = 32;
+    endNpc1.height = 32;
+
+    //Make item
+    // Player collision causes item to become white
+    // Spacebar starts item interaction
+    items = this.physics.add.staticGroup();
+
+    box = items.create(300, 300, 'box');
+    items.create(165, 75, 'box').setVisible(false).setScale(5).refreshBody();
+    items.create(415, 75, 'box').setVisible(false).setScale(5).refreshBody();
+    items.create(650, 75, 'box').setVisible(false).setScale(5).refreshBody();
+    items.create(165, 405, 'box').setVisible(false).setScale(5).refreshBody();
+    items.create(415, 405, 'box').setVisible(false).setScale(5).refreshBody();
+    items.create(650, 410, 'box').setVisible(false).setScale(5).refreshBody();
+
+    //Make Character
+
+    player = this.physics.add.sprite(300, 150, 'character').setScale(.25);
+    player.setSize(120, 250);
+    player.setOffset(70, 220);
 
     //animations
     this.anims.create({
@@ -215,41 +245,6 @@ create(){
     var isSpaceDown = cursors.space.isDown;
     this.physics.add.collider(player, platforms);
 
-
-    // make npc 1
-    npc = this.physics.add.staticGroup();
-    npc.create(200, 190, 'npc1').setScale(.25).setFrame(0);
-    npcStatic = this.physics.add.staticSprite(200, 150).setSize(45, 110).setOffset(-2,2);
-    npc.width = 32;
-    npc.height = 32;
-
-    // test npc
-    theTestNPC = this.physics.add.staticGroup();
-    theTestNPC.create(510, 190, 'npc1').setScale(.25).setFrame(1);
-    test_npcStatic = this.physics.add.staticSprite(500, 150).setSize(45, 110).setOffset(-2,2);
-    theTestNPC.width = 32;
-    theTestNPC.height = 32;
-    
-    // alt ending npc 1
-    endNpc1 = this.physics.add.staticGroup();
-    // endNpc1.create(400, 380, 'npc1').setScale(.25).setFrame(0);
-    endNpc1Static = this.physics.add.staticSprite(400, 340).setSize(45, 110).setOffset(-2,2);
-    endNpc1.width = 32;
-    endNpc1.height = 32;
-
-    //Make item
-    // Player collision causes item to become white
-    // Spacebar starts item interaction
-    items = this.physics.add.staticGroup();
-
-    box = items.create(300, 300, 'box');
-    items.create(165, 75, 'box').setVisible(false).setScale(5).refreshBody();
-    items.create(415, 75, 'box').setVisible(false).setScale(5).refreshBody();
-    items.create(650, 75, 'box').setVisible(false).setScale(5).refreshBody();
-    items.create(165, 405, 'box').setVisible(false).setScale(5).refreshBody();
-    items.create(415, 405, 'box').setVisible(false).setScale(5).refreshBody();
-    items.create(650, 410, 'box').setVisible(false).setScale(5).refreshBody();
-
 //    this.physics.add.collider(player, items);
     // items.setTint(0xff0000)
     this.physics.add.overlap(player, border_sprite, gameItem, null, this);
@@ -258,7 +253,7 @@ create(){
 
     // test NPC
     this.physics.add.overlap(player, border_testNPC, testNPC, null, this);
-    
+
     // alt ending npc 1
     this.physics.add.overlap(player, border_endNpc1, endNpc1Talk, null, this);
 
@@ -350,7 +345,7 @@ create(){
                 this.physics.pause();
             }
     }
-    
+
     // alt ending NPC1
     // test_npc function
     function endNpc1Talk(){
@@ -364,8 +359,8 @@ create(){
                 this.physics.pause();
             }
         }
-    
-    
+
+
     //door function
     function gameDoor(){
         if (cursors.space.isDown){
@@ -397,7 +392,7 @@ create(){
 
     // test npc collider
     this.physics.add.collider(player, test_npcStatic);
-    
+
     // alt ending npc 1 collider
     this.physics.add.collider(player, endNpc1Static);
 

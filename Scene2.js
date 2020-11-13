@@ -99,12 +99,10 @@ create(){
     for (x = 0; x < 10; x += 15){
         platforms.create(x, 200, 'backwall');
     }
-    for (x = 204; x < 350; x += 15){
+    for (x = 211; x < 350; x += 15){
         platforms.create(x, 200, 'backwall');
     }
 
-    // will delete eventually, so added to platforms group (does not matter where it is stored)
-    startDoor = platforms.create(98, 195, 'engine_door').setScale(.17).setSize(75,34).setOffset(220,100);
     startPad = this.physics.add.sprite(350, 130, 'powerSource').setScale(.4);
 
     for (y = 0; y < 150; y += 15){
@@ -115,24 +113,32 @@ create(){
         platforms.create(x, 0, 'wall').setScale(1).refreshBody();
     }
     // Maze and room
-    platforms.create(150, 400, 'sideWall').setScale(.8);
-    platforms.create(210, 448, 'backwall').setScale(.8);
-    platforms.create(315, 448, 'backwall').setScale(.8);
-    platforms.create(376, 400, 'sideWall').setScale(.8);
-    platforms.create(450, 500, 'sideWall').setScale(.8);
-    platforms.create(440, 350, 'backwall').setScale(.8);
-    platforms.create(540, 350, 'backwall').setScale(.8);
-    platforms.create(580, 415, 'sideWall').setScale(.8);
-    platforms.create(640, 460, 'backwall').setScale(.8);
+    //left npc
+    platforms.create(150, 405, 'sideWall').setScale(.8).setSize(20,120).setOffset(4,11);
+    //bottom of npc
+    platforms.create(215, 452, 'backwall').setScale(.8);
+    platforms.create(315, 452, 'backwall').setScale(.8);
+    platforms.create(334, 452, 'backwall').setScale(.8).setSize(120,20).setOffset(0,4);
+    //right of npc
+    platforms.create(376, 400, 'sideWall').setScale(.8).setSize(20,120).setOffset(4,12);
+    //center maze wall
+    platforms.create(480, 500, 'sideWall').setScale(.8).setSize(20,120).setOffset(4,12);
+    //top of center maze wall
+    platforms.create(440, 352, 'backwall').setScale(.8).setSize(120,20).setOffset(1,4);
+    platforms.create(537, 352, 'backwall').setScale(.8).setSize(120,20).setOffset(1,4);
+    //right of center maze wall
+    platforms.create(580, 415, 'sideWall').setScale(.8).setSize(20,120).setOffset(4,10);
+
+    platforms.create(640, 463, 'backwall').setScale(.8).setSize(120,20).setOffset(1,1);
     for (y = 400; y > 200; y -= 50){
         platforms.create(700, y, 'sideWall');
     }
     platforms.create(670, 190, 'backwall').setScale(.8).setDisplaySize(50, 20).setSize(50,20).setOffset(40, 0);
-    platforms.create(650, 140, 'sideWall').setScale(.8);
-    platforms.create(650, 90, 'sideWall').setScale(.8);
+    platforms.create(650, 141, 'sideWall').setScale(.8).setScale(.8).setSize(20,120).setOffset(4,11);
+    platforms.create(650, 90, 'sideWall').setScale(.8).setScale(.8).setSize(20,120).setOffset(4,11);
 
     //maze doors and buttons
-    mazeDoor = platforms.create(740, 180, 'engine_door').setScale(.15).setSize(75,34).setOffset(220,100);
+    mazeDoor = platforms.create(744, 188, 'engine_door').setScale(.155).setSize(75,34).setOffset(220,95);
     let button1 = this.add.image(200, 200, 'button');
     let button2 = this.add.image(750, 20, 'button');
     mazeDoorOpen = this.physics.add.sprite(740, 180, 'engine_door').setScale(.15).setSize(75,34).setOffset(220,100).setVisible(false);
@@ -408,6 +414,7 @@ create(){
     player.setSize(120, 250);
     player.setOffset(70, 220);
 
+    startDoor = platforms.create(104, 197, 'engine_door').setScale(.185).setSize(75,34).setOffset(215,90);
 
     this.physics.add.collider(player, items);
     this.physics.add.collider(player, platforms);
