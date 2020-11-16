@@ -207,8 +207,8 @@ create(){
      let borderButton7 = this.physics.add.sprite(3920, 144).setSize(40, 40);
  
      //Button 7b
-     let button14 = this.add.image(3472, 720, 'button');
-     let borderButton7b = this.physics.add.sprite(3472, 720).setSize(40, 40);
+     let button14 = this.add.image(3472, 336, 'button');
+     let borderButton7b = this.physics.add.sprite(3472, 336).setSize(40, 40);
  
      //Coded buttons
      let code1Button = this.add.image(1264, 496, 'code1');
