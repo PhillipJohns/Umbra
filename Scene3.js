@@ -603,7 +603,7 @@ create(){
     }
 
     function finalDoor(){
-        if (powerPad1On && powerPad2On && battery1On && battery2 && finaldoor == false && cursors.space.isDown){
+        if (powerPad1On && powerPad2On && battery1On && battery2On && finaldoor == true && cursors.space.isDown){
             doorSound.play();
             finaldoor = true;
             door10.anims.play('open', true);
