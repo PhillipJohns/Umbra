@@ -157,8 +157,8 @@ create(){
      let borderButton2b = this.physics.add.sprite(2224, 3088).setSize(40, 40);
  
      // button 2c
-     let button5 = this.add.image(848, 2896, 'button');
-     let borderButton2c = this.physics.add.sprite(848, 2896).setSize(40, 40);
+     let button5 = this.add.image(848, 2480, 'button');
+     let borderButton2c = this.physics.add.sprite(848, 2480).setSize(40, 40);
  
      // door buttons room 3
      // tiled coordinates = (1152, 1888)
@@ -231,8 +231,8 @@ create(){
     powerPad2 = powerPads.create(2080, 2944, 'powerSource').setScale(.4).setSize(74,112).setOffset(60,80);
     brokenBattery1 = platforms.create(128, 2496, 'fixbattery', 1).setScale(.4).setSize(65,95).setOffset(50,75);
     let brokenBattery1Border = this.physics.add.sprite(128, 2496).setSize(70, 100);
-    brokenBattery2 = platforms.create(2560, 1280, 'fixbattery', 1).setScale(.4).setSize(65,95).setOffset(50,75);
-    let brokenBattery2Border = this.physics.add.sprite(2560, 1280).setSize(70, 100);
+    brokenBattery2 = platforms.create(3008, 832, 'fixbattery', 1).setScale(.4).setSize(65,95).setOffset(50,75);
+    let brokenBattery2Border = this.physics.add.sprite(3008, 832).setSize(70, 100);
     repairKit1 = platforms.create(3104, 1664, 'box');
     let repairKit1Border = this.physics.add.sprite(3104, 1664).setSize(40, 40);
     repairKit2 = platforms.create(864, 128, 'box');
@@ -514,7 +514,7 @@ create(){
 
     door2 = platforms.create(2520, 2464, 'engine_door').setScale(.35).setSize(170,70).setOffset(170,60);
     //Test2
-    door4 = platforms.create(1432, 2554, 'engine_door').setScale(.35).setSize(170,70).setOffset(170,80);
+    door4 = platforms.create(1432, 2554, 'engine_door').setScale(.35).setSize(170,70).setOffset(170,60);
     //Test3
     door5 = platforms.create(1432, 2714, 'engine_door').setScale(.35).setSize(170,70).setOffset(170,80);
     //Test Side door
@@ -635,8 +635,8 @@ create(){
     this.physics.add.collider(player, worldLayer);
     this.physics.add.collider(player, platforms);
     this.physics.add.collider(player, batteries);
-    this.physics.add.collider(worldLayer, batteries);
-    this.physics.add.collider(worldLayer, batteries);
+    this.physics.add.collider(worldLayer, battery1);
+    this.physics.add.collider(worldLayer, battery2);
     this.physics.add.collider(platforms, batteries);
 
     
@@ -659,7 +659,7 @@ create(){
     // border button 2b
     this.physics.add.overlap(player, borderButton2b, function(){open_door.call(this, [door5])}, null, this);
 
-    // border button 2b
+    // border button 2c
     this.physics.add.overlap(player, borderButton2c, function(){open_door.call(this, [door6])}, null, this);
 
     // border button 3
@@ -693,7 +693,7 @@ create(){
     this.physics.add.overlap(player, borderButton7, finalDoor, null, this);
 
     // border button 7b
-    this.physics.add.overlap(player, borderButton7b, function(){open_door.call(this, [door12])}, null, this);
+    this.physics.add.overlap(player, borderButton7b, function(){open_door.call(this, [door11])}, null, this);
 
     //Battery1
     this.physics.add.overlap(battery1, powerPad1, addBattery1, null, this);
