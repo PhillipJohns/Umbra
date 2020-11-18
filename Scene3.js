@@ -12,6 +12,10 @@ var bg;
 var x = 0;
 var y = 0;
 
+// player UI vars
+var scoreText;
+var battOn = 0;
+var toolBoxCount = 0;
 
 // timer
 // var timer;
@@ -272,6 +276,8 @@ create(){
             battery1.setVisible(false);
             batteries.remove(battery1);
             powerPad1On = true;
+            battOn+=1;
+                scoreText.setText('Batteries on: '+ battOn + '\nToolkits aquired: ' + toolBoxCount);
             }
     }
     function addBattery2() {
@@ -281,6 +287,8 @@ create(){
             battery2.setVisible(false);
             batteries.remove(battery2);
             powerPad2On = true;
+            battOn+=1;
+                scoreText.setText('Batteries on: '+ battOn + '\nToolkits aquired: ' + toolBoxCount);
             }
     }
     //add repair Kit
@@ -295,6 +303,8 @@ create(){
                 graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
                 repairKitText = this.add.text(player.x - 400, player.y + 150, 'You picked up the toolbox!', { fontSize: '32px', fill: '#999' }).setVisible(true);
                 this.physics.pause();
+                toolBoxCount+=1;
+                scoreText.setText('Batteries on: '+ battOn + '\nToolkits aquired: ' + toolBoxCount);
             }
         }
     }
@@ -309,6 +319,8 @@ create(){
                 graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
                 repairKitText = this.add.text(player.x - 400, player.y + 150, 'You picked up the toolbox!', { fontSize: '32px', fill: '#999' }).setVisible(true);
                 this.physics.pause();
+                toolBoxCount+=1;
+                scoreText.setText('Batteries on: '+ battOn + '\nToolkits aquired: ' + toolBoxCount);
             }
         }
     }
@@ -320,11 +332,16 @@ create(){
                 brokenBattery1.setFrame(0);
                 repairKit1Found = false
                 battery1On = true;
+                battOn+=1;
+                scoreText.setText('Batteries on: '+ battOn + '\nToolkits aquired: ' + toolBoxCount);
+                
             }
             else if(repairKit2Found){
                 brokenBattery1.setFrame(0);
                 repairKit2Found = false
                 battery1On = true;
+                battOn+=1;
+                scoreText.setText('Batteries on: '+ battOn + '\nToolkits aquired: ' + toolBoxCount);
             }
     }
 }
@@ -334,11 +351,13 @@ create(){
                 brokenBattery2.setFrame(0);
                 repairKit1Found = false
                 battery2On = true;
+                battOn+=1;
             }
             else if(repairKit2Found){
                 brokenBattery2.setFrame(0);
                 repairKit2Found = false
                 battery2On = true;
+                battOn+=1;
             }
         }
     }
@@ -723,6 +742,7 @@ create(){
     this.minimap.setBackgroundColor(0x002244);
     this.minimap.scrollX = 2000;
     this.minimap.scrollY = 1500;
+    
     //object array
     let interactable = [code1Button, code2Button, code3Button, code4Button, button1, button2, button3, button4, button5, button6, button7, button8, button9, button10, button11, button12, button13, button14, battery1, battery2, brokenBattery1, brokenBattery2, repairKit1, repairKit2, powerPad1, powerPad2, terminal]
 
@@ -749,13 +769,34 @@ create(){
             boxGray = true;
           }
         }
+    // UI for score
+    //Scoreboard
+//    scene3UI = this.add.container(player.x, 50);
+//    scene3UIText = this.add.text(player.x, 50, "SCORE: 0", {fontSize: '32px', color: '#000'});
+//
+//    scene3UI.add(scene3UIText);
+//
+//    this.tweens.add({
+//        targets: scene3UI,
+//        x: scene3UI.x + player.x,
+//        ease: 'Linear',
+//        duration: 1,
+//        delay: 1,
+//        yoyo: false,
+//        repeat: -1
+//    });
+    scoreText = this.add.text(0, 0, 'Batteries on: 0\nToolkits aquired: 0', {fontSize: '12px' });
+    scoreText.scrollFactorX = 0;
+    scoreText.scrollFactorY = 0;
+    scoreText.setFontSize(24);
 
 }
 
 update(){
     // camera follows the player
     this.cameras.main.startFollow(player);
-
+    //scene3UIText.x = player.body.position.x;
+    
     // keep track of the sprite X and Y
     // spriteCoord.setText('Sprite X: ' + parseFloat(player.x).toFixed(2) + " Sprite Y: " + parseFloat(player.y).toFixed(2));
 
