@@ -14,7 +14,6 @@ var y = 0;
 
 // player UI vars
 var scoreText;
-var battOn = 0;
 var toolBoxCount = 0;
 
 // timer
@@ -115,7 +114,7 @@ preload(){
 }
 
 create(){
-    
+
     //Create text early to define it
     repairKitText = this.add.text(player.x - 400, player.y + 150, 'You picked up the toolbox!', { fontSize: '32px', fill: '#999' }).setVisible(false);
     terminalText1 = this.add.text(player.x - 400, player.y + 100, 'The power in down in this room.', { fontSize: '30px', fill: '#999' }).setVisible(false);
@@ -134,7 +133,7 @@ create(){
     container = this.add.container();
     container.add(player);
 
-    
+
 
     //sounds
     doorSound = this.sound.add('doorSound');
@@ -145,75 +144,75 @@ create(){
      //Door buttons
      let button1 = this.add.image(2336, 2480, 'button');
      let borderButton1 = this.physics.add.sprite(2336, 2480).setSize(40, 40);
- 
+
      // door button 1b
      let button2 = this.add.image(3280, 2480, 'button');
      let borderButton1b = this.physics.add.sprite(3280, 2480).setSize(40, 40);
- 
+
      // door buttons room 2
      // tiled coordinates = (1632, 2560)
      // added 16 px to Y
      let button3 = this.add.image(1632, 2576, 'button');
      let borderButton2 = this.physics.add.sprite(1632, 2576).setSize(40, 40);
- 
+
      // button 2b
      let button4 = this.add.image(2224, 3088, 'button');
      let borderButton2b = this.physics.add.sprite(2224, 3088).setSize(40, 40);
- 
+
      // button 2c
      let button5 = this.add.image(848, 2480, 'button');
      let borderButton2c = this.physics.add.sprite(848, 2480).setSize(40, 40);
- 
+
      // door buttons room 3
      // tiled coordinates = (1152, 1888)
      // added 16 px to Y
      // added 16 px to X
      let button6 = this.add.image(1040, 2000, 'button');
      let borderButton3 = this.physics.add.sprite(1040, 2000).setSize(40, 40);
- 
+
      // door buttons room 3b
      // tiled coordinates = (1696, 2208)
      // added 16 px to Y
      // added 16 px to X
      let button7 = this.add.image(1712, 2224, 'button');
      let borderButton3b = this.physics.add.sprite(1712, 2224).setSize(40, 40);
- 
+
      //Button 4
      let button8 = this.add.image(2704, 1584, 'button');
      let borderButton4 = this.physics.add.sprite(2704, 1584).setSize(40, 40);
- 
+
      //Button 4b
      let button9 =this.add.image(2736, 2288, 'button');
      let borderButton4b = this.physics.add.sprite(2736, 2288).setSize(40, 40);
- 
+
      //Button 5
      let button10 = this.add.image(656, 496, 'button');
      let borderButton5 = this.physics.add.sprite(656, 496).setSize(40, 40);
- 
+
      //Button 5b
      // this.add.image(1712, 1040, 'button');
      // let borderButton5b = this.physics.add.sprite(1712, 1040).setSize(40, 40);
- 
+
      //Button 6
      // this.add.image(1936, 1040, 'button');
      // let borderButton6 = this.physics.add.sprite(1936, 1040).setSize(40, 40);
- 
+
      //Button 6b
      let button11 = this.add.image(3280, 656, 'button');
      let borderButton6b = this.physics.add.sprite(3280, 656).setSize(40, 40);
- 
+
      //Button 6c
      let button12 = this.add.image(754, 1520, 'button');
      let borderButton6c = this.physics.add.sprite(754, 1520).setSize(40, 40);
- 
+
      //Button 7
      let button13 = this.add.image(3920, 144, 'button');
      let borderButton7 = this.physics.add.sprite(3920, 144).setSize(40, 40);
- 
+
      //Button 7b
      let button14 = this.add.image(3472, 336, 'button');
      let borderButton7b = this.physics.add.sprite(3472, 336).setSize(40, 40);
- 
+
      //Coded buttons
      let code1Button = this.add.image(1264, 496, 'code1');
      let code1 = this.physics.add.sprite(1264, 496).setSize(40, 40);
@@ -223,7 +222,7 @@ create(){
      let code3 = this.physics.add.sprite(1392, 496).setSize(40, 40);
      let code4Button =this.add.image(1456, 496, 'code4');
      let code4 = this.physics.add.sprite(1456, 496).setSize(40, 40);
-    
+
 
 
     //power supply generation
@@ -245,12 +244,6 @@ create(){
     //Command Terminal (Tells player how to get out of maze)
     let terminalBorder = this.physics.add.sprite(2525, 2620).setSize(80, 80);
     let terminal = platforms.create(2525, 2620, 'terminal');
-
-    //make player
-    player = this.physics.add.sprite(2500, 3100, 'character').setScale(.25);
-    player.setSize(120, 250);
-    player.setOffset(70, 220);
-
 
     function commandTerminal(){
         if (cursors.space.isDown){
@@ -276,8 +269,7 @@ create(){
             battery1.setVisible(false);
             batteries.remove(battery1);
             powerPad1On = true;
-            battOn+=1;
-                scoreText.setText('Batteries on: '+ battOn + '\nToolkits aquired: ' + toolBoxCount);
+                scoreText.setText('Toolkits aquired: ' + toolBoxCount);
             }
     }
     function addBattery2() {
@@ -287,8 +279,7 @@ create(){
             battery2.setVisible(false);
             batteries.remove(battery2);
             powerPad2On = true;
-            battOn+=1;
-                scoreText.setText('Batteries on: '+ battOn + '\nToolkits aquired: ' + toolBoxCount);
+                scoreText.setText('Toolkits aquired: ' + toolBoxCount);
             }
     }
     //add repair Kit
@@ -304,7 +295,7 @@ create(){
                 repairKitText = this.add.text(player.x - 400, player.y + 150, 'You picked up the toolbox!', { fontSize: '32px', fill: '#999' }).setVisible(true);
                 this.physics.pause();
                 toolBoxCount+=1;
-                scoreText.setText('Batteries on: '+ battOn + '\nToolkits aquired: ' + toolBoxCount);
+                scoreText.setText('Toolkits aquired: ' + toolBoxCount);
             }
         }
     }
@@ -320,7 +311,7 @@ create(){
                 repairKitText = this.add.text(player.x - 400, player.y + 150, 'You picked up the toolbox!', { fontSize: '32px', fill: '#999' }).setVisible(true);
                 this.physics.pause();
                 toolBoxCount+=1;
-                scoreText.setText('Batteries on: '+ battOn + '\nToolkits aquired: ' + toolBoxCount);
+                scoreText.setText('Toolkits aquired: ' + toolBoxCount);
             }
         }
     }
@@ -332,16 +323,16 @@ create(){
                 brokenBattery1.setFrame(0);
                 repairKit1Found = false
                 battery1On = true;
-                battOn+=1;
-                scoreText.setText('Batteries on: '+ battOn + '\nToolkits aquired: ' + toolBoxCount);
-                
+                toolBoxCount-=1;
+                scoreText.setText('Toolkits aquired: ' + toolBoxCount);
+
             }
             else if(repairKit2Found){
                 brokenBattery1.setFrame(0);
                 repairKit2Found = false
                 battery1On = true;
-                battOn+=1;
-                scoreText.setText('Batteries on: '+ battOn + '\nToolkits aquired: ' + toolBoxCount);
+                toolBoxCount-=1;
+                scoreText.setText('Toolkits aquired: ' + toolBoxCount);
             }
     }
 }
@@ -351,13 +342,15 @@ create(){
                 brokenBattery2.setFrame(0);
                 repairKit1Found = false
                 battery2On = true;
-                battOn+=1;
+                toolBoxCount-=1;
+                scoreText.setText('Toolkits aquired: ' + toolBoxCount);
             }
             else if(repairKit2Found){
                 brokenBattery2.setFrame(0);
                 repairKit2Found = false
                 battery2On = true;
-                battOn+=1;
+                toolBoxCount-=1;
+                scoreText.setText('Toolkits aquired: ' + toolBoxCount);
             }
         }
     }
@@ -455,8 +448,8 @@ create(){
             }
         }
 
-    
-    
+
+
     // create door sprites
 //    let door1 = this.physics.add.sprite(0, 0, 'engine_door').setScale(.5);
 //
@@ -515,11 +508,11 @@ create(){
 
     // cursors
     cursors = this.input.keyboard.createCursorKeys();
-    
+
     // scene3 border sprite npc1
     let border_scene3Npc1 = this.physics.add.sprite(2380, 2740).setSize(50, 115).setOffset(-5,0);
-    
-    
+
+
     // scene3 npc 1
     scene3Npc1 = this.physics.add.staticGroup();
     scene3Npc1.create(2380, 2780, 'npc1').setScale(.25).setFrame(0);
@@ -556,8 +549,10 @@ create(){
     let Hdoors = [door2, door4, door5, door10, door13, door14];
     let VdoorsL = [door3, door6, door9];
 
-
-
+    //make player
+    player = this.physics.add.sprite(2500, 3100, 'character').setScale(.25);
+    player.setSize(120, 250);
+    player.setOffset(70, 220);
 
     // open door functions
     function open_door(doorList){
@@ -644,9 +639,9 @@ create(){
 
         }
     }
-    
-    
-    
+
+
+
     // NPC collision
     this.physics.add.collider(player, scene3Npc1Static);
 
@@ -658,10 +653,10 @@ create(){
     this.physics.add.collider(worldLayer, battery2);
     this.physics.add.collider(platforms, batteries);
 
-    
+
     // NPC overlap
     this.physics.add.overlap(player, border_scene3Npc1, scene3Npc1Talk, null, this);
-    
+
     //Player Overlap
     // Terminal
     this.physics.add.overlap(player, terminalBorder, commandTerminal, null, this);
@@ -734,7 +729,7 @@ create(){
     this.physics.add.overlap(player, code2, function(){codedDoor.call(this, 2)}, null, this);
     this.physics.add.overlap(player, code3, function(){codedDoor.call(this, 3)}, null, this);
     this.physics.add.overlap(player, code4, function(){codedDoor.call(this, 4)}, null, this);
-    
+
 
     //Set up text box
     //Mini Map
@@ -742,7 +737,7 @@ create(){
     this.minimap.setBackgroundColor(0x002244);
     this.minimap.scrollX = 2000;
     this.minimap.scrollY = 1500;
-    
+
     //object array
     let interactable = [code1Button, code2Button, code3Button, code4Button, button1, button2, button3, button4, button5, button6, button7, button8, button9, button10, button11, button12, button13, button14, battery1, battery2, brokenBattery1, brokenBattery2, repairKit1, repairKit2, powerPad1, powerPad2, terminal]
 
@@ -754,7 +749,7 @@ create(){
         // callbackScope: thisArg,
         loop: true
         });
-    
+
         function objTint(){
           if (boxGray){
             for (let i = 0; i < interactable.length; i++){
@@ -785,7 +780,7 @@ create(){
 //        yoyo: false,
 //        repeat: -1
 //    });
-    scoreText = this.add.text(0, 0, 'Batteries on: 0\nToolkits aquired: 0', {fontSize: '12px' });
+    scoreText = this.add.text(0, 0, 'Toolkits aquired: 0', {fontSize: '12px' });
     scoreText.scrollFactorX = 0;
     scoreText.scrollFactorY = 0;
     scoreText.setFontSize(24);
@@ -796,7 +791,7 @@ update(){
     // camera follows the player
     this.cameras.main.startFollow(player);
     //scene3UIText.x = player.body.position.x;
-    
+
     // keep track of the sprite X and Y
     // spriteCoord.setText('Sprite X: ' + parseFloat(player.x).toFixed(2) + " Sprite Y: " + parseFloat(player.y).toFixed(2));
 
