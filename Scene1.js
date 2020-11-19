@@ -11,7 +11,7 @@ var info3;
 var text1;
 var npc_text;
 var player1 = {name: "name1", inventory: []};
-var npc1 = {name: "npc1", dialogue: {1: "Can you find my box?\nI'll give you a key out.", 2: 'Thank you! Take this key.'}};
+var npc1 = {name: "npc1", dialogue: {1: "Can you find my box?\nI'll give you a key out.", 2: 'Thank you! Take this key... though the door\nis only one way so you can\'t come back in.'}};
 
 // Test npc
 var theTestNPC;
@@ -80,10 +80,11 @@ preload(){
     this.load.image('engine_room', 'engine_interior.png');
     this.load.spritesheet('engine_door', 'sprite/dooru.png', {frameWidth: 500, frameHeight: 195});
     this.load.spritesheet('powerSource', 'sprite/powersource.png', {frameWidth: 185, frameHeight: 280});
-    this.load.spritesheet('fixbattery', 'sprite/fixbattery.png', {frameWidth: 170, frameHeight: 255});
+    this.load.spritesheet('fixbattery', 'sprite/fixbattery.png', {frameWidth: 165, frameHeight: 255});
     this.load.image('battery', 'sprite/battery.png');
     this.load.image('backwall', 'BackWall.png');
     this.load.image('button', 'Free/Menu/Buttons/Achievements.png');
+    this.load.spritesheet("toolshelf", 'sprite/toolshelf.png', {frameWidth: 298, frameHeight: 330});
 
     // level 3 assets
     this.load.spritesheet('doorL', 'sprite/doorl1.png', {frameWidth: 195, frameHeight: 480});
@@ -173,8 +174,8 @@ create(){
 
     // test npc
     theTestNPC = this.physics.add.staticGroup();
-    theTestNPC.create(510, 190, 'npc1').setScale(.25).setFrame(1);
-    test_npcStatic = this.physics.add.staticSprite(500, 150).setSize(45, 110).setOffset(-2,2);
+    theTestNPC.create(505, 170, 'npc1').setScale(.25).setFrame(1);
+    test_npcStatic = this.physics.add.staticSprite(500, 115).setSize(45, 110).setOffset(-2,20);
     theTestNPC.width = 32;
     theTestNPC.height = 32;
 

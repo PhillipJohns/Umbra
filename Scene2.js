@@ -9,7 +9,6 @@ var door;
 var door_open = false;
 var startDoor_open = false;
 var powerOn = false;
-var power;
 var startDoor;
 var startPad;
 var startTouchPad = false;
@@ -31,6 +30,7 @@ var spriteCoord;
 var powerSupplyFixedText;
 var doorFixedText;
 var toolBoxAcquiredText;
+var notext;
 
 // power supply is broken, I need a took kit
 var powerSupplyFixed = false;
@@ -84,6 +84,7 @@ create(){
     //     }
     //     y += 30
     // }
+
     this.add.image(x, y, 'background').setScale(2);
     for (y = 15; y < 700; y += 15){
         platforms.create(10, y, 'sideWall');
@@ -116,9 +117,9 @@ create(){
     //left npc
     platforms.create(150, 405, 'sideWall').setScale(.8).setSize(20,120).setOffset(4,11);
     //bottom of npc
-    platforms.create(215, 452, 'backwall').setScale(.8);
-    platforms.create(315, 452, 'backwall').setScale(.8);
-    platforms.create(334, 452, 'backwall').setScale(.8).setSize(120,20).setOffset(0,4);
+    platforms.create(210, 454, 'backwall').setScale(.8);
+    platforms.create(315, 454, 'backwall').setScale(.8);
+    platforms.create(332, 454 , 'backwall').setScale(.8).setSize(120,20).setOffset(0,4);
     //right of npc
     platforms.create(376, 400, 'sideWall').setScale(.8).setSize(20,120).setOffset(4,12);
     //center maze wall
@@ -138,9 +139,9 @@ create(){
     platforms.create(650, 90, 'sideWall').setScale(.8).setScale(.8).setSize(20,120).setOffset(4,11);
 
     //maze doors and buttons
-    mazeDoor = platforms.create(744, 188, 'engine_door').setScale(.155).setSize(75,34).setOffset(220,95);
+    mazeDoor = platforms.create(744, 188, 'engine_door').setScale(.155).setSize(75,34).setOffset(220,85);
     let button1 = this.add.image(200, 200, 'button');
-    let button2 = this.add.image(750, 20, 'button');
+    let button2 = this.add.image(788, 130, 'button');
     mazeDoorOpen = this.physics.add.sprite(744, 188, 'engine_door').setScale(.15).setSize(75,34).setOffset(220,100).setVisible(false);
 
     // In-game text for Scene 2
@@ -151,19 +152,21 @@ create(){
 
     // text for power supply being broken (middle of room)
     // power supply is broken, I need a took kit
-    powerSupplyFixedText = this.add.text(30, 545, 'The power supply is broken, I need a tool kit to fix it.', { fontSize: '28px', fill: '#999' }).setVisible(false);
+    powerSupplyFixedText = this.add.text(50, 510, 'The power supply is broken.\nI need a tool kit to fix it.', { fontSize: '28px', fill: '#999' }).setVisible(false);
 
     // door to scene 3
     // Door is broken, need to fix power supply
-    doorFixedText = this.add.text(30, 545, 'The door is broken, I need the power supply to be on.', { fontSize: '28', fill: '#999' }).setVisible(false);
+    doorFixedText = this.add.text(50, 510, 'The door is broken.\nI need the power supply to be on.', { fontSize: '28px', fill: '#999' }).setVisible(false);
 
     // Toolbox to fix powersupply
     // I found the toolbox
-    toolBoxAcquiredText = this.add.text(50, 545, 'You picked up the toolbox!', { fontSize: '32px', fill: '#999' }).setVisible(false);
+    toolBoxAcquiredText = this.add.text(50, 525, 'You picked up the toolbox!', { fontSize: '32px', fill: '#999' }).setVisible(false);
 
     //npc text
-    npc_text =  this.add.text(30, 500, 'You picked up the toolbox!', { fontSize: '28px', fill: '#999' }).setVisible(false);
+    npc_text = this.add.text(30, 500, 'You picked up the toolbox!', { fontSize: '28px', fill: '#999' }).setVisible(false);
 
+    //locks door behind player
+    notext = this.add.text(50, 500, 'The door is locked.', { fontSize: '28px', fill: '#999' }).setVisible(false);
     // show the Spirtes X and Y coord
     // spriteCoord = this.add.text(50, 50, 'The sprites X and Y: ', { fontSize: '18px', fill: '#900' });
 
@@ -171,14 +174,15 @@ create(){
     startPowerSupply = this.physics.add.sprite(150, 120, 'battery', 2).setScale(.4);
 
     // engine
-    engine = this.physics.add.staticGroup();
-    engineOff = engine.create(500, 150, 'fixbattery', 1).setScale(.4).setSize(65,95).setOffset(50,75);
+    let engine = this.physics.add.staticGroup();
+    engineOff = engine.create(500, 150, 'fixbattery').setFrame(0).setScale(.4).setSize(65,95).setOffset(50,75);
 
     // engine door
+    this.physics.add.sprite(70, 12, 'doorBB').setScale(.15);
     door = this.physics.add.sprite(600, 12, 'doorBB').setScale(.15);
 
     items = this.physics.add.group();
-    toolKit = platforms.create(700, 50, 'box');
+    toolKit = platforms.create(700, 45, 'toolshelf').setFrame(0).setScale(.25).setSize(60,80).setOffset(100,100);
 
     //object tint timer
     timerr = this.time.addEvent({
@@ -189,14 +193,6 @@ create(){
     loop: true
     });
 
-    // border npc
-    let border = this.physics.add.sprite(240, 330).setSize(50, 115).setOffset(-5,0);
-    //npc
-    npc = this.physics.add.staticGroup();
-    npc.create(250, 375, 'npc1').setScale(.25).setFrame(2);
-    npcStatic = this.physics.add.staticSprite(240, 330).setSize(45, 110).setOffset(-2,2);
-    npc.width = 32;
-    npc.height = 32;
 
     function gameNpc(){
         // console.log("!!!");
@@ -270,6 +266,18 @@ create(){
         frameRate: 4,
         repeat: 0
     });
+    this.anims.create({
+      key: 'tool',
+      frames: this.anims.generateFrameNumbers('toolshelf', { start: 0, end: 1 }),
+      frameRate: 4,
+      repeat: 0
+    });
+    this.anims.create({
+      key: 'fixed',
+      frames: this.anims.generateFrameNumbers('fixbattery', { start: 0, end: 1 }),
+      frameRate: 4,
+      repeat: 0
+    });
     // start pad animation
     // this.anims.create({
     //     key: 'fixed',
@@ -283,6 +291,10 @@ create(){
     let border_door = this.physics.add.sprite(600, 20);
     border_door.width = 32;
     border_door.height = 28;//(29, 26);
+
+    let border_door1 = this.physics.add.sprite(70, 20);
+    border_door1.width = 32;
+    border_door1.height = 28;//(29, 26);
     //power source border
     let border_power = this.physics.add.sprite(500, 150);
     // border_power.width = 300;
@@ -290,7 +302,7 @@ create(){
     border_power.setSize(70,100);
     //border for maze door button
     let borderButton1 = this.physics.add.sprite(200, 200).setSize(30, 30);
-    let borderButton2 = this.physics.add.sprite(750, 25).setSize(30, 30);
+    let borderButton2 = this.physics.add.sprite(788, 130).setSize(30, 30);
     //tool kit border
     let kitBorder = this.physics.add.sprite(700, 50).setSize(30, 30);
 
@@ -315,12 +327,8 @@ create(){
     //power source on
     function engineOn(){
         if ((cursors.space.isDown) && (toolKitFound)){
-            power = platforms.create(500, 150, 'fixbattery').setScale(.4).setSize(65,95).setOffset(50,75);
-            engine.remove(engineOff);
-            engineOff.setVisible(false);
-            // power.anims.play('fixed', true);
+            engineOff.anims.play('fixed', true);
             console.log('yes');
-            this.physics.add.collider(player, power);
             powerOn = true;
         }
         else if ((cursors.space.isDown) && (!toolKitFound)){
@@ -371,8 +379,7 @@ create(){
     function addToolKit(){
         if (cursors.space.isDown && !toolsAdded){
             player1.inventory.push(new Item("Tool Kit", "box", "You've found a tool kit!"));
-            platforms.remove(toolKit);
-            toolKit.setVisible(false);
+            toolKit.anims.play('tool', true);
             toolKitFound = true;
             graphics.setVisible(true);
             toolBoxAcquiredText.setVisible(true);
@@ -405,14 +412,32 @@ create(){
         }
     }
 
+    function no(){
+      if(cursors.space.isDown){
+        notext.setVisible(true);
+        graphics.setVisible(true);
+      //  doorFixedText.setVisible(false);
+        this.physics.pause();
+      }
+    }
+
     function changeScene(){
         this.scene.start('Scene3');
     }
 
     //make player
-    player = this.physics.add.sprite(50, 130, 'character').setScale(.25);
+    player = this.physics.add.sprite(70, 60, 'character').setScale(.25);
     player.setSize(120, 250);
     player.setOffset(70, 220);
+
+    // border npc
+    let border = this.physics.add.sprite(240, 330).setSize(50, 115).setOffset(-5,0);
+    //npc
+    npc = this.physics.add.staticGroup();
+    npc.create(250, 375, 'npc1').setScale(.25).setFrame(2);
+    npcStatic = this.physics.add.staticSprite(240, 330).setSize(45, 60).setOffset(-2,50);
+    npc.width = 32;
+    npc.height = 32;
 
     startDoor = platforms.create(104, 197, 'engine_door').setScale(.185).setSize(75,34).setOffset(215,90);
 
@@ -425,6 +450,7 @@ create(){
     // powersupply is clipping through wall, collision not working?
     this.physics.add.collider(platforms, startPowerSupply);
     this.physics.add.overlap(player, border_door, exitRoom, null, this);
+    this.physics.add.overlap(player, border_door1, no, null, this);
     this.physics.add.overlap(player, border_power, engineOn, null, this);
     this.physics.add.overlap(startPowerSupply, startPad, startPadOnFunc, null, this);
     this.physics.add.overlap(player, borderButton1, mazeDoorTimer, null, this);
@@ -457,6 +483,7 @@ update(){
         powerSupplyFixedText.setVisible(false);
         doorFixedText.setVisible(false);
         toolBoxAcquiredText.setVisible(false);
+        notext.setVisible(false);
         npc_text.setVisible(false);
         graphics.setVisible(false);
         this.physics.resume();
