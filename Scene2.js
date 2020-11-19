@@ -416,7 +416,6 @@ create(){
       if(cursors.space.isDown){
         notext.setVisible(true);
         graphics.setVisible(true);
-      //  doorFixedText.setVisible(false);
         this.physics.pause();
       }
     }

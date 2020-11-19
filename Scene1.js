@@ -89,7 +89,9 @@ preload(){
     // level 3 assets
     this.load.spritesheet('doorL', 'sprite/doorl1.png', {frameWidth: 195, frameHeight: 480});
     this.load.spritesheet('doorD', 'sprite/doord.png', {frameWidth: 500, frameHeight: 195});
-    this.load.image('terminal', 'sprite/terminal.png')
+    this.load.image('terminal', 'sprite/terminal.png');
+    this.load.image('backdoor', 'sprite/backdoor.png');
+    this.load.image('cabinet', 'sprite/cabinet.png');
     //coded buttons
     this.load.image('code1', 'Free/Menu/Levels/01.png');
     this.load.image('code2', 'Free/Menu/Levels/02.png');
@@ -383,7 +385,7 @@ create(){
 
     function changeScene(){
         //
-        this.scene.start('Scene2');
+        this.scene.start('Scene3');
     }
 
 

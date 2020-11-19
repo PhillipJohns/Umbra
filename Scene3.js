@@ -24,7 +24,7 @@ var sprite_x;
 var sprite_y;
 var spriteCoord;
 
-//Power supplies\
+//Power supplies
 var batteries;
 var battery1;
 var battery2;
@@ -36,6 +36,7 @@ var repairKit1;
 var repairKit2;
 var powerPads
 var container;
+var cabinets;
 
 //Bools
 var repairKit1Found = false;
@@ -71,6 +72,7 @@ var door13;
 var door14;
 var game = this;
 var finaldoor = false;
+var border_door;
 
 //Buttons
 var room1Button;
@@ -85,7 +87,7 @@ var terminalText2;
 var correctCodeText;
 var incorrectCodeText;
 var powerDownText;
-
+var notext;
 
 // Scene3 NPCs
 var scene3Npc1;
@@ -117,9 +119,10 @@ create(){
 
     //Create text early to define it
     repairKitText = this.add.text(player.x - 400, player.y + 150, 'You picked up the toolbox!', { fontSize: '32px', fill: '#999' }).setVisible(false);
-    terminalText1 = this.add.text(player.x - 400, player.y + 100, 'The power in down in this room.', { fontSize: '30px', fill: '#999' }).setVisible(false);
+    terminalText1 = this.add.text(player.x - 400, player.y + 150, 'The power in down in this room.', { fontSize: '30px', fill: '#999' }).setVisible(false);
     terminalText2 = this.add.text(player.x - 400, player.y + 150, 'I need to get the power up so I can escape!', { fontSize: '30px', fill: '#999' }).setVisible(false);
-    powerDownText = this.add.text(player.x - 400, player.y + 100, 'The Power is down I need to get it working!', { fontSize: '30px', fill: '#999' }).setVisible(false);
+    powerDownText = this.add.text(player.x - 400, player.y + 150, 'The Power is down I need to get it working!', { fontSize: '30px', fill: '#999' }).setVisible(false);
+    notext = this.add.text(player.x - 400, player.y + 150, 'The door is locked.', { fontSize: '30px', fill: '#999' }).setVisible(false);
 
     let platforms = this.physics.add.staticGroup();
     // background
@@ -133,8 +136,18 @@ create(){
     container = this.add.container();
     container.add(player);
 
-
-
+    //cabinet maze in bottom room
+    cabinets = this.physics.add.staticGroup();
+    for (x = 900; x < 1370; x += 85){
+        cabinets.create(x, 2800, 'cabinet').setScale(.30).setSize(105,30).setOffset(130,195);
+    }
+    for (x = 990; x < 1370; x += 85){
+        cabinets.create(x, 2975, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
+    }
+    for (x = 900; x < 1370; x += 85){
+        cabinets.create(x, 3150, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
+    }
+    cabinets.create(1410, 3005, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
     //sounds
     doorSound = this.sound.add('doorSound');
 
@@ -228,7 +241,7 @@ create(){
     //power supply generation
     batteries = this.physics.add.group();
     battery1 = batteries.create(3904, 1920, 'battery').setScale(.4);
-    battery2 = batteries.create(1024, 2944, 'battery').setScale(.4);
+    battery2 = batteries.create(1000, 3050, 'battery').setScale(.4);
     powerPads = this.physics.add.staticGroup();
     powerPad1 = powerPads.create(2688, 2528, 'powerSource').setScale(.4).setSize(74,112).setOffset(60,80);
     powerPad2 = powerPads.create(2080, 2944, 'powerSource').setScale(.4).setSize(74,112).setOffset(60,80);
@@ -242,8 +255,8 @@ create(){
     let repairKit2Border = this.physics.add.sprite(864, 128).setSize(40, 40);
 
     //Command Terminal (Tells player how to get out of maze)
-    let terminalBorder = this.physics.add.sprite(2525, 2620).setSize(80, 80);
-    let terminal = platforms.create(2525, 2620, 'terminal');
+    let terminalBorder = this.physics.add.sprite(2525, 2640).setSize(80, 80);
+    let terminal = platforms.create(2525, 2640, 'terminal');
 
     function commandTerminal(){
         if (cursors.space.isDown){
@@ -251,11 +264,11 @@ create(){
             graphics.fillStyle(0x000000, 1);
             graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
             if (!powerPad1On){
-                terminalText1 = this.add.text(player.x - 400, player.y + 100, 'The power is down in this room. \n I need to get the power up so I can escape!', { fontSize: '30px', fill: '#999' }).setVisible(true);
+                terminalText1 = this.add.text(player.x - 400, player.y + 150, 'The power is down in this room. \nI need to get the power up so I can escape!', { fontSize: '30px', fill: '#999' }).setVisible(true);
                 this.physics.pause();
             }
             else{
-                terminalText2 = this.add.text(player.x - 400, player.y + 100, 'Escape pod room code is 2413', { fontSize: '30px', fill: '#999' }).setVisible(true);
+                terminalText2 = this.add.text(player.x - 400, player.y + 150, 'Escape pod room code is 2413', { fontSize: '30px', fill: '#999' }).setVisible(true);
                 this.physics.pause();
             }
         }
@@ -356,8 +369,8 @@ create(){
     }
 
     //coded door
-    correctCodeText = this.add.text(player.x - 400, player.y + 100, 'Correct!', { fontSize: '30px', fill: '#999' }).setVisible(false);
-    incorrectCodeText = this.add.text(player.x - 400, player.y + 100, 'Incorrect code try again!', { fontSize: '30px', fill: '#999' }).setVisible(false);
+    correctCodeText = this.add.text(player.x - 400, player.y + 150, 'Correct!', { fontSize: '30px', fill: '#999' }).setVisible(false);
+    incorrectCodeText = this.add.text(player.x - 400, player.y + 150, 'Incorrect code try again!', { fontSize: '30px', fill: '#999' }).setVisible(false);
     function codedDoor(num){
         if (powerPad1On){
             if (!codeDoorOpen){
@@ -367,13 +380,13 @@ create(){
                     if (doorCode.length == 0){
                         doorCode.push(2);
                         graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
-                        correctCodeText = this.add.text(player.x - 400, player.y + 100, 'Correct!', { fontSize: '30px', fill: '#999' }).setVisible(true);
+                        correctCodeText = this.add.text(player.x - 400, player.y + 150, 'Correct!', { fontSize: '30px', fill: '#999' }).setVisible(true);
                         this.physics.pause();
                     }
                     else{
                         doorCode = [];
                         graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
-                        incorrectCodeText = this.add.text(player.x - 400, player.y + 100, 'Incorrect code try again!', { fontSize: '30px', fill: '#999' }).setVisible(true);
+                        incorrectCodeText = this.add.text(player.x - 400, player.y + 150, 'Incorrect code try again!', { fontSize: '30px', fill: '#999' }).setVisible(true);
                         this.physics.pause();
                     }
                 }
@@ -381,13 +394,13 @@ create(){
                     if (doorCode[0] == 2 && doorCode.length == 1){
                         doorCode.push(4);
                         graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
-                        correctCodeText = this.add.text(player.x - 400, player.y + 100, 'Correct!', { fontSize: '30px', fill: '#999' }).setVisible(true);
+                        correctCodeText = this.add.text(player.x - 400, player.y + 150, 'Correct!', { fontSize: '30px', fill: '#999' }).setVisible(true);
                         this.physics.pause();
                     }
                     else{
                         doorCode = [];
                         graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
-                        incorrectCodeText = this.add.text(player.x - 400, player.y + 100, 'Incorrect code try again!', { fontSize: '30px', fill: '#999' }).setVisible(true);
+                        incorrectCodeText = this.add.text(player.x - 400, player.y + 150, 'Incorrect code try again!', { fontSize: '30px', fill: '#999' }).setVisible(true);
                         this.physics.pause();
                     }
                 }
@@ -395,13 +408,13 @@ create(){
                     if (doorCode[0] == 2 && doorCode[1] == 4 && doorCode.length == 2){
                         doorCode.push(1);
                         graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
-                        correctCodeText = this.add.text(player.x - 400, player.y + 100, 'Correct!', { fontSize: '30px', fill: '#999' }).setVisible(true);
+                        correctCodeText = this.add.text(player.x - 400, player.y + 150, 'Correct!', { fontSize: '30px', fill: '#999' }).setVisible(true);
                         this.physics.pause();
                 }
                     else{
                         doorCode = [];
                         graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
-                        incorrectCodeText = this.add.text(player.x - 400, player.y + 100, 'Incorrect code try again!', { fontSize: '30px', fill: '#999' }).setVisible(true);
+                        incorrectCodeText = this.add.text(player.x - 400, player.y + 150, 'Incorrect code try again!', { fontSize: '30px', fill: '#999' }).setVisible(true);
                         this.physics.pause();
                     }
                 }
@@ -409,7 +422,7 @@ create(){
                     if (doorCode[0] == 2 && doorCode[1] == 4 && doorCode[2] == 1 && doorCode.length == 3){
                         doorCode.push(3);
                         graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
-                        correctCodeText = this.add.text(player.x - 400, player.y + 100, 'Correct!', { fontSize: '30px', fill: '#999' }).setVisible(true);
+                        correctCodeText = this.add.text(player.x - 400, player.y + 150, 'Correct!', { fontSize: '30px', fill: '#999' }).setVisible(true);
                         this.physics.pause();
                         codeDoorOpen = true
                         door12.anims.play('openL', true);
@@ -419,14 +432,14 @@ create(){
                     else{
                         doorCode = [];
                         graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
-                        incorrectCodeText = this.add.text(player.x - 400, player.y + 100, 'Incorrect code try again!', { fontSize: '30px', fill: '#999' }).setVisible(true);
+                        incorrectCodeText = this.add.text(player.x - 400, player.y + 150, 'Incorrect code try again!', { fontSize: '30px', fill: '#999' }).setVisible(true);
                         this.physics.pause();
                     }
             }
             }
         }
         else{
-            powerDownText = this.add.text(player.x - 400, player.y + 100, 'The Power is down I need to get it working!', { fontSize: '30px', fill: '#999' }).setVisible(true);
+            powerDownText = this.add.text(player.x - 400, player.y + 150, 'The Power is down I need to get it working!', { fontSize: '30px', fill: '#999' }).setVisible(true);
             this.physics.pause();
         }
     }
@@ -508,17 +521,12 @@ create(){
 
     // cursors
     cursors = this.input.keyboard.createCursorKeys();
+    let border_door = this.physics.add.sprite(2530, 3175);
+    border_door.width = 100;
+    border_door.height = 28;
 
     // scene3 border sprite npc1
     let border_scene3Npc1 = this.physics.add.sprite(2380, 2740).setSize(50, 115).setOffset(-5,0);
-
-
-    // scene3 npc 1
-    scene3Npc1 = this.physics.add.staticGroup();
-    scene3Npc1.create(2380, 2780, 'npc1').setScale(.25).setFrame(0);
-    scene3Npc1Static = this.physics.add.staticSprite(2380, 2740).setSize(45, 110).setOffset(-2,2);
-    scene3Npc1.width = 32;
-    scene3Npc1.height = 32;
 
 
     //Test Door
@@ -549,10 +557,20 @@ create(){
     let Hdoors = [door2, door4, door5, door10, door13, door14];
     let VdoorsL = [door3, door6, door9];
 
+    //locks door behind player
+    this.physics.add.sprite(2530, 3195, 'backdoor').setScale(.35);
+
     //make player
     player = this.physics.add.sprite(2500, 3100, 'character').setScale(.25);
     player.setSize(120, 250);
     player.setOffset(70, 220);
+
+    // scene3 npc 1
+    scene3Npc1 = this.physics.add.staticGroup();
+    scene3Npc1.create(2380, 2780, 'npc1').setScale(.25).setFrame(0);
+    scene3Npc1Static = this.physics.add.staticSprite(2380, 2740).setSize(45, 60).setOffset(-2,50);
+    scene3Npc1.width = 32;
+    scene3Npc1.height = 32;
 
     // open door functions
     function open_door(doorList){
@@ -626,6 +644,17 @@ create(){
         }
     }
 
+    function no(){
+      if(cursors.space.isDown){
+        notext.setVisible(true);
+        graphics = this.add.graphics();
+        graphics.fillStyle(0x000000, 1);
+        graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
+        repairKitText = this.add.text(player.x - 400, player.y + 150, 'The door locked behind us.', { fontSize: '32px', fill: '#999' }).setVisible(true);
+        this.physics.pause();
+      }
+    }
+
     function changeScene(){
         this.scene.start('Scene4');
     }
@@ -641,7 +670,6 @@ create(){
     }
 
 
-
     // NPC collision
     this.physics.add.collider(player, scene3Npc1Static);
 
@@ -649,10 +677,11 @@ create(){
     this.physics.add.collider(player, worldLayer);
     this.physics.add.collider(player, platforms);
     this.physics.add.collider(player, batteries);
+    this.physics.add.collider(player, cabinets);
     this.physics.add.collider(worldLayer, battery1);
     this.physics.add.collider(worldLayer, battery2);
     this.physics.add.collider(platforms, batteries);
-
+    this.physics.add.overlap(player, border_door, no, null, this);
 
     // NPC overlap
     this.physics.add.overlap(player, border_scene3Npc1, scene3Npc1Talk, null, this);
@@ -733,7 +762,7 @@ create(){
 
     //Set up text box
     //Mini Map
-    this.minimap = this.cameras.add(500, 10, 200, 160).setZoom(.05).setName('mini');
+    this.minimap = this.cameras.add(590, 5, 200, 160).setZoom(.05).setName('mini');
     this.minimap.setBackgroundColor(0x002244);
     this.minimap.scrollX = 2000;
     this.minimap.scrollY = 1500;
@@ -794,7 +823,6 @@ update(){
 
     // keep track of the sprite X and Y
     // spriteCoord.setText('Sprite X: ' + parseFloat(player.x).toFixed(2) + " Sprite Y: " + parseFloat(player.y).toFixed(2));
-
     player.setVelocityX(0);
     player.setVelocityY(0);
     batteries.setVelocityX(0);
@@ -815,6 +843,7 @@ update(){
         correctCodeText.setVisible(false);
         incorrectCodeText.setVisible(false);
         powerDownText.setVisible(false);
+        notext.setVisible(false);
         this.physics.resume();
 }
 
