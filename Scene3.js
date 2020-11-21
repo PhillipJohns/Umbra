@@ -37,6 +37,7 @@ var repairKit2;
 var powerPads
 var container;
 var cabinets;
+var wire;
 
 //Bools
 var repairKit1Found = false;
@@ -48,6 +49,7 @@ var powerPad2On = false;
 var battery1On = false;
 var battery2On = false;
 var boxGray = false;
+var movepad = false;
 
 //Mini Map
 var minimap;
@@ -91,7 +93,7 @@ var notext;
 
 // Scene3 NPCs
 var scene3Npc1;
-var scene3Npc1Obj = {name: "scene3Npc1Obj", dialogue: {1: "We need to talk to the computer! \nIt will tell us what we need to do.", }};
+var scene3Npc1Obj = {name: "scene3Npc1Obj", dialogue: {1: "We need to get the terminal running! \nWe can't escape without it.", }};
 var scene3Npc1Static;
 
 //coded door array
@@ -136,6 +138,29 @@ create(){
     container = this.add.container();
     container.add(player);
 
+    //wire shelves
+    wire = this.physics.add.staticGroup();
+    //bottom left room
+    for (y = 2425; y < 2650; y += 70){
+        wire.create(285, y, 'toolshelf', 1).setScale(.30).setSize(73,75).setOffset(115,130);
+    }
+    for (y = 2425; y < 2650; y += 70){
+        wire.create(648, y, 'toolshelf', 1).setScale(.30).setSize(73,75).setOffset(115,130);
+    }
+    for (y = 2599; y < 2740; y += 70){
+        wire.create(465, y, 'toolshelf', 1).setScale(.30).setSize(73,75).setOffset(115,130);
+    }
+    // upper left room
+    for (x = 584; x < 1200; x += 73){
+        wire.create(x, 80, 'toolshelf', 1).setScale(.30).setSize(73,75).setOffset(115,130);
+    }
+    for (x = 584; x < 815; x += 83){
+        wire.create(x, 300, 'toolshelf', 1).setScale(.30).setSize(73,75).setOffset(115,130);
+    }
+    for (x = 980; x < 1170; x += 86){
+        wire.create(x, 300, 'toolshelf', 1).setScale(.30).setSize(73,75).setOffset(115,130);
+    }
+
     //cabinet maze in bottom room
     cabinets = this.physics.add.staticGroup();
     for (x = 900; x < 1370; x += 85){
@@ -144,10 +169,21 @@ create(){
     for (x = 990; x < 1370; x += 85){
         cabinets.create(x, 2975, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
     }
-    for (x = 900; x < 1370; x += 85){
+    for (x = 930; x < 1475; x += 85){
         cabinets.create(x, 3150, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
     }
+    for (x = 1560; x < 2170; x += 85){
+        cabinets.create(x, 2800, 'cabinet').setScale(.30).setSize(105,30).setOffset(130,195);
+    }
+    for (x = 1575; x < 2085; x += 85){
+        cabinets.create(x, 2970, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
+    }
+    for (x = 1592; x < 2170; x += 85){
+        cabinets.create(x, 3050, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
+    }
     cabinets.create(1410, 3005, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
+
+
     //sounds
     doorSound = this.sound.add('doorSound');
 
@@ -236,23 +272,40 @@ create(){
      let code4Button =this.add.image(1456, 496, 'code4');
      let code4 = this.physics.add.sprite(1456, 496).setSize(40, 40);
 
+     //move pad arrows
+     let arrowrs = this.physics.add.staticGroup();
+     let rarrow = arrowrs.create(1410, 3080, 'rarrow');
+     let rarrow1 = arrowrs.create(1515, 2880, 'rarrow').setSize(50, 1).setOffset(0,25);
 
+     let arrowus = this.physics.add.staticGroup();
+     let uarrow = arrowus.create(1515, 3030, 'uarrow');
+
+     //stop movepads
+     let stops = this.physics.add.staticGroup();
+     let stop = stops.create(1515, 3080, 'stop').setSize(1, 50).setOffset(53, 0);
+
+     //list of arrows
+     let Rarrows = [rarrow];
+     let Uarrows = [uarrow];
+     let Darrows = [];
+     let Larrows = [];
+     let Stop = [stop];
 
     //power supply generation
     batteries = this.physics.add.group();
     battery1 = batteries.create(3904, 1920, 'battery').setScale(.4);
-    battery2 = batteries.create(1000, 3050, 'battery').setScale(.4);
+    battery2 = batteries.create(1000, 3045, 'battery').setScale(.4).setSize(130, 80).setOffset(15,155);
     powerPads = this.physics.add.staticGroup();
     powerPad1 = powerPads.create(2688, 2528, 'powerSource').setScale(.4).setSize(74,112).setOffset(60,80);
-    powerPad2 = powerPads.create(2080, 2944, 'powerSource').setScale(.4).setSize(74,112).setOffset(60,80);
-    brokenBattery1 = platforms.create(128, 2496, 'fixbattery', 1).setScale(.4).setSize(65,95).setOffset(50,75);
+    powerPad2 = powerPads.create(2150, 2860, 'powerSource').setScale(.4).setSize(74,90).setOffset(60,80);
+    brokenBattery1 = platforms.create(128, 2496, 'fixbattery', 0).setScale(.4).setSize(65,95).setOffset(50,75);
     let brokenBattery1Border = this.physics.add.sprite(128, 2496).setSize(70, 100);
-    brokenBattery2 = platforms.create(3008, 832, 'fixbattery', 1).setScale(.4).setSize(65,95).setOffset(50,75);
+    brokenBattery2 = platforms.create(3008, 832, 'fixbattery', 0).setScale(.4).setSize(65,95).setOffset(50,75);
     let brokenBattery2Border = this.physics.add.sprite(3008, 832).setSize(70, 100);
     repairKit1 = platforms.create(3104, 1664, 'box');
     let repairKit1Border = this.physics.add.sprite(3104, 1664).setSize(40, 40);
-    repairKit2 = platforms.create(864, 128, 'box');
-    let repairKit2Border = this.physics.add.sprite(864, 128).setSize(40, 40);
+    repairKit2 = platforms.create(1150, 180, 'toolbox').setScale(.35).setSize(40,40).setOffset(70,80);
+    let repairKit2Border = this.physics.add.sprite(1150, 180).setSize(43, 43);
 
     //Command Terminal (Tells player how to get out of maze)
     let terminalBorder = this.physics.add.sprite(2525, 2640).setSize(80, 80);
@@ -333,7 +386,7 @@ create(){
         if (cursors.space.isDown){
             console.log('Fix Battery')
             if (repairKit1Found){
-                brokenBattery1.setFrame(0);
+                brokenBattery1.setFrame(1);
                 repairKit1Found = false
                 battery1On = true;
                 toolBoxCount-=1;
@@ -341,7 +394,7 @@ create(){
 
             }
             else if(repairKit2Found){
-                brokenBattery1.setFrame(0);
+                brokenBattery1.setFrame(1);
                 repairKit2Found = false
                 battery1On = true;
                 toolBoxCount-=1;
@@ -352,14 +405,14 @@ create(){
     function fixBattery2(){
         if (cursors.space.isDown){
             if (repairKit1Found){
-                brokenBattery2.setFrame(0);
+                brokenBattery2.setFrame(1);
                 repairKit1Found = false
                 battery2On = true;
                 toolBoxCount-=1;
                 scoreText.setText('Toolkits aquired: ' + toolBoxCount);
             }
             else if(repairKit2Found){
-                brokenBattery2.setFrame(0);
+                brokenBattery2.setFrame(1);
                 repairKit2Found = false
                 battery2On = true;
                 toolBoxCount-=1;
@@ -511,6 +564,7 @@ create(){
         frameRate: 4,
         repeat: 0
     });
+
     // start pad animation
     // this.anims.create({
     //     key: 'fixed',
@@ -644,6 +698,7 @@ create(){
         }
     }
 
+    // can't go back through the door
     function no(){
       if(cursors.space.isDown){
         notext.setVisible(true);
@@ -654,6 +709,35 @@ create(){
         this.physics.pause();
       }
     }
+
+    function arrrow(a){
+      movepad = true;
+      for(let arrowNum = 0; arrowNum < a.length; arrowNum ++){
+          if (Rarrows.includes(a[arrowNum])){
+              battery2.setVelocityY(0);
+              battery2.setVelocityX(50);
+              // battery1.setVelocityX(10);
+          }
+    } }
+
+    function arruow(a){
+      movepad = true;
+      for(let arrowNum = 0; arrowNum < a.length; arrowNum ++){
+          if (Uarrows.includes(a[arrowNum])){
+              battery2.setVelocityY(-50);
+          }
+    } }
+
+    function stopp(s){
+      movepad = true;
+      for(let stopNum = 0; stopNum < s.length; stopNum ++){
+          if (Stop.includes(s[stopNum])){
+              movepad = false;
+          }
+        }
+
+   }
+
 
     function changeScene(){
         this.scene.start('Scene4');
@@ -678,10 +762,24 @@ create(){
     this.physics.add.collider(player, platforms);
     this.physics.add.collider(player, batteries);
     this.physics.add.collider(player, cabinets);
+    this.physics.add.collider(player, wire);
+    this.physics.add.collider(player, powerPads);
+    this.physics.add.collider(batteries, cabinets);
     this.physics.add.collider(worldLayer, battery1);
     this.physics.add.collider(worldLayer, battery2);
     this.physics.add.collider(platforms, batteries);
     this.physics.add.overlap(player, border_door, no, null, this);
+
+    //movepad right overlap
+    this.physics.add.overlap(batteries, arrowrs, function(){arrrow.call(this, [rarrow, uarrow])}, null, this);
+    //movepad left overlap
+    // this.physics.add.overlap(batteries, arrows, function(){arrrow.call(this, [rarrow, uarrow])}, null, this);
+    // //movepad down overlap
+    // this.physics.add.overlap(batteries, arrows, function(){arrrow.call(this, [rarrow, uarrow])}, null, this);
+    //movepad up overlap
+    this.physics.add.overlap(batteries, arrowus, function(){arruow.call(this, [uarrow])}, null, this);
+    //stop on movepad
+    this.physics.add.overlap(batteries, stops, function(){stopp.call(this, [stop])}, null, this);
 
     // NPC overlap
     this.physics.add.overlap(player, border_scene3Npc1, scene3Npc1Talk, null, this);
@@ -823,10 +921,15 @@ update(){
 
     // keep track of the sprite X and Y
     // spriteCoord.setText('Sprite X: ' + parseFloat(player.x).toFixed(2) + " Sprite Y: " + parseFloat(player.y).toFixed(2));
+    console.log(player.x, player.y);
     player.setVelocityX(0);
     player.setVelocityY(0);
+    if (movepad == false){
     batteries.setVelocityX(0);
     batteries.setVelocityY(0);
+    }
+
+
 
 //    if(cursors.shift.isDown){
 //        powerSupplyFixedText.setVisible(false);

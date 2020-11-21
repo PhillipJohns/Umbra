@@ -92,6 +92,13 @@ preload(){
     this.load.image('terminal', 'sprite/terminal.png');
     this.load.image('backdoor', 'sprite/backdoor.png');
     this.load.image('cabinet', 'sprite/cabinet.png');
+    this.load.image('rarrow', 'sprite/arrowr.png');
+    this.load.image('larrow', 'sprite/arrowl.png');
+    this.load.image('uarrow', 'sprite/arrowu.png');
+    this.load.image('darrow', 'sprite/arrowd.png');
+    this.load.image('stop', 'sprite/stop.png');
+    this.load.image('toolbox', 'sprite/toolbox.png');
+
     //coded buttons
     this.load.image('code1', 'Free/Menu/Levels/01.png');
     this.load.image('code2', 'Free/Menu/Levels/02.png');
