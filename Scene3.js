@@ -75,6 +75,8 @@ var door14;
 var game = this;
 var finaldoor = false;
 var border_door;
+var pdoor1;
+var pdoor2;
 
 //Buttons
 var room1Button;
@@ -160,29 +162,6 @@ create(){
     for (x = 980; x < 1170; x += 86){
         wire.create(x, 300, 'toolshelf', 1).setScale(.30).setSize(73,75).setOffset(115,130);
     }
-
-    //cabinet maze in bottom room
-    cabinets = this.physics.add.staticGroup();
-    for (x = 900; x < 1370; x += 85){
-        cabinets.create(x, 2800, 'cabinet').setScale(.30).setSize(105,30).setOffset(130,195);
-    }
-    for (x = 990; x < 1370; x += 85){
-        cabinets.create(x, 2975, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
-    }
-    for (x = 930; x < 1475; x += 85){
-        cabinets.create(x, 3150, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
-    }
-    for (x = 1560; x < 2170; x += 85){
-        cabinets.create(x, 2800, 'cabinet').setScale(.30).setSize(105,30).setOffset(130,195);
-    }
-    for (x = 1575; x < 2085; x += 85){
-        cabinets.create(x, 2970, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
-    }
-    for (x = 1592; x < 2170; x += 85){
-        cabinets.create(x, 3050, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
-    }
-    cabinets.create(1410, 3005, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
-
 
     //sounds
     doorSound = this.sound.add('doorSound');
@@ -283,6 +262,7 @@ create(){
      //stop movepads
      let stops = this.physics.add.staticGroup();
      let stop = stops.create(1515, 3080, 'stop').setSize(1, 50).setOffset(53, 0);
+     let stopb = this.physics.add.sprite(1515, 3080).setSize(50, 50);
 
      //list of arrows
      let Rarrows = [rarrow];
@@ -290,6 +270,28 @@ create(){
      let Darrows = [];
      let Larrows = [];
      let Stop = [stop];
+
+     //cabinet maze in bottom room
+     cabinets = this.physics.add.staticGroup();
+     for (x = 900; x < 1370; x += 85){
+         cabinets.create(x, 2800, 'cabinet').setScale(.30).setSize(105,30).setOffset(130,180);
+     }
+     for (x = 990; x < 1370; x += 85){
+         cabinets.create(x, 2975, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
+     }
+     for (x = 930; x < 1475; x += 85){
+         cabinets.create(x, 3150, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
+     }
+     for (x = 1560; x < 2170; x += 85){
+         cabinets.create(x, 2800, 'cabinet').setScale(.30).setSize(105,30).setOffset(130,195);
+     }
+
+     //pressure plate for bottom room
+     let pressure1 = this.add.image(2035, 3130, 'plate');
+     let pressureBorder1 = this.physics.add.sprite(2035, 3130).setSize(50,50);
+     pdoor1 = platforms.create(1460, 2947, 'engine_door').setScale(.35).setSize(170,35).setOffset(170,80);
+     cabinets.create(1410, 3005, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
+
 
     //power supply generation
     batteries = this.physics.add.group();
@@ -590,7 +592,7 @@ create(){
     //Test2
     door4 = platforms.create(1432, 2554, 'engine_door').setScale(.35).setSize(170,70).setOffset(170,60);
     //Test3
-    door5 = platforms.create(1432, 2714, 'engine_door').setScale(.35).setSize(170,70).setOffset(170,80);
+    door5 = platforms.create(1432, 2725, 'engine_door').setScale(.35).setSize(170,70).setOffset(170,77);
     //Test Side door
     // Test value was 2784(22), 2592(56)
     door1 = platforms.create(2811, 2648, 'door').setScale(.35).setSize(70,160).setOffset(65,165);
@@ -607,6 +609,20 @@ create(){
     door12 = platforms.create(1718, 792, 'door').setScale(.35).setSize(70,160).setOffset(80,165);
     door13 = platforms.create(856, 495, 'engine_door').setScale(.35).setSize(170,70).setOffset(170,80);
     door14 = platforms.create(568, 1519, 'engine_door').setScale(.35).setSize(170,70).setOffset(170,80);
+
+    //pressure activated door in bottom room
+    let pdoor2 = platforms.create(2130, 3010, 'engine_door', 6).setScale(.35).setSize(170,35).setOffset(170,80);
+    platforms.remove(pdoor2);
+    let pdoor3 = platforms.create(1718, 2900, 'door').setScale(.35).setSize(70,160).setOffset(80,165);
+    for (x = 1575; x < 2085; x += 85){
+        cabinets.create(x, 2970, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
+    }
+    for (x = 1592; x < 2085; x += 85){
+        cabinets.create(x, 3050, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
+    }
+
+
+
     //Door position list
     let Hdoors = [door2, door4, door5, door10, door13, door14];
     let VdoorsL = [door3, door6, door9];
@@ -715,7 +731,7 @@ create(){
       for(let arrowNum = 0; arrowNum < a.length; arrowNum ++){
           if (Rarrows.includes(a[arrowNum])){
               battery2.setVelocityY(0);
-              battery2.setVelocityX(50);
+              battery2.setVelocityX(500);
               // battery1.setVelocityX(10);
           }
     } }
@@ -724,9 +740,31 @@ create(){
       movepad = true;
       for(let arrowNum = 0; arrowNum < a.length; arrowNum ++){
           if (Uarrows.includes(a[arrowNum])){
-              battery2.setVelocityY(-50);
+              battery2.setVelocityY(-500);
           }
     } }
+
+    let p1 = false;
+    function pressureDoor1(){
+      if (p1 == false){
+      doorSound.play();
+      pdoor1.anims.play('open', true);
+      pdoor2.setFrame(0);
+      platforms.add(pdoor2);
+      platforms.remove(pdoor1);
+    }
+      p1 = true;
+    }
+
+    let p3 = false;
+    function pressureDoor3(){
+      if (p3 == false){
+        pdoor3.anims.play('openR', true);
+        doorSound.play();
+        platforms.remove(pdoor3);
+      }
+      p3 = true;
+    }
 
     function stopp(s){
       movepad = true;
@@ -735,7 +773,6 @@ create(){
               movepad = false;
           }
         }
-
    }
 
 
@@ -764,7 +801,7 @@ create(){
     this.physics.add.collider(player, cabinets);
     this.physics.add.collider(player, wire);
     this.physics.add.collider(player, powerPads);
-    this.physics.add.collider(batteries, cabinets);
+    // this.physics.add.collider(batteries, cabinets);
     this.physics.add.collider(worldLayer, battery1);
     this.physics.add.collider(worldLayer, battery2);
     this.physics.add.collider(platforms, batteries);
@@ -780,6 +817,9 @@ create(){
     this.physics.add.overlap(batteries, arrowus, function(){arruow.call(this, [uarrow])}, null, this);
     //stop on movepad
     this.physics.add.overlap(batteries, stops, function(){stopp.call(this, [stop])}, null, this);
+    //pressure activated doors in bottom room
+    this.physics.add.overlap(player, pressureBorder1, pressureDoor1, null, this);
+    this.physics.add.overlap(battery2, stopb, pressureDoor3, null, this);
 
     // NPC overlap
     this.physics.add.overlap(player, border_scene3Npc1, scene3Npc1Talk, null, this);

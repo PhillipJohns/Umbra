@@ -83,7 +83,7 @@ preload(){
     this.load.spritesheet('fixbattery', 'sprite/fixbattery.png', {frameWidth: 165, frameHeight: 255});
     this.load.image('battery', 'sprite/battery.png');
     this.load.image('backwall', 'BackWall.png');
-    this.load.image('button', 'Free/Menu/Buttons/Achievements.png');
+    this.load.image('button', 'sprite/umbrabutton.png');
     this.load.spritesheet("toolshelf", 'sprite/toolshelf.png', {frameWidth: 298, frameHeight: 330});
 
     // level 3 assets
@@ -98,6 +98,7 @@ preload(){
     this.load.image('darrow', 'sprite/arrowd.png');
     this.load.image('stop', 'sprite/stop.png');
     this.load.image('toolbox', 'sprite/toolbox.png');
+    this.load.image('plate', 'sprite/pressureplate.png');
 
     //coded buttons
     this.load.image('code1', 'Free/Menu/Levels/01.png');
