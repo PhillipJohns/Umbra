@@ -122,7 +122,7 @@ preload(){
 create(){
 
     //Create text early to define it
-    repairKitText = this.add.text(player.x - 400, player.y + 150, 'You picked up the toolbox!', { fontSize: '32px', fill: '#999' }).setVisible(false);
+    repairKitText = this.add.text(player.x - 380, player.y + 170, 'You picked up the toolbox!', { fontSize: '32px', fill: '#999' }).setVisible(false);
     terminalText1 = this.add.text(player.x - 400, player.y + 150, 'The power in down in this room.', { fontSize: '30px', fill: '#999' }).setVisible(false);
     terminalText2 = this.add.text(player.x - 400, player.y + 150, 'I need to get the power up so I can escape!', { fontSize: '30px', fill: '#999' }).setVisible(false);
     powerDownText = this.add.text(player.x - 400, player.y + 150, 'The Power is down I need to get it working!', { fontSize: '30px', fill: '#999' }).setVisible(false);
@@ -134,7 +134,7 @@ create(){
     const maze = this.make.tilemap({ key: "maze" });
     const tileset = maze.addTilesetImage("tileset", "tiles");
     const worldLayer = maze.createStaticLayer('Tile Layer 1', tileset, 0, 0);
-    worldLayer.setCollisionByProperty({ Collision: true });
+    // worldLayer.setCollisionByProperty({ Collision: true });
 
     //container
     container = this.add.container();
@@ -161,6 +161,17 @@ create(){
     }
     for (x = 980; x < 1170; x += 86){
         wire.create(x, 300, 'toolshelf', 1).setScale(.30).setSize(73,75).setOffset(115,130);
+    }
+
+    //middle room wire shelves
+    for (x = 2990; x < 3248; x += 220){
+        wire.create(x, 1650, 'toolshelf', 1).setScale(.30).setSize(73,75).setOffset(115,130);
+    }
+    for (x = 2990; x < 3248; x += 110){
+        wire.create(x, 2207, 'toolshelf', 1).setScale(.30).setSize(73,75).setOffset(115,115);
+    }
+    for (y = 1828; y < 2080; y += 70){
+        wire.create(3220, y, 'toolshelf', 1).setScale(.30).setSize(73,75).setOffset(115,115);
     }
 
     //sounds
@@ -252,23 +263,51 @@ create(){
      let code4 = this.physics.add.sprite(1456, 496).setSize(40, 40);
 
      //move pad arrows
+     //right arrows left room
      let arrowrs = this.physics.add.staticGroup();
      let rarrow = arrowrs.create(1410, 3080, 'rarrow');
      let rarrow1 = arrowrs.create(1515, 2880, 'rarrow').setSize(50, 1).setOffset(0,25);
 
+     //right arrows right room
+     let arrowrs1 = this.physics.add.staticGroup();
+     let rarrow2 = arrowrs1.create(3755, 1965, 'rarrow');
+     let rarrow3 = arrowrs1.create(3960, 2195, 'rarrow').setSize(50, 1).setOffset(0, 49);
+     let rarrow4 = arrowrs1.create(3855, 2375, 'rarrow').setSize(50, 1).setOffset(0, 49);
+
+     //up arrows in left room
      let arrowus = this.physics.add.staticGroup();
      let uarrow = arrowus.create(1515, 3030, 'uarrow');
+
+     //uparrows in right room
+     // let arrowus1 = this.physics.add.staticGroup();
+     // let uarrow1 = arrowus1.create(3875, 2375, 'uarrow');
+
+     //down arrows in right room
+     let arrowds = this.physics.add.staticGroup();
+     let darrow = arrowds.create(3925, 1965, 'darrow').setSize(1, 50).setOffset(49, 0);
+     let darrow1 = arrowds.create(3925, 2375, 'darrow').setSize(1, 50).setOffset(49, 0);
+
+     //left arrows in right room
+     let arrowls = this.physics.add.staticGroup();
+     // let larrow = arrowls.create(3925, 2375, 'larrow');
+     let larrow = arrowls.create(3750, 2195, 'larrow').setSize(50, 1).setOffset(0, -1);
 
      //stop movepads
      let stops = this.physics.add.staticGroup();
      let stop = stops.create(1515, 3080, 'stop').setSize(1, 50).setOffset(53, 0);
      let stopb = this.physics.add.sprite(1515, 3080).setSize(50, 50);
 
+     //right room
+     let stop1 = stops.create(4025, 2195, 'stop').setSize(1, 50).setOffset(49, 0);
+     let stop2 = stops.create(3700, 2195, 'stop').setSize(1, 50).setOffset(-1, 0);
+     let stop3 = stops.create(3855, 2195, 'stop').setSize(50, 1).setOffset(0, 49);
+     stops.remove(stop3);
+
      //list of arrows
-     let Rarrows = [rarrow];
+     let Rarrows = [rarrow, rarrow2];
      let Uarrows = [uarrow];
-     let Darrows = [];
-     let Larrows = [];
+     let Darrows = [darrow];
+     let Larrows = [larrow];
      let Stop = [stop];
 
      //cabinet maze in bottom room
@@ -292,10 +331,36 @@ create(){
      pdoor1 = platforms.create(1460, 2947, 'engine_door').setScale(.35).setSize(170,35).setOffset(170,80);
      cabinets.create(1410, 3005, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
 
+    //cabinet maze in right room
+    cabinets.create(3715, 1870, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
+    for (x = 3765; x < 4035; x += 85){
+        cabinets.create(x, 1885, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
+    }
+    for (y = 2025; y < 2125; y += 85){
+        cabinets.create(3765, y, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
+    }
+    cabinets.create(3715, 2035, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
+    cabinets.create(3715, 2090, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
+    for (y = 2025; y < 2125; y += 85){
+        cabinets.create(4000, y, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
+    }
+    cabinets.create(3715, 2265, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
+    for (y = 2250; y < 2450; y += 75){
+        cabinets.create(3765, y, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
+    }
+    cabinets.create(4035, 2090, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
+    for (y = 2250; y < 2450; y += 75){
+        cabinets.create(4000, y, 'cabinet').setScale(.30).setSize(80,90).setOffset(140,135);
+    }
+    cabinets.create(4035, 2265, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
+    for (x = 3765; x < 4035; x += 85){
+        cabinets.create(x, 2445, 'cabinet').setScale(.30).setSize(80,90).setOffset(140,135);
+    }
+
 
     //power supply generation
     batteries = this.physics.add.group();
-    battery1 = batteries.create(3904, 1920, 'battery').setScale(.4);
+    battery1 = batteries.create(3700, 1935, 'battery').setScale(.4).setSize(130, 80).setOffset(15,155);
     battery2 = batteries.create(1000, 3045, 'battery').setScale(.4).setSize(130, 80).setOffset(15,155);
     powerPads = this.physics.add.staticGroup();
     powerPad1 = powerPads.create(2688, 2528, 'powerSource').setScale(.4).setSize(74,112).setOffset(60,80);
@@ -304,8 +369,8 @@ create(){
     let brokenBattery1Border = this.physics.add.sprite(128, 2496).setSize(70, 100);
     brokenBattery2 = platforms.create(3008, 832, 'fixbattery', 0).setScale(.4).setSize(65,95).setOffset(50,75);
     let brokenBattery2Border = this.physics.add.sprite(3008, 832).setSize(70, 100);
-    repairKit1 = platforms.create(3104, 1664, 'box');
-    let repairKit1Border = this.physics.add.sprite(3104, 1664).setSize(40, 40);
+    repairKit1 = platforms.create(3110, 1650, 'toolshelf').setFrame(0).setScale(.30).setSize(73,75).setOffset(115,130);
+    let repairKit1Border = this.physics.add.sprite(3115, 1655).setSize(80, 80);
     repairKit2 = platforms.create(1150, 180, 'toolbox').setScale(.35).setSize(40,40).setOffset(70,80);
     let repairKit2Border = this.physics.add.sprite(1150, 180).setSize(43, 43);
 
@@ -355,8 +420,7 @@ create(){
         if(!repairKit1Found){
             if (cursors.space.isDown){
                 repairKit1Found = true;
-                platforms.remove(repairKit1);
-                repairKit1.setVisible(false);
+                repairKit1.anims.play('tool', true);
                 graphics = this.add.graphics();
                 graphics.fillStyle(0x000000, 1);
                 graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
@@ -566,6 +630,12 @@ create(){
         frameRate: 4,
         repeat: 0
     });
+    this.anims.create({
+      key: 'tool',
+      frames: this.anims.generateFrameNumbers('toolshelf', { start: 0, end: 1 }),
+      frameRate: 4,
+      repeat: 0
+    });
 
     // start pad animation
     // this.anims.create({
@@ -736,11 +806,47 @@ create(){
           }
     } }
 
+    function arrrow1(a){
+      movepad = true;
+      for(let arrowNum = 0; arrowNum < a.length; arrowNum ++){
+          if (Rarrows.includes(a[arrowNum])){
+              battery1.setVelocityY(0);
+              battery1.setVelocityX(500);
+          }
+    } }
+
     function arruow(a){
       movepad = true;
       for(let arrowNum = 0; arrowNum < a.length; arrowNum ++){
           if (Uarrows.includes(a[arrowNum])){
               battery2.setVelocityY(-500);
+              battery2.setVelocityX(0);
+          }
+    } }
+
+    function arruow1(a){
+      movepad = true;
+      for(let arrowNum = 0; arrowNum < a.length; arrowNum ++){
+          if (Uarrows.includes(a[arrowNum])){
+              battery1.setVelocityY(-500);
+              battery1.setVelocityX(0);
+          }
+    } }
+    //right room
+    function arrdow(a){
+      movepad = true;
+      for(let arrowNum = 0; arrowNum < a.length; arrowNum ++){
+          if (Darrows.includes(a[arrowNum])){
+              battery1.setVelocityY(500);
+              battery1.setVelocityX(0);
+          }
+    } }
+    function arrlow(a){
+      movepad = true;
+      for(let arrowNum = 0; arrowNum < a.length; arrowNum ++){
+          if (Darrows.includes(a[arrowNum])){
+              battery1.setVelocityY(0);
+              battery1.setVelocityX(-500);
           }
     } }
 
@@ -807,19 +913,31 @@ create(){
     this.physics.add.collider(platforms, batteries);
     this.physics.add.overlap(player, border_door, no, null, this);
 
-    //movepad right overlap
-    this.physics.add.overlap(batteries, arrowrs, function(){arrrow.call(this, [rarrow, uarrow])}, null, this);
-    //movepad left overlap
-    // this.physics.add.overlap(batteries, arrows, function(){arrrow.call(this, [rarrow, uarrow])}, null, this);
-    // //movepad down overlap
-    // this.physics.add.overlap(batteries, arrows, function(){arrrow.call(this, [rarrow, uarrow])}, null, this);
+    //left room
+    //movepad right overlap left room
+    this.physics.add.overlap(battery2, arrowrs, function(){arrrow.call(this, [rarrow, uarrow])}, null, this);
     //movepad up overlap
-    this.physics.add.overlap(batteries, arrowus, function(){arruow.call(this, [uarrow])}, null, this);
-    //stop on movepad
-    this.physics.add.overlap(batteries, stops, function(){stopp.call(this, [stop])}, null, this);
+    this.physics.add.overlap(battery2, arrowus, function(){arruow.call(this, [uarrow])}, null, this);
     //pressure activated doors in bottom room
     this.physics.add.overlap(player, pressureBorder1, pressureDoor1, null, this);
     this.physics.add.overlap(battery2, stopb, pressureDoor3, null, this);
+
+    //right room
+    //movepad down overlap
+    this.physics.add.overlap(battery1, arrowds, function(){arrdow.call(this, [darrow])}, null, this);
+    //movepad right overlap right room
+    this.physics.add.overlap(battery1, arrowrs1, function(){arrrow1.call(this, [rarrow, uarrow])}, null, this);
+    //movepad left overlap right room
+    this.physics.add.overlap(battery1, arrowls, function(){arrlow.call(this, [larrow])}, null, this);
+    //movepad up right room
+    // this.physics.add.overlap(battery1, arrowus1, function(){arruow1.call(this, [uarrow])}, null, this);
+
+
+
+
+    //stop on movepad
+    this.physics.add.overlap(batteries, stops, function(){stopp.call(this, [stop])}, null, this);
+
 
     // NPC overlap
     this.physics.add.overlap(player, border_scene3Npc1, scene3Npc1Talk, null, this);

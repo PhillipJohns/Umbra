@@ -64,6 +64,7 @@ preload(){
     this.load.image('background', 'sprite/bbackground.png');
     this.load.image('beds', 'sprite/beds.png');
     this.load.image('wall', 'Interior/Wall.png');
+    this.load.image('victory', 'sprite/scene4.png');
     //this.load.image('bbackground', 'sprite/bbackground.png');
     this.load.image('sideWall', 'Interior/SideWall.png');
     this.load.spritesheet('door', 'sprite/doorr1.png', {frameWidth: 195, frameHeight: 480});
