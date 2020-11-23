@@ -749,6 +749,9 @@ create(){
                     doorList[doorNumber].anims.play('open', true);
                     platforms.remove(doorList[doorNumber]);
                 }
+                else if ((doorList[doorNumber]) == door3 && !powerPad1On){
+                    continue
+                }
                 else if(VdoorsL.includes(doorList[doorNumber])){
                     doorSound.play();
                     doorList[doorNumber].anims.play('openL', true);
@@ -826,7 +829,7 @@ create(){
           if (Rarrows.includes(a[arrowNum])){
               battery2.setVelocityY(0);
               battery2.setVelocityX(500);
-              console.log('ughhghghghhggh');
+              // console.log('ughhghghghhggh');
           }
     } }
 
@@ -1157,10 +1160,10 @@ create(){
 //        yoyo: false,
 //        repeat: -1
 //    });
-    scoreText = this.add.text(0, 0, 'Toolkits aquired: 0', {fontSize: '12px' });
+    scoreText = this.add.text(590, 170, 'Toolkits aquired: 0', {fontSize: '12px' });
     scoreText.scrollFactorX = 0;
     scoreText.scrollFactorY = 0;
-    scoreText.setFontSize(24);
+    scoreText.setFontSize(18);
 
 }
 
