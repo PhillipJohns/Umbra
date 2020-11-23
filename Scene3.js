@@ -509,7 +509,9 @@ create(){
     correctCodeText = this.add.text(player.x - 400, player.y + 150, 'Correct!', { fontSize: '30px', fill: '#999' }).setVisible(false);
     incorrectCodeText = this.add.text(player.x - 400, player.y + 150, 'Incorrect code try again!', { fontSize: '30px', fill: '#999' }).setVisible(false);
     function codedDoor(num){
-        if (powerPad1On){
+        if (powerPad1On && powerPad2On){
+            graphics = this.add.graphics();
+            graphics.fillStyle(0x000000, 1);
             if (!codeDoorOpen){
                 graphics = this.add.graphics();
                 graphics.fillStyle(0x000000, 1);
@@ -576,8 +578,13 @@ create(){
             }
         }
         else{
-            powerDownText = this.add.text(player.x - 400, player.y + 150, 'The Power is down I need to get it working!', { fontSize: '30px', fill: '#999' }).setVisible(true);
-            this.physics.pause();
+            if(cursors.space.isDown){
+                graphics = this.add.graphics();
+                graphics.fillStyle(0x000000, 1);
+                graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
+                powerDownText = this.add.text(player.x - 400, player.y + 150, 'The Power is down I need to get it working!', { fontSize: '30px', fill: '#999' }).setVisible(true);
+                this.physics.pause();
+            }
         }
     }
 
