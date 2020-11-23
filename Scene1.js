@@ -170,7 +170,7 @@ create(){
     let border_testNPC = this.physics.add.sprite(500, 150).setSize(50, 115).setOffset(-5,0);
 
     // border sprite for alt endNpc1
-    let border_endNpc1 = this.physics.add.sprite(400, 340).setSize(50, 115).setOffset(-5,0);
+    let border_endNpc1 = this.physics.add.sprite(400, 360).setSize(50, 115).setOffset(-5,0);
 
     // border door
     let border_door = this.physics.add.sprite(750, 275);
@@ -194,7 +194,7 @@ create(){
     // alt ending npc 1
     endNpc1 = this.physics.add.staticGroup();
     // endNpc1.create(400, 380, 'npc1').setScale(.25).setFrame(0);
-    endNpc1Static = this.physics.add.staticSprite(400, 340).setSize(45, 110).setOffset(-2,2);
+    endNpc1Static = this.physics.add.staticSprite(400, 360).setSize(45, 110).setOffset(-2,2);
     endNpc1.width = 32;
     endNpc1.height = 32;
 
@@ -207,9 +207,9 @@ create(){
     items.create(165, 75, 'box').setVisible(false).setScale(5).refreshBody();
     items.create(415, 75, 'box').setVisible(false).setScale(5).refreshBody();
     items.create(650, 75, 'box').setVisible(false).setScale(5).refreshBody();
-    items.create(165, 405, 'box').setVisible(false).setScale(5).refreshBody();
-    items.create(415, 405, 'box').setVisible(false).setScale(5).refreshBody();
-    items.create(650, 410, 'box').setVisible(false).setScale(5).refreshBody();
+    items.create(165, 400, 'box').setVisible(false).setScale(5).refreshBody();
+    items.create(415, 400, 'box').setVisible(false).setScale(5).refreshBody();
+    items.create(650, 400, 'box').setVisible(false).setScale(5).refreshBody();
 
     //Make Character
 

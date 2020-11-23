@@ -359,6 +359,23 @@ create(){
     cabinets.create(4035, 2090, 'cabinet').setScale(.30).setSize(80,90).setOffset(140,135);
     cabinets.create(4000, 2110, 'cabinet').setScale(.30).setSize(80,90).setOffset(140,135);
 
+    //power supply generation
+    batteries = this.physics.add.group();
+    battery1 = batteries.create(3700, 1930, 'battery').setScale(.4).setSize(130, 80).setOffset(15,155);
+    battery2 = batteries.create(1000, 3045, 'battery').setScale(.4).setSize(130, 80).setOffset(15,155);
+    powerPads = this.physics.add.staticGroup();
+    powerPad1 = powerPads.create(3917, 2490, 'powerSource').setScale(.4).setSize(74,45).setOffset(60,160);
+    powerPad2 = powerPads.create(2150, 2860, 'powerSource').setScale(.4).setSize(74,90).setOffset(60,80);
+    brokenBattery1 = platforms.create(128, 2496, 'fixbattery', 0).setScale(.4).setSize(65,95).setOffset(50,75);
+    let brokenBattery1Border = this.physics.add.sprite(128, 2496).setSize(70, 100);
+    brokenBattery2 = platforms.create(3008, 832, 'fixbattery', 0).setScale(.4).setSize(65,95).setOffset(50,75);
+    let brokenBattery2Border = this.physics.add.sprite(3008, 832).setSize(70, 100);
+    repairKit1 = platforms.create(3110, 1650, 'toolshelf').setFrame(0).setScale(.30).setSize(73,75).setOffset(115,130);
+    let repairKit1Border = this.physics.add.sprite(3115, 1655).setSize(80, 80);
+    repairKit2 = platforms.create(1150, 180, 'toolbox').setScale(.35).setSize(40,40).setOffset(70,80);
+    let repairKit2Border = this.physics.add.sprite(1150, 180).setSize(43, 43);
+
+    //rest of the cabinets in right room
     cabinets.create(3765, 2250, 'cabinet').setScale(.30).setSize(80,90).setOffset(140,135);
     cabinets.create(3715, 2265, 'cabinet').setScale(.30).setSize(80,90).setOffset(140,135);
     for (y = 2325; y < 2580; y += 65){
@@ -374,23 +391,6 @@ create(){
     for (x = 3755; x < 4035; x += 85){
         cabinets.create(x, 2595, 'cabinet').setScale(.30).setSize(80,90).setOffset(140,135);
     }
-
-
-    //power supply generation
-    batteries = this.physics.add.group();
-    battery1 = batteries.create(3700, 1935, 'battery').setScale(.4).setSize(130, 80).setOffset(15,155);
-    battery2 = batteries.create(1000, 3045, 'battery').setScale(.4).setSize(130, 80).setOffset(15,155);
-    powerPads = this.physics.add.staticGroup();
-    powerPad1 = powerPads.create(3917, 2490, 'powerSource').setScale(.4).setSize(74,45).setOffset(60,160);
-    powerPad2 = powerPads.create(2150, 2860, 'powerSource').setScale(.4).setSize(74,90).setOffset(60,80);
-    brokenBattery1 = platforms.create(128, 2496, 'fixbattery', 0).setScale(.4).setSize(65,95).setOffset(50,75);
-    let brokenBattery1Border = this.physics.add.sprite(128, 2496).setSize(70, 100);
-    brokenBattery2 = platforms.create(3008, 832, 'fixbattery', 0).setScale(.4).setSize(65,95).setOffset(50,75);
-    let brokenBattery2Border = this.physics.add.sprite(3008, 832).setSize(70, 100);
-    repairKit1 = platforms.create(3110, 1650, 'toolshelf').setFrame(0).setScale(.30).setSize(73,75).setOffset(115,130);
-    let repairKit1Border = this.physics.add.sprite(3115, 1655).setSize(80, 80);
-    repairKit2 = platforms.create(1150, 180, 'toolbox').setScale(.35).setSize(40,40).setOffset(70,80);
-    let repairKit2Border = this.physics.add.sprite(1150, 180).setSize(43, 43);
 
     //Command Terminal (Tells player how to get out of maze)
     let terminalBorder = this.physics.add.sprite(2525, 2640).setSize(80, 80);
