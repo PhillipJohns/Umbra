@@ -72,7 +72,7 @@ preload(){
     this.load.spritesheet('doorBB', 'sprite/door.png', {frameWidth: 500, frameHeight: 225});
     // add item image
     // 28 X 24
-    this.load.image('box', 'Free/Items/Boxes/Box1/Idle.png')
+    this.load.image('box', 'Idle.png')
 
     // add the npc
     this.load.spritesheet('npc1', 'sprite/npc1.png', {frameWidth: 275, frameHeight: 550});
