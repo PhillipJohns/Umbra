@@ -97,6 +97,7 @@ preload(){
     this.load.image('larrow', 'sprite/arrowl.png');
     this.load.image('uarrow', 'sprite/arrowu.png');
     this.load.image('darrow', 'sprite/arrowd.png');
+    this.load.image('go', 'sprite/gothru.png');
     this.load.image('stop', 'sprite/stop.png');
     this.load.image('toolbox', 'sprite/toolbox.png');
     this.load.image('plate', 'sprite/pressureplate.png');

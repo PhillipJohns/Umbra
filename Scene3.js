@@ -134,7 +134,7 @@ create(){
     const maze = this.make.tilemap({ key: "maze" });
     const tileset = maze.addTilesetImage("tileset", "tiles");
     const worldLayer = maze.createStaticLayer('Tile Layer 1', tileset, 0, 0);
-    // worldLayer.setCollisionByProperty({ Collision: true });
+    worldLayer.setCollisionByProperty({ Collision: true });
 
     //container
     container = this.add.container();
@@ -213,8 +213,8 @@ create(){
      // tiled coordinates = (1696, 2208)
      // added 16 px to Y
      // added 16 px to X
-     let button7 = this.add.image(1712, 2224, 'button');
-     let borderButton3b = this.physics.add.sprite(1712, 2224).setSize(40, 40);
+     let button7 = this.add.image(1437, 1800, 'button');
+     let borderButton3b = this.physics.add.sprite(1437, 1815).setSize(40, 40);
 
      //Button 4
      let button8 = this.add.image(2704, 1584, 'button');
@@ -289,7 +289,6 @@ create(){
 
      //left arrows in right room
      let arrowls = this.physics.add.staticGroup();
-     // let larrow = arrowls.create(3925, 2375, 'larrow');
      let larrow = arrowls.create(3750, 2195, 'larrow').setSize(50, 1).setOffset(0, -1);
 
      //stop movepads
@@ -300,8 +299,22 @@ create(){
      //right room
      let stop1 = stops.create(4025, 2195, 'stop').setSize(1, 50).setOffset(49, 0);
      let stop2 = stops.create(3700, 2195, 'stop').setSize(1, 50).setOffset(-1, 0);
-     let stop3 = stops.create(3855, 2195, 'stop').setSize(50, 1).setOffset(0, 49);
-     stops.remove(stop3);
+     let stop4 = stops.create(3700, 1965, 'stop').setSize(1, 50).setOffset(-1, 0);
+
+     //pattern 2
+     let larrow1 = arrowls.create(3755, 1965, 'larrow').setVisible(false);
+     let larrow2 = arrowls.create(3960, 2195, 'larrow').setVisible(false);
+     let pass = this.add.image(3855, 2195, 'go').setVisible(false);
+     arrowls.remove(larrow1);
+     arrowls.remove(larrow2);
+
+     //pattern 3
+     let darrow2 = arrowds.create(3855, 2195, 'darrow').setSize(1, 50).setOffset(49, 0).setVisible(false);
+     arrowds.remove(darrow2);
+     let rarrow5 = arrowrs1.create(3750, 2195, 'rarrow').setVisible(false);
+     arrowrs1.remove(rarrow5);
+
+
 
      //list of arrows
      let Rarrows = [rarrow, rarrow2];
@@ -336,25 +349,30 @@ create(){
     for (x = 3765; x < 4035; x += 85){
         cabinets.create(x, 1885, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
     }
-    for (y = 2025; y < 2125; y += 85){
-        cabinets.create(3765, y, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
-    }
-    cabinets.create(3715, 2035, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
+
+    cabinets.create(3765, 2025, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
+    cabinets.create(3715, 2040, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
     cabinets.create(3715, 2090, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
-    for (y = 2025; y < 2125; y += 85){
-        cabinets.create(4000, y, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
+    cabinets.create(3765, 2110, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
+
+    cabinets.create(4000, 2025, 'cabinet').setScale(.30).setSize(80,90).setOffset(140,135);
+    cabinets.create(4035, 2090, 'cabinet').setScale(.30).setSize(80,90).setOffset(140,135);
+    cabinets.create(4000, 2110, 'cabinet').setScale(.30).setSize(80,90).setOffset(140,135);
+
+    cabinets.create(3765, 2250, 'cabinet').setScale(.30).setSize(80,90).setOffset(140,135);
+    cabinets.create(3715, 2265, 'cabinet').setScale(.30).setSize(80,90).setOffset(140,135);
+    for (y = 2325; y < 2580; y += 65){
+        cabinets.create(3765, y, 'cabinet').setScale(.30).setSize(80,90).setOffset(140,135);
     }
-    cabinets.create(3715, 2265, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
-    for (y = 2250; y < 2450; y += 75){
-        cabinets.create(3765, y, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
-    }
-    cabinets.create(4035, 2090, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
-    for (y = 2250; y < 2450; y += 75){
+
+    cabinets.create(4000, 2250, 'cabinet').setScale(.30).setSize(80,90).setOffset(140,135);
+    cabinets.create(4035, 2265, 'cabinet').setScale(.30).setSize(80,90).setOffset(140,135);
+    for (y = 2325; y < 2580; y += 65){
         cabinets.create(4000, y, 'cabinet').setScale(.30).setSize(80,90).setOffset(140,135);
     }
-    cabinets.create(4035, 2265, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
-    for (x = 3765; x < 4035; x += 85){
-        cabinets.create(x, 2445, 'cabinet').setScale(.30).setSize(80,90).setOffset(140,135);
+
+    for (x = 3755; x < 4035; x += 85){
+        cabinets.create(x, 2595, 'cabinet').setScale(.30).setSize(80,90).setOffset(140,135);
     }
 
 
@@ -363,7 +381,7 @@ create(){
     battery1 = batteries.create(3700, 1935, 'battery').setScale(.4).setSize(130, 80).setOffset(15,155);
     battery2 = batteries.create(1000, 3045, 'battery').setScale(.4).setSize(130, 80).setOffset(15,155);
     powerPads = this.physics.add.staticGroup();
-    powerPad1 = powerPads.create(2688, 2528, 'powerSource').setScale(.4).setSize(74,112).setOffset(60,80);
+    powerPad1 = powerPads.create(3917, 2490, 'powerSource').setScale(.4).setSize(74,45).setOffset(60,160);
     powerPad2 = powerPads.create(2150, 2860, 'powerSource').setScale(.4).setSize(74,90).setOffset(60,80);
     brokenBattery1 = platforms.create(128, 2496, 'fixbattery', 0).setScale(.4).setSize(65,95).setOffset(50,75);
     let brokenBattery1Border = this.physics.add.sprite(128, 2496).setSize(70, 100);
@@ -383,7 +401,7 @@ create(){
             graphics = this.add.graphics();
             graphics.fillStyle(0x000000, 1);
             graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
-            if (!powerPad1On){
+            if (!powerPad1On && !powerPad2On || !powerPad1On && powerPad2On || powerPad1On && !powerPad2On ){
                 terminalText1 = this.add.text(player.x - 400, player.y + 150, 'The power is down in this room. \nI need to get the power up so I can escape!', { fontSize: '30px', fill: '#999' }).setVisible(true);
                 this.physics.pause();
             }
@@ -692,7 +710,6 @@ create(){
     }
 
 
-
     //Door position list
     let Hdoors = [door2, door4, door5, door10, door13, door14];
     let VdoorsL = [door3, door6, door9];
@@ -802,7 +819,7 @@ create(){
           if (Rarrows.includes(a[arrowNum])){
               battery2.setVelocityY(0);
               battery2.setVelocityX(500);
-              // battery1.setVelocityX(10);
+              console.log('ughhghghghhggh');
           }
     } }
 
@@ -844,12 +861,13 @@ create(){
     function arrlow(a){
       movepad = true;
       for(let arrowNum = 0; arrowNum < a.length; arrowNum ++){
-          if (Darrows.includes(a[arrowNum])){
+          if (Larrows.includes(a[arrowNum])){
               battery1.setVelocityY(0);
               battery1.setVelocityX(-500);
           }
     } }
 
+    //left room
     let p1 = false;
     function pressureDoor1(){
       if (p1 == false){
@@ -862,15 +880,85 @@ create(){
       p1 = true;
     }
 
-    let p3 = false;
-    function pressureDoor3(){
-      if (p3 == false){
+    let p2 = false;
+    function pressureDoor2(){
+      if (p2 == false){
         pdoor3.anims.play('openR', true);
         doorSound.play();
         platforms.remove(pdoor3);
       }
-      p3 = true;
+      p2 = true;
     }
+
+    //object tint timer
+    var timerrr = this.time.addEvent({
+        delay: 3000,
+        callback: pattern,
+        //args: [],
+        // callbackScope: thisArg,
+        loop: true
+        });
+      //right room
+    let pattern1 = true;
+    let pattern2 = false;
+    let pattern3 = false;
+    function pattern(){
+      if (pattern1 == true){
+        pattern1 = false;
+        pattern2 = true;
+        arrowds.remove(darrow2);
+        arrowrs1.remove(rarrow2);
+        arrowrs1.remove(rarrow3);
+        arrowrs1.remove(rarrow5);
+        darrow2.setVisible(false);
+        rarrow2.setVisible(false);
+        rarrow3.setVisible(false);
+        rarrow5.setVisible(false);
+
+        arrowrs1.add(rarrow2);
+        arrowrs1.add(rarrow3);
+        pass.setVisible(true);
+        rarrow2.setVisible(true);
+        rarrow3.setVisible(true);
+        // console.log('1');
+      }
+      else if (pattern2 == true){
+        pattern2 = false;
+        pattern3 = true;
+        arrowrs1.remove(rarrow2);
+        arrowrs1.remove(rarrow3);
+        pass.setVisible(false);
+        rarrow2.setVisible(false);
+        rarrow3.setVisible(false);
+
+        arrowls.add(larrow1);
+        arrowls.add(larrow2);
+        larrow1.setVisible(true);
+        larrow2.setVisible(true);
+        pass.setVisible(true);
+        // console.log('2');
+      }
+      else if (pattern3 == true){
+        pattern3 = false;
+        pattern1 = true;
+        pass.setVisible(false);
+        larrow1.setVisible(false);
+        larrow2.setVisible(false);
+        arrowls.remove(larrow1);
+        arrowls.remove(larrow2);
+
+        arrowds.add(darrow2);
+        arrowrs1.add(rarrow2);
+        arrowrs1.add(rarrow3);
+        arrowrs1.add(rarrow5);
+        darrow2.setVisible(true);
+        rarrow2.setVisible(true);
+        rarrow3.setVisible(true);
+        rarrow5.setVisible(true);
+        // console.log('3');
+      }
+    }
+
 
     function stopp(s){
       movepad = true;
@@ -907,7 +995,6 @@ create(){
     this.physics.add.collider(player, cabinets);
     this.physics.add.collider(player, wire);
     this.physics.add.collider(player, powerPads);
-    // this.physics.add.collider(batteries, cabinets);
     this.physics.add.collider(worldLayer, battery1);
     this.physics.add.collider(worldLayer, battery2);
     this.physics.add.collider(platforms, batteries);
@@ -918,9 +1005,9 @@ create(){
     this.physics.add.overlap(battery2, arrowrs, function(){arrrow.call(this, [rarrow, uarrow])}, null, this);
     //movepad up overlap
     this.physics.add.overlap(battery2, arrowus, function(){arruow.call(this, [uarrow])}, null, this);
-    //pressure activated doors in bottom room
+    //pressure activated doors in bottom left room
     this.physics.add.overlap(player, pressureBorder1, pressureDoor1, null, this);
-    this.physics.add.overlap(battery2, stopb, pressureDoor3, null, this);
+    this.physics.add.overlap(battery2, stopb, pressureDoor2, null, this);
 
     //right room
     //movepad down overlap
@@ -931,8 +1018,6 @@ create(){
     this.physics.add.overlap(battery1, arrowls, function(){arrlow.call(this, [larrow])}, null, this);
     //movepad up right room
     // this.physics.add.overlap(battery1, arrowus1, function(){arruow1.call(this, [uarrow])}, null, this);
-
-
 
 
     //stop on movepad
@@ -1079,7 +1164,7 @@ update(){
 
     // keep track of the sprite X and Y
     // spriteCoord.setText('Sprite X: ' + parseFloat(player.x).toFixed(2) + " Sprite Y: " + parseFloat(player.y).toFixed(2));
-    console.log(player.x, player.y);
+    // console.log(player.x, player.y);
     player.setVelocityX(0);
     player.setVelocityY(0);
     if (movepad == false){
