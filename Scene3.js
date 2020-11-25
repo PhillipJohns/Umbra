@@ -731,7 +731,7 @@ create(){
 
     // scene3 npc 1
     scene3Npc1 = this.physics.add.staticGroup();
-    scene3Npc1.create(2380, 2780, 'npc1').setScale(.25).setFrame(0);
+    scene3Npc1.create(2380, 2780, 'npc1').setScale(.25).setFrame(3);
     scene3Npc1Static = this.physics.add.staticSprite(2380, 2740).setSize(45, 60).setOffset(-2,50);
     scene3Npc1.width = 32;
     scene3Npc1.height = 32;

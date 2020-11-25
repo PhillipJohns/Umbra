@@ -104,6 +104,9 @@ create(){
         platforms.create(x, 200, 'backwall');
     }
 
+    let things = this.physics.add.staticGroup();
+    let thing = things.create(350, 110, 'box').setVisible(false).setScale(2).refreshBody();
+    let thing1 = things.create(350, 140, 'box').setVisible(false).setScale(2).refreshBody();
     startPad = this.physics.add.sprite(350, 130, 'powerSource').setScale(.4);
 
     for (y = 0; y < 150; y += 15){
@@ -445,6 +448,7 @@ create(){
     this.physics.add.collider(player, door);
     this.physics.add.collider(player, engine);
     this.physics.add.collider(player, startPowerSupply);
+    this.physics.add.collider(player, things)
 
     // powersupply is clipping through wall, collision not working?
     this.physics.add.collider(platforms, startPowerSupply);

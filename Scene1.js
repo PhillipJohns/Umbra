@@ -55,7 +55,7 @@ class Scene1 extends Phaser.Scene {
 
     }
 preload(){
-    this.load.spritesheet('character', 'sprite/char2.png', {frameWidth: 239, frameHeight: 500});
+    this.load.spritesheet('character', 'sprite/char3.png', {frameWidth: 239, frameHeight: 500});
     player1.sprite_sheet = 'character';
     //this.load.spritesheet('right', 'Free/Main Characters/Ninja Frog/Run (32x32).png', {frameWidth: 32, frameHeight: 32});
     //this.load.spritesheet('left', 'Free/Main Characters/Ninja Frog/RunL (32x32).png', {frameWidth: 32, frameHeight: 32});
@@ -75,7 +75,7 @@ preload(){
     this.load.image('box', 'Idle.png')
 
     // add the npc
-    this.load.spritesheet('npc1', 'sprite/npc1.png', {frameWidth: 275, frameHeight: 550});
+    this.load.spritesheet('npc1', 'sprite/npc1.png', {frameWidth: 275, frameHeight: 520});
 
     // level 2 assets
     this.load.image('engine_room', 'engine_interior.png');
@@ -317,7 +317,7 @@ create(){
               box_added = true;
               items.remove(box);
               box.setVisible(false);
-
+              border_sprite.destroy(true);
 
             }
             this.physics.pause();
