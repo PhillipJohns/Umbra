@@ -15,6 +15,8 @@ var y = 0;
 // player UI vars
 var scoreText;
 var toolBoxCount = 0;
+var powerText;
+var powerCount = 0;
 
 // timer
 // var timer;
@@ -134,7 +136,7 @@ create(){
     const maze = this.make.tilemap({ key: "maze" });
     const tileset = maze.addTilesetImage("tileset", "tiles");
     const worldLayer = maze.createStaticLayer('Tile Layer 1', tileset, 0, 0);
-    worldLayer.setCollisionByProperty({ Collision: true });
+    // worldLayer.setCollisionByProperty({ Collision: true });
 
     //container
     container = this.add.container();
@@ -191,8 +193,8 @@ create(){
      // door buttons room 2
      // tiled coordinates = (1632, 2560)
      // added 16 px to Y
-     let button3 = this.add.image(1632, 2576, 'button');
-     let borderButton2 = this.physics.add.sprite(1632, 2576).setSize(40, 40);
+     let button3 = this.add.image(1132, 2565, 'button');
+     let borderButton2 = this.physics.add.sprite(1132, 2575).setSize(40, 40);
 
      // button 2b
      let button4 = this.add.image(2224, 3088, 'button');
@@ -206,8 +208,8 @@ create(){
      // tiled coordinates = (1152, 1888)
      // added 16 px to Y
      // added 16 px to X
-     let button6 = this.add.image(1040, 2000, 'button');
-     let borderButton3 = this.physics.add.sprite(1040, 2000).setSize(40, 40);
+     let button6 = this.add.image(500, 2000, 'button');
+     let borderButton3 = this.physics.add.sprite(500, 2000).setSize(40, 40);
 
      // door buttons room 3b
      // tiled coordinates = (1696, 2208)
@@ -241,8 +243,8 @@ create(){
      let borderButton6b = this.physics.add.sprite(3280, 656).setSize(40, 40);
 
      //Button 6c
-     let button12 = this.add.image(754, 1520, 'button');
-     let borderButton6c = this.physics.add.sprite(754, 1520).setSize(40, 40);
+     let button12 = this.add.image(714, 1520, 'button');
+     let borderButton6c = this.physics.add.sprite(714, 1520).setSize(40, 40);
 
      //Button 7
      let button13 = this.add.image(3920, 144, 'button');
@@ -351,10 +353,11 @@ create(){
     }
 
     cabinets.create(3765, 2025, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
-    cabinets.create(3715, 2040, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
+    cabinets.create(3715, 2045, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
     cabinets.create(3715, 2090, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
     cabinets.create(3765, 2110, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
 
+    cabinets.create(4000, 1960, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
     cabinets.create(4000, 2025, 'cabinet').setScale(.30).setSize(80,90).setOffset(140,135);
     cabinets.create(4035, 2090, 'cabinet').setScale(.30).setSize(80,90).setOffset(140,135);
     cabinets.create(4000, 2110, 'cabinet').setScale(.30).setSize(80,90).setOffset(140,135);
@@ -420,7 +423,9 @@ create(){
             battery1.setVisible(false);
             batteries.remove(battery1);
             powerPad1On = true;
+            powerCount+=1;
                 scoreText.setText('Toolkits aquired: ' + toolBoxCount);
+                powerText.setText('Power Supplies fixed: (' + powerCount + '/4)');
             }
     }
     function addBattery2() {
@@ -430,7 +435,10 @@ create(){
             battery2.setVisible(false);
             batteries.remove(battery2);
             powerPad2On = true;
+            powerCount+=1;
                 scoreText.setText('Toolkits aquired: ' + toolBoxCount);
+                powerText.setText('Power Supplies fixed: (' + powerCount + '/4)');
+
             }
     }
     //add repair Kit
@@ -446,6 +454,7 @@ create(){
                 this.physics.pause();
                 toolBoxCount+=1;
                 scoreText.setText('Toolkits aquired: ' + toolBoxCount);
+                powerText.setText('Power Supplies fixed: (' + powerCount + '/4)');
             }
         }
     }
@@ -462,6 +471,7 @@ create(){
                 this.physics.pause();
                 toolBoxCount+=1;
                 scoreText.setText('Toolkits aquired: ' + toolBoxCount);
+                powerText.setText('Power Supplies fixed: (' + powerCount + '/4)');
             }
         }
     }
@@ -474,7 +484,9 @@ create(){
                 repairKit1Found = false
                 battery1On = true;
                 toolBoxCount-=1;
+                powerCount+=1;
                 scoreText.setText('Toolkits aquired: ' + toolBoxCount);
+                powerText.setText('Power Supplies fixed: (' + powerCount + '/4)');
 
             }
             else if(repairKit2Found){
@@ -482,7 +494,9 @@ create(){
                 repairKit2Found = false
                 battery1On = true;
                 toolBoxCount-=1;
+                powerCount+=1;
                 scoreText.setText('Toolkits aquired: ' + toolBoxCount);
+                powerText.setText('Power Supplies fixed: (' + powerCount + '/4)');
             }
     }
 }
@@ -493,14 +507,18 @@ create(){
                 repairKit1Found = false
                 battery2On = true;
                 toolBoxCount-=1;
+                powerCount+=1;
                 scoreText.setText('Toolkits aquired: ' + toolBoxCount);
+                powerText.setText('Power Supplies fixed: (' + powerCount + '/4)');
             }
             else if(repairKit2Found){
                 brokenBattery2.setFrame(1);
                 repairKit2Found = false
                 battery2On = true;
                 toolBoxCount-=1;
+                powerCount+=1;
                 scoreText.setText('Toolkits aquired: ' + toolBoxCount);
+                powerText.setText('Power Supplies fixed: (' + powerCount + '/4)');
             }
         }
     }
@@ -677,7 +695,7 @@ create(){
     border_door.height = 28;
 
     // scene3 border sprite npc1
-    let border_scene3Npc1 = this.physics.add.sprite(2380, 2740).setSize(50, 115).setOffset(-5,0);
+    let border_scene3Npc1 = this.physics.add.sprite(2380, 2740).setSize(50, 115).setOffset(-18,0);
 
 
     //Test Door
@@ -699,10 +717,10 @@ create(){
     door7 = platforms.create(2934, 1976, 'door').setScale(.35).setSize(70,160).setOffset(80,165);
     door8 = platforms.create(1718, 2072, 'door').setScale(.35).setSize(70,160).setOffset(80,165);
     door9 = platforms.create(1154, 2072, 'doorL').setScale(.35).setSize(70,160).setOffset(80,165);
-    door10 = platforms.create(3800, 143, 'engine_door').setScale(.35).setSize(170,70).setOffset(170,80);
-    door11= platforms.create(3266, 472, 'door').setScale(.35).setSize(70,160).setOffset(80,165);
+    door10 = platforms.create(3800, 128, 'engine_door').setScale(.35).setSize(170,70).setOffset(170,80);
+    door11= platforms.create(3290, 472, 'door').setScale(.35).setSize(70,160).setOffset(80,165);
     door12 = platforms.create(1718, 792, 'door').setScale(.35).setSize(70,160).setOffset(80,165);
-    door13 = platforms.create(856, 495, 'engine_door').setScale(.35).setSize(170,70).setOffset(170,80);
+    door13 = platforms.create(856, 480, 'engine_door').setScale(.35).setSize(170,70).setOffset(170,80);
     door14 = platforms.create(568, 1519, 'engine_door').setScale(.35).setSize(170,70).setOffset(170,80);
 
     //pressure activated door in bottom room
@@ -732,7 +750,7 @@ create(){
     // scene3 npc 1
     scene3Npc1 = this.physics.add.staticGroup();
     scene3Npc1.create(2380, 2780, 'npc1').setScale(.25).setFrame(3);
-    scene3Npc1Static = this.physics.add.staticSprite(2380, 2740).setSize(45, 60).setOffset(-2,50);
+    scene3Npc1Static = this.physics.add.staticSprite(2380, 2740).setSize(45, 60).setOffset(-16,50);
     scene3Npc1.width = 32;
     scene3Npc1.height = 32;
 
@@ -750,6 +768,12 @@ create(){
                     platforms.remove(doorList[doorNumber]);
                 }
                 else if ((doorList[doorNumber]) == door3 && !powerPad1On){
+                    continue
+                }
+                else if ((doorList[doorNumber]) == door9 && (!battery1On || !powerPad1On || !powerPad2On)){
+                    continue
+                }
+                else if ((doorList[doorNumber]) == door11 && !battery2On){
                     continue
                 }
                 else if(VdoorsL.includes(doorList[doorNumber])){
@@ -775,7 +799,7 @@ create(){
                 platforms.remove(door7);
             }
         }
-        else if (cursors.space.isDown){
+        else if (cursors.space.isDown && (!powerPad1On)){
         graphics = this.add.graphics();
         graphics.fillStyle(0x000000, 1);
         graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
@@ -807,7 +831,7 @@ create(){
             finaldoor = true;
             door10.anims.play('open', true);
             platforms.remove(door10);
-            timer = this.time.delayedCall(3000, changeScene, null, this);
+            timer = this.time.delayedCall(1000, changeScene, null, this);
         }
     }
 
@@ -1160,11 +1184,14 @@ create(){
 //        yoyo: false,
 //        repeat: -1
 //    });
-    scoreText = this.add.text(590, 170, 'Toolkits aquired: 0', {fontSize: '12px' });
+    scoreText = this.add.text(5, 5, 'Toolkits aquired: 0', {fontSize: '12px' });
     scoreText.scrollFactorX = 0;
     scoreText.scrollFactorY = 0;
     scoreText.setFontSize(18);
-
+    powerText = this.add.text(5, 25, 'Power Supplies fixed: (' + powerCount + '/4)', {fontSize: '12px' });
+    powerText.scrollFactorX = 0;
+    powerText.scrollFactorY = 0;
+    powerText.setFontSize(18);
 }
 
 update(){
@@ -1174,7 +1201,7 @@ update(){
 
     // keep track of the sprite X and Y
     // spriteCoord.setText('Sprite X: ' + parseFloat(player.x).toFixed(2) + " Sprite Y: " + parseFloat(player.y).toFixed(2));
-    // console.log(player.x, player.y);
+    console.log(player.x, player.y);
     player.setVelocityX(0);
     player.setVelocityY(0);
     if (movepad == false){

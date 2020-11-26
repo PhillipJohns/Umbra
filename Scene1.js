@@ -8,6 +8,7 @@ var npc;
 var info;
 var info2;
 var info3;
+var info4;
 var text1;
 var npc_text;
 var player1 = {name: "name1", inventory: []};
@@ -151,9 +152,10 @@ create(){
     graphics.fillStyle(0x000000, 1);
     graphics.fillRect(0, 500, 850, 500).setVisible(false);
     text1 = this.add.text(50, 545, 'You picked up the box!', { fontSize: '32px', fill: '#999' }).setVisible(false);
-    info = this.add.text(50, 505, 'Spacebar to interact', { fontSize: '32px', fill: '#999' }).setVisible(false);
-    info3 = this.add.text(50, 525, 'Arrow Keys to move', { fontSize: '32px', fill: '#999' }).setVisible(false);
-    info2 = this.add.text(50, 545, 'Shift to end message', { fontSize: '32px', fill: '#999' }).setVisible(false);
+    info = this.add.text(50, 505, 'Spacebar to interact', { fontSize: '28px', fill: '#999' }).setVisible(false);
+    info3 = this.add.text(50, 528, 'Arrow Keys to move', { fontSize: '28px', fill: '#999' }).setVisible(false);
+    info2 = this.add.text(50, 550, 'Shift to end message', { fontSize: '28px', fill: '#999' }).setVisible(false);
+    info4 = this.add.text(50, 575, '*Hint* Talk to NPCs!', { fontSize: '22px', fill: '#999' }).setVisible(false);
     keyText = this.add.text(50, 545, 'I need a key.', { fontSize: '32px', fill: '#999' }).setVisible(false);
     npc_text = this.add.text(50, 530, 'Hello there! Welcome to the tutorial!', { fontSize: '28px', fill: '#999' }).setVisible(false);
 
@@ -276,6 +278,7 @@ create(){
         info.setVisible(true);
         info2.setVisible(true);
         info3.setVisible(true);
+        info4.setVisible(true);
         graphics.setVisible(true);
         this.physics.pause();
     }
@@ -436,6 +439,7 @@ update(){
             info.setVisible(false);
             info2.setVisible(false);
             info3.setVisible(false);
+            info4.setVisible(false);
             npc_text.setVisible(false);
             graphics.setVisible(false);
             keyText.setVisible(false);

@@ -6,11 +6,10 @@ class Scene4 extends Phaser.Scene {
 
     }
     create(){
-        this.add.image(x, y, 'victory');
+        this.add.image(390, 300, 'victory').setScale(.30);
         //make player
-        // player = this.physics.add.sprite(70, 60, 'character').setScale(.25);
-        // player.setSize(120, 250);
-        // player.setOffset(70, 220);
-        this.add.text(100, 250, "You've Escaped!!", { fontSize: '62px', fill: '#999' }).setVisible(true);
+        player = this.physics.add.sprite(390, 300, 'character').setScale(.25);
+
+        this.add.text(170, 440, "I saved the ship!!!", { fontSize: '42px', fill: '#999' }).setVisible(true);
     }
 }

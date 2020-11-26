@@ -143,7 +143,7 @@ create(){
 
     //maze doors and buttons
     mazeDoor = platforms.create(744, 188, 'engine_door').setScale(.155).setSize(75,34).setOffset(220,85);
-    let button1 = this.add.image(200, 200, 'button');
+    let button1 = this.add.image(152, 400, 'button');
     let button2 = this.add.image(788, 130, 'button');
     mazeDoorOpen = this.physics.add.sprite(744, 188, 'engine_door').setScale(.15).setSize(75,34).setOffset(220,100).setVisible(false);
 
@@ -304,7 +304,7 @@ create(){
     // border_power.height = 300;
     border_power.setSize(70,100);
     //border for maze door button
-    let borderButton1 = this.physics.add.sprite(200, 200).setSize(30, 30);
+    let borderButton1 = this.physics.add.sprite(152, 400).setSize(30, 30);
     let borderButton2 = this.physics.add.sprite(788, 130).setSize(30, 30);
     //tool kit border
     let kitBorder = this.physics.add.sprite(700, 50).setSize(30, 30);
@@ -329,7 +329,7 @@ create(){
     // }
     //power source on
     function engineOn(){
-        if ((cursors.space.isDown) && (toolKitFound)){
+        if ((cursors.space.isDown) && (toolKitFound) && (!powerOn)){
             engineOff.anims.play('fixed', true);
             console.log('yes');
             powerOn = true;
