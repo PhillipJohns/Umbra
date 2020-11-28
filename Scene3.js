@@ -136,7 +136,7 @@ create(){
     const maze = this.make.tilemap({ key: "maze" });
     const tileset = maze.addTilesetImage("tileset", "tiles");
     const worldLayer = maze.createStaticLayer('Tile Layer 1', tileset, 0, 0);
-    // worldLayer.setCollisionByProperty({ Collision: true });
+    worldLayer.setCollisionByProperty({ Collision: true });
 
     //container
     container = this.add.container();
@@ -177,7 +177,7 @@ create(){
     }
 
     //sounds
-    doorSound = this.sound.add('doorSound');
+    doorSound = this.sound.add('doorSound', {volume: 0.3});
 
     // show the Spirtes X and Y coord
     // spriteCoord = this.add.text(50, 50, 'The sprites X and Y: ', { fontSize: '18px', fill: '#900' });
@@ -223,8 +223,8 @@ create(){
      let borderButton4 = this.physics.add.sprite(2704, 1584).setSize(40, 40);
 
      //Button 4b
-     let button9 =this.add.image(2736, 2288, 'button');
-     let borderButton4b = this.physics.add.sprite(2736, 2288).setSize(40, 40);
+     let button9 =this.add.image(2336, 2288, 'button');
+     let borderButton4b = this.physics.add.sprite(2336, 2288).setSize(40, 40);
 
      //Button 5
      let button10 = this.add.image(656, 496, 'button');
@@ -624,7 +624,6 @@ create(){
         }
 
 
-
     // create door sprites
 //    let door1 = this.physics.add.sprite(0, 0, 'engine_door').setScale(.5);
 //
@@ -734,13 +733,64 @@ create(){
         cabinets.create(x, 3050, 'cabinet').setScale(.30).setSize(90,90).setOffset(140,135);
     }
 
-
     //Door position list
     let Hdoors = [door2, door4, door5, door10, door13, door14];
     let VdoorsL = [door3, door6, door9];
 
     //locks door behind player
     this.physics.add.sprite(2530, 3195, 'backdoor').setScale(.35);
+
+
+    //teleporter main rooms by door
+    function tele1a(){
+      player.setPosition(2532,1106);
+    }
+    this.add.image(2740, 2225, 'plate');
+    let t1a = this.physics.add.sprite(2740, 2225);
+
+    function tele2a(){
+      player.setPosition(2814, 1105);
+    }
+    this.add.image(2866, 2205, 'plate');
+    let t2a = this.physics.add.sprite(2866, 2205);
+
+    function tele3a(){
+      player.setPosition(2532, 1285);
+    }
+    this.add.image(2316, 1845, 'plate');
+    let t3a = this.physics.add.sprite(2316, 1845);
+
+    function tele4a(){
+      player.setPosition(2814, 1300);
+    }
+    this.add.image(2610, 2025, 'plate');
+    let t4a = this.physics.add.sprite(2610, 2025);
+
+
+    //teleporter rooms
+    function tele1b(){
+      player.setPosition(2690,2200);
+    }
+    this.add.image(2482, 1135, 'plate');
+    let t1b = this.physics.add.sprite(2482, 1135);
+
+    function tele2b(){
+      player.setPosition(2866, 2105);
+    }
+    this.add.image(2864, 1135, 'plate');
+    let t2b = this.physics.add.sprite(2864, 1135);
+
+    function tele3b(){
+      player.setPosition(2316, 1755);
+    }
+    this.add.image(2482, 1335, 'plate');
+    let t3b = this.physics.add.sprite(2482, 1335);
+
+    function tele4b(){
+      player.setPosition(2600, 2075);
+    }
+    this.add.image(2864, 1335, 'plate');
+    let t4b = this.physics.add.sprite(2864, 1335);
 
     //make player
     player = this.physics.add.sprite(2500, 3100, 'character').setScale(.25);
@@ -1034,6 +1084,16 @@ create(){
     this.physics.add.collider(platforms, batteries);
     this.physics.add.overlap(player, border_door, no, null, this);
 
+    //telport
+    this.physics.add.overlap(player, t1a, tele1a, null, this);
+    this.physics.add.overlap(player, t1b, tele1b, null, this);
+    this.physics.add.overlap(player, t2a, tele2a, null, this);
+    this.physics.add.overlap(player, t2b, tele2b, null, this);
+    this.physics.add.overlap(player, t3a, tele3a, null, this);
+    this.physics.add.overlap(player, t3b, tele3b, null, this);
+    this.physics.add.overlap(player, t4a, tele4a, null, this);
+    this.physics.add.overlap(player, t4b, tele4b, null, this);
+
     //left room
     //movepad right overlap left room
     this.physics.add.overlap(battery2, arrowrs, function(){arrrow.call(this, [rarrow, uarrow])}, null, this);
@@ -1201,7 +1261,7 @@ update(){
 
     // keep track of the sprite X and Y
     // spriteCoord.setText('Sprite X: ' + parseFloat(player.x).toFixed(2) + " Sprite Y: " + parseFloat(player.y).toFixed(2));
-    console.log(player.x, player.y);
+    // console.log(player.x, player.y);
     player.setVelocityX(0);
     player.setVelocityY(0);
     if (movepad == false){

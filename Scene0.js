@@ -6,34 +6,15 @@ class Scene0 extends Phaser.Scene {
     }
     create(){
         this.add.text(300, 200, "Umbra", { fontSize: '64px', fill: '#999' }).setVisible(true);
-        cursors = this.input.keyboard.createCursorKeys();
-        var key = cursors.space.isDown;
-        // this.input.keyboard.on('keydown', function(){this.scene.start('Scene1')});
-        // this.input.keyboard.on('keydown', function (event) {
-        //
-        // changeScene.call(this);
-        //
-        // });
-        // this.add.text();
+        this.add.text(120, 400, "Press any key to start", { fontSize: '42px', fill: '#999' }).setVisible(true);
+        this.input.keyboard.on('keyup', this.changeScene, this);
 
-        function changeScene(){
-            this.scene.start('Scene1');
-        }
+    }
 
-        document.onkeypress = function(){changeScene.call(this);}
-        if (cursors.space.isDown){
-          this.scene.start('Scene1');
-          console.log('ugh');
-        }
+    changeScene(){
+        this.scene.start('Scene1');
     }
 
     update(){
-      // function changeScene(){
-      //     this.scene.start('Scene1');
-      // }
-      // if (cursors.space.isDown){
-      //   changeScene();
-      //   console.log('ugh');
-      // }
     }
 }

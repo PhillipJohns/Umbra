@@ -118,8 +118,8 @@ create(){
     //create event timer
 
     // sound
-    bgm = this.sound.add('bgm');
-    doorSound = this.sound.add('doorSound');
+    bgm = this.sound.add('bgm', {volume: 0.2});
+    doorSound = this.sound.add('doorSound', {volume: 0.3});
 
     let platforms = this.physics.add.staticGroup();
     //Make background
@@ -398,7 +398,7 @@ create(){
 
     function changeScene(){
         //
-        this.scene.start('Scene2');
+        this.scene.start('Scene3');
     }
 
 

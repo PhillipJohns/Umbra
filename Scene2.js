@@ -75,7 +75,7 @@ create(){
     let platforms = this.physics.add.staticGroup();
 
     //sounds
-    doorSound = this.sound.add('doorSound');
+    doorSound = this.sound.add('doorSound', {volume: 0.3});
 
     // y = 30
     // while (y != 600){
@@ -143,7 +143,7 @@ create(){
 
     //maze doors and buttons
     mazeDoor = platforms.create(744, 188, 'engine_door').setScale(.155).setSize(75,34).setOffset(220,85);
-    let button1 = this.add.image(152, 400, 'button');
+    let button1 = this.add.image(150, 400, 'button');
     let button2 = this.add.image(788, 130, 'button');
     mazeDoorOpen = this.physics.add.sprite(744, 188, 'engine_door').setScale(.15).setSize(75,34).setOffset(220,100).setVisible(false);
 
