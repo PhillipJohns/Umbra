@@ -2,6 +2,8 @@
 //
 //
 
+// 2524 2504
+
 // door flags
 var door1Open  = false;
 
@@ -136,7 +138,7 @@ create(){
     const maze = this.make.tilemap({ key: "maze" });
     const tileset = maze.addTilesetImage("tileset", "tiles");
     const worldLayer = maze.createStaticLayer('Tile Layer 1', tileset, 0, 0);
-    worldLayer.setCollisionByProperty({ Collision: true });
+//    worldLayer.setCollisionByProperty({ Collision: true });
 
     //container
     container = this.add.container();
@@ -813,9 +815,15 @@ create(){
             //console.log('OpenDoor')
             for(let doorNumber = 0; doorNumber < doorList.length; doorNumber ++){
                 if (Hdoors.includes(doorList[doorNumber])){
-                    doorSound.play();
-                    doorList[doorNumber].anims.play('open', true);
-                    platforms.remove(doorList[doorNumber]);
+                    if(!powerPad1On && (doorList[doorNumber]) == door2)
+                    {
+                        continue
+                    }
+                    else{
+                        doorSound.play();
+                        doorList[doorNumber].anims.play('open', true);
+                        platforms.remove(doorList[doorNumber]);
+                    }
                 }
                 else if ((doorList[doorNumber]) == door3 && !powerPad1On){
                     continue
@@ -1067,8 +1075,35 @@ create(){
 
         }
     }
-
-
+    // slippery function
+    function slippery()
+    {
+        console.log("x");
+        
+        if(cursors.right.isDown){
+            player.setVelocityX(1500);
+            player.setVelocityY(0);
+        }
+        else if(cursors.left.isDown){
+            player.setVelocityX(-1500);
+            player.setVelocityY(0);
+        }
+        else if(cursors.up.isDown){
+            player.setVelocityX(0);
+            player.setVelocityY(-1500);
+        }
+        else if(cursors.down.isDown){
+            player.setVelocityX(0);
+            player.setVelocityY(1500);
+        }
+    }
+    
+    
+    // ice room overlap sprite
+    // top left (1966,238)
+    let iceRoom = this.physics.add.sprite(2200, 500).setSize(500, 500);
+    this.physics.add.overlap(player, iceRoom, slippery, null, this);
+    
     // NPC collision
     this.physics.add.collider(player, scene3Npc1Static);
 
@@ -1261,7 +1296,7 @@ update(){
 
     // keep track of the sprite X and Y
     // spriteCoord.setText('Sprite X: ' + parseFloat(player.x).toFixed(2) + " Sprite Y: " + parseFloat(player.y).toFixed(2));
-    // console.log(player.x, player.y);
+    console.log(player.x, player.y);
     player.setVelocityX(0);
     player.setVelocityY(0);
     if (movepad == false){
