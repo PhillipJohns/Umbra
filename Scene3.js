@@ -101,7 +101,7 @@ var scene3Npc1Static;
 
 // Scene3 NPC
 var scene3endNpc;
-var scene3endNpcObj = {name: "scene3endNpcObj", dialogue: {1: "All the power sources seems to be on.\nNow we need you to steer the spaceship!", }};
+var scene3endNpcObj = {name: "scene3endNpcObj", dialogue: {1: "All the power sources seem to be on.\nNow we need you to steer the spaceship!", }};
 var scene3endNpcStatic;
 
 //ice NPC

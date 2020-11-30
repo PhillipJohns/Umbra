@@ -364,6 +364,7 @@ create(){
             startDoor.setVisible(false);
             startDoor = this.physics.add.sprite(104, 197, 'engine_door').setScale(.17);
             startDoor.anims.play('open', true);
+            doorSound.play();
             startDoor_open = true;
         }
     }

@@ -271,7 +271,7 @@ create(){
     this.physics.add.overlap(player, border_testNPC, testNPC, null, this);
 
     // alt ending npc 1
-    this.physics.add.overlap(player, border_endNpc1, endNpc1Talk, null, this);
+    // this.physics.add.overlap(player, border_endNpc1, endNpc1Talk, null, this);
 
     //Tutorial Text function
     timer = this.time.delayedCall(2500, tutorialText, null, this);
@@ -411,7 +411,7 @@ create(){
     this.physics.add.collider(player, test_npcStatic);
 
     // alt ending npc 1 collider
-    this.physics.add.collider(player, endNpc1Static);
+    // this.physics.add.collider(player, endNpc1Static);
 
     // resume music
     bgm.resume();
