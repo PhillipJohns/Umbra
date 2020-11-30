@@ -1,8 +1,5 @@
 // global vars
 //
-//
-
-// 2524 2504
 
 // door flags
 var door1Open  = false;
@@ -138,7 +135,7 @@ create(){
     const maze = this.make.tilemap({ key: "maze" });
     const tileset = maze.addTilesetImage("tileset", "tiles");
     const worldLayer = maze.createStaticLayer('Tile Layer 1', tileset, 0, 0);
-//    worldLayer.setCollisionByProperty({ Collision: true });
+   worldLayer.setCollisionByProperty({ Collision: true });
 
     //container
     container = this.add.container();
@@ -180,9 +177,6 @@ create(){
 
     //sounds
     doorSound = this.sound.add('doorSound', {volume: 0.3});
-
-    // show the Spirtes X and Y coord
-    // spriteCoord = this.add.text(50, 50, 'The sprites X and Y: ', { fontSize: '18px', fill: '#900' });
 
      //Door buttons
      let button1 = this.add.image(2336, 2480, 'button');
@@ -1076,34 +1070,85 @@ create(){
         }
     }
     // slippery function
-    function slippery()
+    function slipperyX()
     {
-        console.log("x");
-        
-        if(cursors.right.isDown){
-            player.setVelocityX(1500);
-            player.setVelocityY(0);
+        // console.log(player.body.velocity);
+        if (player.body.velocity.x > 0){
+          player.setAccelerationX(2500);
+          player.setVelocityX(400)
+          player.setVelocityY(0);
         }
-        else if(cursors.left.isDown){
-            player.setVelocityX(-1500);
-            player.setVelocityY(0);
-        }
-        else if(cursors.up.isDown){
-            player.setVelocityX(0);
-            player.setVelocityY(-1500);
-        }
-        else if(cursors.down.isDown){
-            player.setVelocityX(0);
-            player.setVelocityY(1500);
+        else if (player.body.velocity.x < 0){
+          player.setAccelerationX(-2500);
+          player.setVelocityX(-400);
+          player.setVelocityY(0);
         }
     }
-    
-    
+
+    function slipperyY()
+    {
+        // console.log(player.body.velocity);
+        if (player.body.velocity.y > 0){
+          player.setAccelerationY(2500);
+          player.setVelocityY(400);
+          player.setVelocityX(0);
+        }
+        else if (player.body.velocity.y < 0){
+          player.setAccelerationY(-2500);
+          player.setVelocityY(-400);
+          player.setVelocityX(0);
+        }
+    }
+
+    function rock(){
+      player.setAccelerationY(0);
+      player.setAccelerationX(0);
+    }
+
     // ice room overlap sprite
-    // top left (1966,238)
-    let iceRoom = this.physics.add.sprite(2200, 500).setSize(500, 500);
-    this.physics.add.overlap(player, iceRoom, slippery, null, this);
-    
+    let iceRoom = this.physics.add.sprite(2140, 784).setSize(450, 150);
+    let iceRoom1 = this.physics.add.sprite(2420, 650).setSize(120, 200);
+    let iceRoom2 = this.physics.add.sprite(2230, 506).setSize(250, 100);
+    let iceRoom3 = this.physics.add.sprite(2060, 400).setSize(90, 100);
+    let iceRoom4 = this.physics.add.sprite(2335, 320).setSize(450, 100);
+    let iceRoom5 = this.physics.add.sprite(2610, 595).setSize(100, 480);
+    let iceRoom6 = this.physics.add.sprite(2780, 880).setSize(250, 90);
+    let iceRoom7 = this.physics.add.sprite(2940, 765).setSize(70, 130);
+    let iceRoom8 = this.physics.add.sprite(3050, 657).setSize(160, 100);
+
+    this.physics.add.overlap(player, iceRoom, slipperyX, null, this);
+    this.physics.add.overlap(player, iceRoom1, slipperyY, null, this);
+    this.physics.add.overlap(player, iceRoom2, slipperyX, null, this);
+    this.physics.add.overlap(player, iceRoom3, slipperyY, null, this);
+    this.physics.add.overlap(player, iceRoom4, slipperyX, null, this);
+    this.physics.add.overlap(player, iceRoom5, slipperyY, null, this);
+    this.physics.add.overlap(player, iceRoom6, slipperyX, null, this);
+    this.physics.add.overlap(player, iceRoom7, slipperyY, null, this);
+    this.physics.add.overlap(player, iceRoom8, slipperyX, null, this);
+
+
+    let rock1 = this.physics.add.sprite(2420, 810).setSize(70, 110);
+    let rock2 = this.physics.add.sprite(2420, 455).setSize(70, 50);
+    let rock3 = this.physics.add.sprite(2040, 506).setSize(50, 50);
+    let rock4 = this.physics.add.sprite(2060, 270).setSize(75, 50);
+    let rock5 = this.physics.add.sprite(2620, 270).setSize(75, 50);
+    let rock6 = this.physics.add.sprite(2580, 910).setSize(50, 50);
+    let rock7 = this.physics.add.sprite(2965, 900).setSize(50, 50);
+    let rock8 = this.physics.add.sprite(2920, 620).setSize(50, 50);
+    let rock9 = this.physics.add.sprite(3220, 680).setSize(110, 50);
+    // let rock10 = this.physics.add.sprite(3190, 420).setSize(110, 50);
+
+    this.physics.add.overlap(player, rock1, rock, null, this);
+    this.physics.add.overlap(player, rock2, rock, null, this);
+    this.physics.add.overlap(player, rock3, rock, null, this);
+    this.physics.add.overlap(player, rock4, rock, null, this);
+    this.physics.add.overlap(player, rock5, rock, null, this);
+    this.physics.add.overlap(player, rock6, rock, null, this);
+    this.physics.add.overlap(player, rock7, rock, null, this);
+    this.physics.add.overlap(player, rock8, rock, null, this);
+    this.physics.add.overlap(player, rock9, rock, null, this);
+    // this.physics.add.overlap(player, rock10, rock, null, this);
+
     // NPC collision
     this.physics.add.collider(player, scene3Npc1Static);
 
