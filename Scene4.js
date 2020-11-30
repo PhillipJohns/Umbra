@@ -6,6 +6,7 @@ class Scene4 extends Phaser.Scene {
 
     }
     create(){
+        this.add.image(400, 350, 'stars').setScale(.85);
         this.add.image(390, 300, 'victory').setScale(.30);
         //make player
         player = this.physics.add.sprite(390, 300, 'character').setScale(.25);
