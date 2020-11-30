@@ -94,10 +94,20 @@ var incorrectCodeText;
 var powerDownText;
 var notext;
 
-// Scene3 NPCs
+// Scene3 NPC
 var scene3Npc1;
 var scene3Npc1Obj = {name: "scene3Npc1Obj", dialogue: {1: "We need to get the terminal running! \nWe can't escape without it.", }};
 var scene3Npc1Static;
+
+// Scene3 NPC
+var scene3endNpc;
+var scene3endNpcObj = {name: "scene3endNpcObj", dialogue: {1: "All the power sources seems to be on.\nNow we need you to steer the spaceship!", }};
+var scene3endNpcStatic;
+
+//ice NPC
+var iceNpc1;
+var iceNpc1Obj = {name: "iceNpc1Obj", dialogue: {1: "The next room was badly damaged and \niced over. Watch your step!", }};
+var iceNpc1Static;
 
 //coded door array
 var doorCode = [];
@@ -135,7 +145,7 @@ create(){
     const maze = this.make.tilemap({ key: "maze" });
     const tileset = maze.addTilesetImage("tileset", "tiles");
     const worldLayer = maze.createStaticLayer('Tile Layer 1', tileset, 0, 0);
-   worldLayer.setCollisionByProperty({ Collision: true });
+    // worldLayer.setCollisionByProperty({ Collision: true });
 
     //container
     container = this.add.container();
@@ -610,7 +620,7 @@ create(){
                 graphics = this.add.graphics();
                 graphics.fillStyle(0x000000, 1);
                 graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
-                repairKitText = this.add.text(player.x - 400, player.y + 150, scene3Npc1Obj.dialogue[1], { fontSize: '30px', fill: '#999' }).setVisible(true);
+                repairKitText = this.add.text(player.x - 380, player.y + 150, scene3Npc1Obj.dialogue[1], { fontSize: '30px', fill: '#999' }).setVisible(true);
                 // terminalText2.setText(scene3Npc1Obj.dialogue[1]);
                 // terminalText2.setVisible(true);
                 graphics.setVisible(true);
@@ -619,6 +629,36 @@ create(){
             }
         }
 
+        function scene3endNpcTalk(){
+            if(cursors.space.isDown){
+                    graphics = this.add.graphics();
+                    graphics.fillStyle(0x000000, 1);
+                    graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
+                    repairKitText = this.add.text(player.x - 380, player.y + 150, scene3endNpcObj.dialogue[1], { fontSize: '30px', fill: '#999' }).setVisible(true);
+                    graphics.setVisible(true);
+                    this.physics.pause();
+                }
+            }
+
+        function iceNpcTalk(){
+            if(cursors.space.isDown){
+                    graphics = this.add.graphics();
+                    graphics.fillStyle(0x000000, 1);
+                    graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
+                    repairKitText = this.add.text(player.x - 380, player.y + 150, iceNpc1Obj.dialogue[1], { fontSize: '30px', fill: '#999' }).setVisible(true);
+                    graphics.setVisible(true);
+                    this.physics.pause();
+                }
+            }
+
+    //tables
+    let tables = this.physics.add.staticGroup();
+    tables.create(560, 694, 'table').setScale(1.5).setOffset(-100,-20).setSize(110,0).refreshBody();
+    tables.create(560, 894, 'table').setScale(1.5).setOffset(-100,-20).setSize(110,0).refreshBody();
+    tables.create(1090, 694, 'table').setScale(1.5).setOffset(-100,-20).setSize(110,0).refreshBody();
+    tables.create(1090, 894, 'table').setScale(1.5).setOffset(-100,-20).setSize(110,0).refreshBody();
+    tables.create(1390, 694, 'table').setScale(1.5).setOffset(-100,-20).setSize(110,0).refreshBody();
+    tables.create(1390, 894, 'table').setScale(1.5).setOffset(-100,-20).setSize(110,0).refreshBody();
 
     // create door sprites
 //    let door1 = this.physics.add.sprite(0, 0, 'engine_door').setScale(.5);
@@ -691,6 +731,8 @@ create(){
 
     // scene3 border sprite npc1
     let border_scene3Npc1 = this.physics.add.sprite(2380, 2740).setSize(50, 115).setOffset(-18,0);
+    let border_sceneiceNpc1 = this.physics.add.sprite(1430, 787).setSize(50, 115).setOffset(-18,-15);
+    let border_sceneendNpc = this.physics.add.sprite(3958, 404).setSize(50, 145).setOffset(-18,-15);
 
 
     //Test Door
@@ -799,6 +841,20 @@ create(){
     scene3Npc1Static = this.physics.add.staticSprite(2380, 2740).setSize(45, 60).setOffset(-16,50);
     scene3Npc1.width = 32;
     scene3Npc1.height = 32;
+
+    // scene3 end npc
+    scene3endNpc = this.physics.add.staticGroup();
+    scene3endNpc.create(3958, 404, 'npc1').setScale(.25).setFrame(5);
+    scene3endNpcStatic = this.physics.add.staticSprite(3958, 404).setSize(45, 60).setOffset(-16,50);
+    scene3endNpc.width = 32;
+    scene3endNpc.height = 32;
+
+    //ice NPC
+    iceNpc1 = this.physics.add.staticGroup();
+    iceNpc1.create(1430, 787, 'npc1').setScale(.25).setFrame(4);
+    iceNpc1Static = this.physics.add.staticSprite(1430, 787).setSize(45, 80).setOffset(-16,50);
+    iceNpc1.width = 32;
+    iceNpc1.height = 32;
 
     // open door functions
     function open_door(doorList){
@@ -1074,12 +1130,12 @@ create(){
     {
         // console.log(player.body.velocity);
         if (player.body.velocity.x > 0){
-          player.setAccelerationX(2500);
+          player.setAccelerationX(5000);
           player.setVelocityX(400)
           player.setVelocityY(0);
         }
         else if (player.body.velocity.x < 0){
-          player.setAccelerationX(-2500);
+          player.setAccelerationX(-5000);
           player.setVelocityX(-400);
           player.setVelocityY(0);
         }
@@ -1089,12 +1145,12 @@ create(){
     {
         // console.log(player.body.velocity);
         if (player.body.velocity.y > 0){
-          player.setAccelerationY(2500);
+          player.setAccelerationY(5000);
           player.setVelocityY(400);
           player.setVelocityX(0);
         }
         else if (player.body.velocity.y < 0){
-          player.setAccelerationY(-2500);
+          player.setAccelerationY(-5000);
           player.setVelocityY(-400);
           player.setVelocityX(0);
         }
@@ -1136,7 +1192,7 @@ create(){
     let rock7 = this.physics.add.sprite(2965, 900).setSize(50, 50);
     let rock8 = this.physics.add.sprite(2920, 620).setSize(50, 50);
     let rock9 = this.physics.add.sprite(3220, 680).setSize(110, 50);
-    // let rock10 = this.physics.add.sprite(3190, 420).setSize(110, 50);
+    let rock10 = this.physics.add.sprite(1865, 795).setSize(50, 125);
 
     this.physics.add.overlap(player, rock1, rock, null, this);
     this.physics.add.overlap(player, rock2, rock, null, this);
@@ -1147,10 +1203,12 @@ create(){
     this.physics.add.overlap(player, rock7, rock, null, this);
     this.physics.add.overlap(player, rock8, rock, null, this);
     this.physics.add.overlap(player, rock9, rock, null, this);
-    // this.physics.add.overlap(player, rock10, rock, null, this);
+    this.physics.add.overlap(player, rock10, rock, null, this);
 
     // NPC collision
     this.physics.add.collider(player, scene3Npc1Static);
+    this.physics.add.collider(player, iceNpc1Static);
+    this.physics.add.collider(player, scene3endNpcStatic);
 
     //Player Collision
     this.physics.add.collider(player, worldLayer);
@@ -1158,6 +1216,7 @@ create(){
     this.physics.add.collider(player, batteries);
     this.physics.add.collider(player, cabinets);
     this.physics.add.collider(player, wire);
+    this.physics.add.collider(player, tables);
     this.physics.add.collider(player, powerPads);
     this.physics.add.collider(worldLayer, battery1);
     this.physics.add.collider(worldLayer, battery2);
@@ -1200,6 +1259,8 @@ create(){
 
     // NPC overlap
     this.physics.add.overlap(player, border_scene3Npc1, scene3Npc1Talk, null, this);
+    this.physics.add.overlap(player, border_sceneiceNpc1, iceNpcTalk, null, this);
+    this.physics.add.overlap(player, border_sceneendNpc, scene3endNpcTalk, null, this);
 
     //Player Overlap
     // Terminal

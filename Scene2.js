@@ -21,6 +21,11 @@ var graphics;
 var buttonPush = false;
 var toolsAdded = false;
 var boxGray = false;
+var scoreText;
+var toolBoxCount = 0;
+var powerText;
+var powerCount = 0;
+
 // coordinates
 var sprite_x;
 var sprite_y;
@@ -333,6 +338,10 @@ create(){
             engineOff.anims.play('fixed', true);
             console.log('yes');
             powerOn = true;
+            toolBoxCount -= 1;
+            powerCount += 1;
+            scoreText.setText('Toolkits aquired: ' + toolBoxCount);
+            powerText.setText('Power Supplies fixed: (' + powerCount + '/1)');
         }
         else if ((cursors.space.isDown) && (!toolKitFound)){
             graphics.setVisible(true);
@@ -388,6 +397,9 @@ create(){
             toolBoxAcquiredText.setVisible(true);
             this.physics.pause();
             toolsAdded = true;
+            toolBoxCount += 1;
+            scoreText.setText('Toolkits aquired: ' + toolBoxCount);
+            powerText.setText('Power Supplies fixed: (' + powerCount + '/1)');
         }
     }
 
@@ -424,6 +436,7 @@ create(){
     }
 
     function changeScene(){
+        powerCount = 0;
         this.scene.start('Scene3');
     }
 
@@ -462,6 +475,11 @@ create(){
     this.physics.add.overlap(player, border, gameNpc, null, this);
     this.physics.add.collider(player, npcStatic);
 
+
+    scoreText = this.add.text(5, 30, 'Toolkits aquired: 0', {fontSize: '12px' });
+    scoreText.setFontSize(18);
+    powerText = this.add.text(5, 50, 'Power Supplies fixed: (' + powerCount + '/1)', {fontSize: '12px' });
+    powerText.setFontSize(18);
 }
 
 // update

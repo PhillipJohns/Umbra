@@ -102,6 +102,7 @@ preload(){
     this.load.image('stop', 'sprite/stop.png');
     this.load.image('toolbox', 'sprite/toolbox.png');
     this.load.image('plate', 'sprite/pressureplate.png');
+    this.load.image('table', 'sprite/table.png');
 
     //coded buttons
     this.load.image('code1', 'Free/Menu/Levels/01.png');
