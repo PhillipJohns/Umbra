@@ -44,4 +44,4 @@ var config = {
 }
 
 var game = new Phaser.Game(config);
-game.scene.start('Scene1');
+game.scene.start('Scene0');
