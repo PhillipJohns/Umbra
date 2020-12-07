@@ -924,11 +924,11 @@ create(){
                 platforms.remove(door13);
             }
         }
-        else if (cursors.space.isDown){
+        else if (cursors.space.isDown && (!battery1On)){
             graphics = this.add.graphics();
             graphics.fillStyle(0x000000, 1);
             graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
-            powerDownText = this.add.text(player.x - 400, player.y + 100, 'The Power is down I need to get it working!', { fontSize: '30px', fill: '#999' }).setVisible(true);
+            powerDownText = this.add.text(player.x - 380, player.y + 170, 'The Power is down I need to get it working!', { fontSize: '30px', fill: '#999' }).setVisible(true);
             this.physics.pause();
         }
     }
