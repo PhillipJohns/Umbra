@@ -1,6 +1,17 @@
 // global vars
 //
 
+// easter egg ending stuff
+// npc
+var scene3NpcX;
+var scene3NpcXStatic;
+
+// door stuff
+var doorX1Open = false;
+var doorX2Open = false;
+var doorX3Open = false;
+var doorX4Open = false;
+
 // door flags
 var door1Open  = false;
 
@@ -145,7 +156,8 @@ create(){
     const maze = this.make.tilemap({ key: "maze" });
     const tileset = maze.addTilesetImage("tileset", "tiles");
     const worldLayer = maze.createStaticLayer('Tile Layer 1', tileset, 0, 0);
-    worldLayer.setCollisionByProperty({ Collision: true });
+    // easter egg
+    //worldLayer.setCollisionByProperty({ Collision: true });
 
     //container
     container = this.add.container();
@@ -269,7 +281,20 @@ create(){
      let code3 = this.physics.add.sprite(1392, 496).setSize(40, 40);
      let code4Button =this.add.image(1456, 496, 'code4');
      let code4 = this.physics.add.sprite(1456, 496).setSize(40, 40);
-
+        
+     // secret room buttons - easter egg
+     let buttonX1 = this.add.image(4026, 1745, 'button');
+     let borderButtonX1 = this.physics.add.sprite(4026, 1745).setSize(40, 40);
+    
+     let buttonX2 = this.add.image(2850, 1584, 'button');
+     let borderButtonX2 = this.physics.add.sprite(2850, 1584).setSize(40, 40);
+    
+     let buttonX3 = this.add.image(530, 190, 'button');
+     let borderButtonX3 = this.physics.add.sprite(530, 190).setSize(40, 40);
+    
+     let buttonX4 = this.add.image(4140, 413, 'button');
+     let borderButtonX4 = this.physics.add.sprite(4140, 413).setSize(40, 40);
+    
      //move pad arrows
      //right arrows left room
      let arrowrs = this.physics.add.staticGroup();
@@ -834,7 +859,14 @@ create(){
     player = this.physics.add.sprite(2500, 3100, 'character').setScale(.25);
     player.setSize(120, 250);
     player.setOffset(70, 220);
-
+    
+    // easter egg npc
+    scene3NpcX = this.physics.add.staticGroup();
+    scene3NpcX.create(558, 601, 'npc1').setScale(.25).setFrame(6);
+    scene3NpcXStatic = this.physics.add.staticSprite(558, 601).setSize(45, 60).setOffset(-16,50);
+    scene3NpcX.width = 32;
+    scene3NpcX.height = 32;
+    
     // scene3 npc 1
     scene3Npc1 = this.physics.add.staticGroup();
     scene3Npc1.create(2380, 2780, 'npc1').setScale(.25).setFrame(3);
@@ -915,7 +947,72 @@ create(){
         this.physics.pause();
         }
     }
-
+    
+    // easter egg doors
+    // easter egg door 1
+    function openDoorX1()
+    {
+        if(cursors.space.isDown && doorX1Open == false)
+        {
+            doorX1Open = true;
+            console.log(doorX1Open);
+            notext.setVisible(true);
+            graphics = this.add.graphics();
+            graphics.fillStyle(0x000000, 1);
+            graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
+            repairKitText = this.add.text(player.x - 400, player.y + 150, 'This button activated something...', { fontSize: '32px', fill: '#999' }).setVisible(true);
+            this.physics.pause();
+      }
+    }
+    
+    // easter egg door 2
+     function openDoorX2()
+    {
+        if(cursors.space.isDown && doorX2Open == false)
+        {
+            doorX2Open = true;
+            console.log(doorX2Open);
+            notext.setVisible(true);
+            graphics = this.add.graphics();
+            graphics.fillStyle(0x000000, 1);
+            graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
+            repairKitText = this.add.text(player.x - 400, player.y + 150, 'This button activated something...', { fontSize: '32px', fill: '#999' }).setVisible(true);
+            this.physics.pause();
+      }
+    }
+    
+    // easter egg door 3
+     function openDoorX3()
+    {
+        if(cursors.space.isDown && doorX3Open == false)
+        {
+            doorX3Open = true;
+            console.log(doorX3Open);
+            notext.setVisible(true);
+            graphics = this.add.graphics();
+            graphics.fillStyle(0x000000, 1);
+            graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
+            repairKitText = this.add.text(player.x - 400, player.y + 150, 'This button activated something...', { fontSize: '32px', fill: '#999' }).setVisible(true);
+            this.physics.pause();
+      }
+    }
+    
+    // easter egg door 4
+     function openDoorX4()
+    {
+        if(cursors.space.isDown && doorX4Open == false)
+        {
+            doorX4Open = true;
+            console.log(doorX4Open);
+            notext.setVisible(true);
+            graphics = this.add.graphics();
+            graphics.fillStyle(0x000000, 1);
+            graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
+            repairKitText = this.add.text(player.x - 400, player.y + 150, 'This button activated something...', { fontSize: '32px', fill: '#999' }).setVisible(true);
+            this.physics.pause();
+      }
+    }
+    
     function openRepairKitdoor2(){
         if (battery1On && !repairKit2Found){
             if (cursors.space.isDown){
@@ -1262,6 +1359,12 @@ create(){
     this.physics.add.overlap(player, border_sceneiceNpc1, iceNpcTalk, null, this);
     this.physics.add.overlap(player, border_sceneendNpc, scene3endNpcTalk, null, this);
 
+    // easter egg buttons
+    this.physics.add.overlap(player, borderButtonX1, openDoorX1, null, this);
+    this.physics.add.overlap(player, borderButtonX2, openDoorX2, null, this);
+    this.physics.add.overlap(player, borderButtonX3, openDoorX3, null, this);
+    this.physics.add.overlap(player, borderButtonX4, openDoorX4, null, this);
+    
     //Player Overlap
     // Terminal
     this.physics.add.overlap(player, terminalBorder, commandTerminal, null, this);
@@ -1401,7 +1504,7 @@ update(){
     //scene3UIText.x = player.body.position.x;
 
     // keep track of the sprite X and Y
-    // spriteCoord.setText('Sprite X: ' + parseFloat(player.x).toFixed(2) + " Sprite Y: " + parseFloat(player.y).toFixed(2));
+//     spriteCoord.setText('Sprite X: ' + parseFloat(player.x).toFixed(2) + " Sprite Y: " + //parseFloat(player.y).toFixed(2));
     console.log(player.x, player.y);
     player.setVelocityX(0);
     player.setVelocityY(0);
