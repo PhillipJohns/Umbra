@@ -399,7 +399,7 @@ create(){
 
     function changeScene(){
         //
-        this.scene.start('Scene3');
+        this.scene.start('Scene2');
     }
 
 

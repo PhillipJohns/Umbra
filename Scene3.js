@@ -6,11 +6,19 @@
 var scene3NpcX;
 var scene3NpcXStatic;
 
+// door
+var doorX;
+
+// npc dialogue
+var scene3NpcXObj = {name: "scene3NpcXObj", dialogue: {1: "I want to use the escape pod...\nBut I can't seem to figure out how to\n unlock the door.", }};
+
 // door stuff
 var doorX1Open = false;
 var doorX2Open = false;
 var doorX3Open = false;
 var doorX4Open = false;
+
+var easterEggOpen = false;
 
 // door flags
 var door1Open  = false;
@@ -156,8 +164,7 @@ create(){
     const maze = this.make.tilemap({ key: "maze" });
     const tileset = maze.addTilesetImage("tileset", "tiles");
     const worldLayer = maze.createStaticLayer('Tile Layer 1', tileset, 0, 0);
-    // easter egg
-    //worldLayer.setCollisionByProperty({ Collision: true });
+    worldLayer.setCollisionByProperty({ Collision: true });
 
     //container
     container = this.add.container();
@@ -636,7 +643,24 @@ create(){
             }
         }
     }
-
+    
+    // easter egf NPC dialogue
+    function scene3NpcXTalk(){
+        //console.log(test_npc);
+        if(cursors.space.isDown){
+            //console.log(test_npc.dialogue[1]);
+                graphics = this.add.graphics();
+                graphics.fillStyle(0x000000, 1);
+                graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
+                repairKitText = this.add.text(player.x - 380, player.y + 150, scene3NpcXObj.dialogue[1], { fontSize: '30px', fill: '#999' }).setVisible(true);
+                // terminalText2.setText(scene3Npc1Obj.dialogue[1]);
+                // terminalText2.setVisible(true);
+                graphics.setVisible(true);
+//                console.log(test_npc.dialogue[1]);
+                this.physics.pause();
+            }
+        }
+    
     // NPC dialogues
     function scene3Npc1Talk(){
         //console.log(test_npc);
@@ -758,7 +782,9 @@ create(){
     let border_scene3Npc1 = this.physics.add.sprite(2380, 2740).setSize(50, 115).setOffset(-18,0);
     let border_sceneiceNpc1 = this.physics.add.sprite(1430, 787).setSize(50, 115).setOffset(-18,-15);
     let border_sceneendNpc = this.physics.add.sprite(3958, 404).setSize(50, 145).setOffset(-18,-15);
-
+    
+    // easter egg npc border
+    let border_scene3NpcX = this.physics.add.sprite(554, 590).setSize(50, 115).setOffset(-18,0);
 
     //Test Door
     // Test Value was 2464(56), 2464(15)
@@ -784,6 +810,12 @@ create(){
     door12 = platforms.create(1718, 792, 'door').setScale(.35).setSize(70,160).setOffset(80,165);
     door13 = platforms.create(856, 480, 'engine_door').setScale(.35).setSize(170,70).setOffset(170,80);
     door14 = platforms.create(568, 1519, 'engine_door').setScale(.35).setSize(170,70).setOffset(170,80);
+    
+    // easter egg
+    doorX = platforms.create(2, 2680, 'doorL').setScale(.35).setSize(70,160).setOffset(57,165);
+    
+    let border_doorX = this.physics.add.sprite(30, 2686);
+    border_doorX.setSize(40, 160);
 
     //pressure activated door in bottom room
     let pdoor2 = platforms.create(2130, 3010, 'engine_door', 6).setScale(.35).setSize(170,35).setOffset(170,80);
@@ -862,8 +894,8 @@ create(){
     
     // easter egg npc
     scene3NpcX = this.physics.add.staticGroup();
-    scene3NpcX.create(558, 601, 'npc1').setScale(.25).setFrame(6);
-    scene3NpcXStatic = this.physics.add.staticSprite(558, 601).setSize(45, 60).setOffset(-16,50);
+    scene3NpcX.create(554, 590, 'npc1').setScale(.25).setFrame(6);
+    scene3NpcXStatic = this.physics.add.staticSprite(554, 590).setSize(45, 60).setOffset(-16,50);
     scene3NpcX.width = 32;
     scene3NpcX.height = 32;
     
@@ -1011,6 +1043,31 @@ create(){
             repairKitText = this.add.text(player.x - 400, player.y + 150, 'This button activated something...', { fontSize: '32px', fill: '#999' }).setVisible(true);
             this.physics.pause();
       }
+    }
+    
+    // easter egg escape pod door
+    function easter_egg_dooropen(){
+        if (cursors.space.isDown){
+        if (doorX1Open && doorX2Open && doorX3Open && doorX4Open && easterEggOpen == false)
+        {
+             doorSound.play();
+            doorX.anims.play('openL', true);
+            easterEggOpen = true;
+            // go to easter egg ending scene
+            timer = this.time.delayedCall(1000, changeSceneX, null, this);
+            return;
+        }
+        else if(easterEggOpen == false)
+        {
+            notext.setVisible(true);
+            graphics = this.add.graphics();
+            graphics.fillStyle(0x000000, 1);
+            graphics.fillRect(player.x - 400, player.y + 100, 800, 500).setVisible(true);
+            repairKitText = this.add.text(player.x - 400, player.y + 150, 'This door is locked...', { fontSize: '32px', fill: '#999' }).setVisible(true);
+            this.physics.pause();
+        }
+        
+        }
     }
     
     function openRepairKitdoor2(){
@@ -1212,6 +1269,11 @@ create(){
     function changeScene(){
         this.scene.start('Scene4');
     }
+    
+    // easter egg
+    function changeSceneX(){
+        this.scene.start('SceneX');
+    }
 
     // Close door function
     function close_door(doorList){
@@ -1306,6 +1368,8 @@ create(){
     this.physics.add.collider(player, scene3Npc1Static);
     this.physics.add.collider(player, iceNpc1Static);
     this.physics.add.collider(player, scene3endNpcStatic);
+    // easter egg npc
+    this.physics.add.collider(player, scene3NpcXStatic);
 
     //Player Collision
     this.physics.add.collider(player, worldLayer);
@@ -1358,12 +1422,15 @@ create(){
     this.physics.add.overlap(player, border_scene3Npc1, scene3Npc1Talk, null, this);
     this.physics.add.overlap(player, border_sceneiceNpc1, iceNpcTalk, null, this);
     this.physics.add.overlap(player, border_sceneendNpc, scene3endNpcTalk, null, this);
-
+    // easter egg overlap
+    this.physics.add.overlap(player, border_scene3NpcX, scene3NpcXTalk, null, this);
+    
     // easter egg buttons
     this.physics.add.overlap(player, borderButtonX1, openDoorX1, null, this);
     this.physics.add.overlap(player, borderButtonX2, openDoorX2, null, this);
     this.physics.add.overlap(player, borderButtonX3, openDoorX3, null, this);
     this.physics.add.overlap(player, borderButtonX4, openDoorX4, null, this);
+    this.physics.add.overlap(player, border_doorX, easter_egg_dooropen, null, this);
     
     //Player Overlap
     // Terminal
